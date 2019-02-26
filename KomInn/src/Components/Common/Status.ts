@@ -1,0 +1,1 @@
+export enum Status { Submitted, Published, Draft, Success, Promoted }
