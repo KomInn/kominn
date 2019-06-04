@@ -5,53 +5,49 @@ import * as ReactDOM from "react-dom";
 
 import { NewSuggestion } from "./NewSuggestion";
 import { Frontpage } from "./Frontpage";
-import { ViewSuggestion }  from "./ViewSuggestion";
-import { SendTilKS }  from "./SendTilKS/SendTilKS";
+import { ViewSuggestion } from "./ViewSuggestion";
+import { SendTilKS } from "./SendTilKS/SendTilKS";
 import { Vurdering } from './Components/Vurdering/Vurdering';
 $.ajaxSetup({ headers: { "Accept": "application/json;odata=verbose" } })
 
 
-function renderSuggestionForm(id:string) 
-{
+function renderSuggestionForm(id: string) {
     ReactDOM.render(
-    <NewSuggestion />,
+        <NewSuggestion />,
         document.getElementById(id)
     );
 }
 
-function renderShowAllSuggestions(id:string)
-{
+function renderShowAllSuggestions(id: string) {
     ReactDOM.render(
-    <Frontpage />,
+        <Frontpage />,
         document.getElementById(id)
     );
 }
 
-function renderViewSuggestions(id:string)
-{
+function renderViewSuggestions(id: string) {
     ReactDOM.render(
-    <ViewSuggestion />,
+        <ViewSuggestion />,
         document.getElementById(id)
     );
 }
 
 
 
-if(document.getElementById("vurdering") != null)
-    ReactDOM.render(<Vurdering />, document.getElementById("vurdering")); 
+if (document.getElementById("vurdering") != null)
+    ReactDOM.render(<Vurdering />, document.getElementById("vurdering"));
 
 
-if(document.getElementById("form") != null)
+if (document.getElementById("form") != null)
     renderSuggestionForm("form");
 
-if(document.getElementById("allsuggestions") != null)
+if (document.getElementById("allsuggestions") != null)
     renderShowAllSuggestions("allsuggestions");
 
-if(document.getElementById("forslag") != null)
+if (document.getElementById("forslag") != null)
     renderViewSuggestions("forslag");
 
-if(document.getElementById("inductintegrasjon") != null)
-{ 
+if (document.getElementById("inductintegrasjon") != null) {
     ReactDOM.render(<SendTilKS />, document.getElementById("inductintegrasjon"));
 }
 
