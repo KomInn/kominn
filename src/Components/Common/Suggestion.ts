@@ -71,8 +71,7 @@ export class Suggestion {
     }
 
     public get MapUrl(): string {
-        console.error("Google Maps API-key NOT SET in Suggestion.ts");
-        var mapsApiKey = "";
+        var mapsApiKey = "AIzaSyBEQC7aWXruMiVIMfR_ev-7AFFqs96xn2c";
         return "//www.google.com/maps/embed/v1/place?key=" + mapsApiKey + "&q=" + this.Location;
     }
 
