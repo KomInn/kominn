@@ -1,0 +1,8 @@
+<pnp:Files xmlns:pnp="http://schemas.dev.office.com/PnP/2019/03/ProvisioningSchema">
+    <pnp:File Src="SitePages\Home.aspx" Folder="SitePages" Level="Published" Overwrite="false" />
+    <pnp:File Src="SitePages\Forslag.aspx" Folder="SitePages" Level="Published" Overwrite="false" />
+    <pnp:File Src="SitePages\NyttForslag.aspx" Folder="SitePages" Level="Published" Overwrite="false" />
+    <pnp:File Src="SitePages\SendTilKS.aspx" Folder="SitePages" Level="Published" Overwrite="false" />
+    <pnp:File Src="SitePages\Vurdering.aspx" Folder="SitePages" Level="Published" Overwrite="false" />
+    <pnp:Directory Src="SiteAssets" Folder="SiteAssets" Overwrite="true" Recursive="true" IncludedExtensions="*.js,*.css,*.eot,*.svg,*.ttf,*.woff" />
+</pnp:Files>
