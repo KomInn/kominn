@@ -1,0 +1,15 @@
+
+<pnp:SiteFields xmlns:pnp="http://schemas.dev.office.com/PnP/2019/03/ProvisioningSchema">
+    <Field Type="Number" DisplayName="Score gjennomførbarhet" EnforceUniqueValues="FALSE" Indexed="FALSE" ID="{1db6fffa-830e-4372-85b3-2918d6a1c411}" Group="KomInn" StaticName="KmiScoreFeasability" Name="KmiScoreFeasability" />
+    <Field Type="Number" DisplayName="Score bruker/innbyggerinvolvering" EnforceUniqueValues="FALSE" Indexed="FALSE" ID="{793cf1bf-6338-42b6-9e8b-2054a642ff42}" Group="KomInn" StaticName="KmiScoreUserInvolvement" Name="KmiScoreUserInvolvement" />
+    <Field Type="Number" DisplayName="Score spredningspotensiale" EnforceUniqueValues="FALSE" Indexed="FALSE" ID="{63574edf-70bd-4ddb-bd15-2e02659d0d7b}" Group="KomInn" StaticName="KmiScoreDistributionPotential" Name="KmiScoreDistributionPotential" />
+    <Field Type="Number" DisplayName="Score innovasjonsgrad" EnforceUniqueValues="FALSE" Indexed="FALSE" ID="{e877ce76-ad5d-4f46-b1ab-479bd32dde87}" Group="KomInn" StaticName="KmiScoreDegreeOfInnovation" Name="KmiScoreDegreeOfInnovation" />
+    <Field Type="Boolean" DisplayName="Flere aktører?" EnforceUniqueValues="FALSE" Indexed="FALSE" ID="{e803d521-8b55-4e52-a3bb-6fbb6aa53740}" Group="KomInn" StaticName="KmiMoreActors" Name="KmiMoreActors">
+        <Default>1</Default>
+    </Field>
+    <Field Type="Boolean" DisplayName="Lovkrav?" EnforceUniqueValues="FALSE" Indexed="FALSE" ID="{2ca4c43c-487c-4acd-bf9a-b5b1c38e50a8}" Group="KomInn" StaticName="KmiLawRequirements" Name="KmiLawRequirements">
+        <Default>1</Default>
+    </Field>
+    <Field Type="Note" DisplayName="Kommentar" EnforceUniqueValues="FALSE" Indexed="FALSE" NumLines="6" RichText="FALSE" RichTextMode="Compatible" IsolateStyles="FALSE" Sortable="FALSE" ID="{6bd2842a-a0e1-4642-923d-7ea36c54aba4}" Group="KomInn" StaticName="KmiShortComment" Name="KmiShortComment" RestrictedMode="TRUE" AppendOnly="FALSE" />
+    <Field Type="Lookup" DisplayName="Forslag" EnforceUniqueValues="FALSE" List="{listid:Forslag}" ShowField="Title" UnlimitedLengthInDocumentLibrary="FALSE" RelationshipDeleteBehavior="None" ID="{cab77638-1071-4cfb-8a89-057636f4e9c8}" Group="KomInn" StaticName="KmiSuggestion" Name="KmiSuggestion" />
+</pnp:SiteFields>

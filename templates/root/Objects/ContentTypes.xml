@@ -1,0 +1,28 @@
+<pnp:ContentTypes xmlns:pnp="http://schemas.dev.office.com/PnP/2019/03/ProvisioningSchema">
+    <pnp:ContentType ID="0x010065441382533B4E4D9229492B2B4B4CDA" Name="Forslagsvurdering" Description="" Group="KomInn" NewFormUrl="" EditFormUrl="" DisplayFormUrl="">
+        <pnp:FieldRefs>
+            <pnp:FieldRef ID="c042a256-787d-4a6f-8a8a-cf6ab767f12d" Name="ContentType" UpdateChildren="false" />
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" Required="true" UpdateChildren="false" />
+            <pnp:FieldRef ID="e803d521-8b55-4e52-a3bb-6fbb6aa53740" Name="KmiMoreActors" UpdateChildren="false" />
+            <pnp:FieldRef ID="cab77638-1071-4cfb-8a89-057636f4e9c8" Name="KmiSuggestion" UpdateChildren="false" />
+            <pnp:FieldRef ID="6bd2842a-a0e1-4642-923d-7ea36c54aba4" Name="KmiShortComment" UpdateChildren="false" />
+            <pnp:FieldRef ID="2ca4c43c-487c-4acd-bf9a-b5b1c38e50a8" Name="KmiLawRequirements" UpdateChildren="false" />
+            <pnp:FieldRef ID="793cf1bf-6338-42b6-9e8b-2054a642ff42" Name="KmiScoreUserInvolvement" UpdateChildren="false" />
+            <pnp:FieldRef ID="1db6fffa-830e-4372-85b3-2918d6a1c411" Name="KmiScoreFeasability" UpdateChildren="false" />
+            <pnp:FieldRef ID="e877ce76-ad5d-4f46-b1ab-479bd32dde87" Name="KmiScoreDegreeOfInnovation" UpdateChildren="false" />
+            <pnp:FieldRef ID="63574edf-70bd-4ddb-bd15-2e02659d0d7b" Name="KmiScoreDistributionPotential" UpdateChildren="false" />
+        </pnp:FieldRefs>
+    </pnp:ContentType>
+    <pnp:ContentType ID="0x01005A1A91375DC52640B84730B7EAB11919" Name="Kampanje" Description="" Group="KomInn" NewFormUrl="" EditFormUrl="" DisplayFormUrl="">
+        <pnp:FieldRefs>
+            <pnp:FieldRef ID="c042a256-787d-4a6f-8a8a-cf6ab767f12d" Name="ContentType" UpdateChildren="false" />
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" Required="true" UpdateChildren="false" />
+        </pnp:FieldRefs>
+    </pnp:ContentType>
+    <pnp:ContentType ID="0x010063D756B686FA90498E2CB193C077DEA0" Name="Forslag" Description="" Group="KomInn" NewFormUrl="" EditFormUrl="" DisplayFormUrl="">
+        <pnp:FieldRefs>
+            <pnp:FieldRef ID="c042a256-787d-4a6f-8a8a-cf6ab767f12d" Name="ContentType" UpdateChildren="false" />
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" Required="true" UpdateChildren="false" />
+        </pnp:FieldRefs>
+    </pnp:ContentType>
+</pnp:ContentTypes>

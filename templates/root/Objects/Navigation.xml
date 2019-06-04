@@ -1,0 +1,20 @@
+<pnp:Navigation AddNewPagesToNavigation="true" CreateFriendlyUrlsForNewPages="true" 
+    xmlns:pnp="http://schemas.dev.office.com/PnP/2019/03/ProvisioningSchema">
+    <pnp:GlobalNavigation NavigationType="Structural">
+        <pnp:StructuralNavigation RemoveExistingNodes="true">
+            <pnp:NavigationNode Title="Innovasjon" Url="{site}" />
+        </pnp:StructuralNavigation>
+    </pnp:GlobalNavigation>
+    <pnp:CurrentNavigation NavigationType="StructuralLocal">
+        <pnp:StructuralNavigation RemoveExistingNodes="true">
+            <pnp:NavigationNode Title="Hjem" Url="{site}" />
+            <pnp:NavigationNode Title="Forslag" Url="{site}/Forslag/AllItems.aspx" />
+            <pnp:NavigationNode Title="Bilder" Url="{site}/Bilder/Forms/Thumbnails.aspx" />
+            <pnp:NavigationNode Title="Kampanje" Url="{site}/Kampanje/AllItems.aspx" />
+            <pnp:NavigationNode Title="Kommentarer" Url="{site}/Kommentarer/AllItems.aspx" />
+            <pnp:NavigationNode Title="Notatblokk" Url="{site}/_layouts/15/WopiFrame.aspx?sourcedoc=%2Finnovasjon%2FSiteAssets%2FNotatblokk%20for%20Innovasjon&amp;action=editnew" IsExternal="true" />
+            <pnp:NavigationNode Title="Dokumenter" Url="{site}/Delte dokumenter/Forms/AllItems.aspx" />
+            <pnp:NavigationNode Title="Områdeinnhold" Url="{site}/_layouts/15/viewlsts.aspx" IsExternal="true" />
+        </pnp:StructuralNavigation>
+    </pnp:CurrentNavigation>
+</pnp:Navigation>
