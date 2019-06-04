@@ -4,7 +4,7 @@
   "description": "",
   "main": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "webpack": "webpack -w"
   },
   "author": "",
   "license": "ISC",
@@ -33,6 +33,7 @@
     "ts-loader": "^4.3.0",
     "typescript": "^2.7.2",
     "vis": "^4.21.0",
-    "webpack": "^2.7.0"
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2"
   }
 }
