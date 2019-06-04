@@ -41,7 +41,6 @@ export class SuggestionRating extends React.Component<ISuggestionRatingProps, IS
 
     private deleteExisting() {
         return new Promise((resolve, reject) => {
-
             if (this.state.ExistingId === -1) {
                 resolve();
                 return;
@@ -89,13 +88,13 @@ export class SuggestionRating extends React.Component<ISuggestionRatingProps, IS
             item.set_item("KmiMoreActors", s.MoreActors);
             item.set_item("KmiLawRequirements", s.LawRequirements);
             item.set_item("KmiShortComment", s.ShortComment);
-            var lookup = new SP.FieldLookupValue();
-            lookup.set_lookupId(this.props.sugggestion.Id);
-            item.set_item("Forslag", lookup);
+            var suggestionLookup = new SP.FieldLookupValue();
+            suggestionLookup.set_lookupId(this.props.sugggestion.Id);
+            item.set_item("KmiSuggestion", suggestionLookup);
             item.update();
             context.load(item);
             context.executeQueryAsync(
-                (success: any) => {
+                () => {
                     this.setState({ ExistingId: item.get_id() }, () => {
                         resolve(s);
                     });
@@ -122,29 +121,24 @@ export class SuggestionRating extends React.Component<ISuggestionRatingProps, IS
 
 
     getExisting() {
-
-
         var exId = this.props.sugggestion.Id;
         var meId = _spPageContextInfo.userId;
         $.ajax({
-            url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Forslagsvurdering')/Items?$select=*,KmiProposal/Id,Author/Id&$expand=KmiProposal,Author&$filter=KmiProposal/Id eq " + exId + " and Author/Id eq " + meId + "",
+            url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Forslagsvurdering')/Items?$select=*,KmiSuggestion/Id,Author/Id&$expand=KmiSuggestion,Author&$filter=KmiSuggestion/Id eq " + exId + " and Author/Id eq " + meId + "",
             contentType: "application/json;odata=verbose",
             success: (data: any) => {
-                console.log("Existing", data);
-                if (data.d.results.length < 0)
+                if (data.d.results.length === 0)
                     return;
-
-                var result = data.d.results[0];
+                var [result] = data.d.results;
                 this.setState({
-                    LawRequirements: result.LawRequirements,
-                    MoreActors: result.MoreActors,
-                    ScoreDegreeOfInnovation: result.ScoreDegreeOfInnovation,
-                    ScoreDistributionPotential: result.ScoreDistributionPotential,
-                    ScoreFeasability: result.ScoreFeasability,
-                    ScoreUserInvolvement: result.ScoreUserInvolvement,
-                    ShortComment: result.ShortComment,
-                    ExistingId: result.Id
-
+                    LawRequirements: result.KmiLawRequirements,
+                    MoreActors: result.KmiMoreActors,
+                    ScoreDegreeOfInnovation: result.KmiScoreDegreeOfInnovation,
+                    ScoreDistributionPotential: result.KmiScoreDistributionPotential,
+                    ScoreFeasability: result.KmiScoreFeasability,
+                    ScoreUserInvolvement: result.KmiScoreUserInvolvement,
+                    ShortComment: result.KmiShortComment || '',
+                    ExistingId: result.Id,
                 });
             }
         });
@@ -165,7 +159,6 @@ export class SuggestionRating extends React.Component<ISuggestionRatingProps, IS
     }
 
     render() {
-        console.log("STATE AT ", this.state);
         if (!this.state.UserHasPermissions)
             return <div></div>;
 
@@ -241,7 +234,6 @@ export class SuggestionRating extends React.Component<ISuggestionRatingProps, IS
                         <p>{saveText}</p>
                     </Col>
                 </Row>
-
             </div>
         )
 

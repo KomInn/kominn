@@ -4,7 +4,7 @@ import { Suggestion } from "../Common/Suggestion";
 import { DataAdapter } from "../Common/DataAdapter";
 import { DoneThisModal} from "../Common/DoneThisModal";
 import { Status } from "../Common/Status"; 
-import { SuggestionRating } from "../ViewSuggestion/SuggestionRating"; 
+import { SuggestionRating } from "./SuggestionRating"; 
 
 interface IActionsState { showModal: boolean, numLikes:number, inspiredBy:Suggestion}
 interface ActionsProps { suggestion?:Suggestion }
