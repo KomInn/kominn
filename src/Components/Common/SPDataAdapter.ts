@@ -9,9 +9,10 @@ import { Person } from "./Person";
 import { Comment } from "./Comment";
 import { Status } from "./Status";
 import { Tools } from "./Tools";
-import { SustainabilityGoal } from "./SustainabilityGoal"; 
+import { SustainabilityGoal } from "./SustainabilityGoal";
 $.ajaxSetup({ headers: { "Accept": "application/json;odata=verbose" } })
 import { Promise } from "es6-promise";
+import { Campaign } from "./Campaign";
 $.ajaxSetup({ headers: { "Accept": "application/json;odata=verbose" } })
 
 
@@ -19,48 +20,47 @@ interface UserProfileProperty {
     Key: string, Value: string, ValueType: string
 }
 
-interface SustainabilityGoalRestRequest { d:{results:[{Id:number, Title:string, IkonId:number}]}}
-interface SustainabilityIconRestRequest { d:{results:[SustainabilityIconObject]} }
-interface SustainabilityIconObject { File:{ServerRelativeUrl:string}, Id:number }
+interface SustainabilityGoalRestRequest { d: { results: [{ Id: number, Title: string, IkonId: number }] } }
+interface SustainabilityIconRestRequest { d: { results: [SustainabilityIconObject] } }
+interface SustainabilityIconObject { File: { ServerRelativeUrl: string }, Id: number }
 export class SPDataAdapter {
-   
+
     /**
      * Sustainabilitygoals
      * Returns: Array of sustainabilitygoals with id's
      */
-    static getSustainabilityGoals():Promise<Array<SustainabilityGoal>>
-    {
-        return new Promise( (resolve, reject) => { 
-            var icons = new Array<SustainabilityIconObject>(); 
+    static getSustainabilityGoals(): Promise<Array<SustainabilityGoal>> {
+        return new Promise((resolve, reject) => {
+            var icons = new Array<SustainabilityIconObject>();
             $.get(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Ikoner')/Items?$select=Id,File/ServerRelativeUrl&$expand=File").then(
-                (result:SustainabilityIconRestRequest) => { 
-                    icons = result.d.results.map( (s:SustainabilityIconObject) => s); 
-                    
-                    $.get(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Baerekraftsmaal')/Items?$select=Title,Id,IkonId").then( 
-                        (result:SustainabilityGoalRestRequest) => { 
-                            var results = result.d.results.map( (r) => { 
-                                var icon = icons.filter( (i) => i.Id === r.IkonId); 
-                                
-                                return { Id:r.Id, Title:r.Title, ImageSrc:(icon.length > 0) ? icon[0].File.ServerRelativeUrl : "" } as SustainabilityGoal;
+                (result: SustainabilityIconRestRequest) => {
+                    icons = result.d.results.map((s: SustainabilityIconObject) => s);
+
+                    $.get(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Baerekraftsmaal')/Items?$select=Title,Id,IkonId").then(
+                        (result: SustainabilityGoalRestRequest) => {
+                            var results = result.d.results.map((r) => {
+                                var icon = icons.filter((i) => i.Id === r.IkonId);
+
+                                return { Id: r.Id, Title: r.Title, ImageSrc: (icon.length > 0) ? icon[0].File.ServerRelativeUrl : "" } as SustainabilityGoal;
                             });
-                            resolve(results); 
+                            resolve(results);
                         }
-                     );
+                    );
 
 
                 })
 
-                }
-              )
+        }
+        )
     }
-   
+
     /**
    * Upload image
    * Returns: Uploaded image path
    */
     static uploadImage(buffer: any, filename: string): Promise<any> {
         return new Promise((resolve, reject) => {
-            Tools.getFileBuffer(buffer).then(() => {              
+            Tools.getFileBuffer(buffer).then(() => {
                 var url = _spPageContextInfo.webAbsoluteUrl +
                     "/_api/web/lists/getbytitle('Bilder')/rootfolder/files" +
                     "/add(url='" + filename + "', overwrite=true)";
@@ -90,7 +90,7 @@ export class SPDataAdapter {
     static getAllSuggestions(type?: Status, top?: number, customFilter?: string, customSort?: string): Promise<Array<Suggestion>> {
         return new Promise((resolve, reject) => {
             var numResults = (top == null) ? 100 : top;
-            var query = (type == null) ? "" : "&$filter=Status ne 'Sendt inn' and Status eq '" + Tools.statusToString(type) + "'";
+            var query = (type == null) ? "" : "&$filter=KmiStatus ne 'Sendt inn' and KmiStatus eq '" + Tools.statusToString(type) + "'";
             var sortStr = "&$orderby=Created desc";
             if (customSort != null)
                 sortStr = customSort;
@@ -98,52 +98,46 @@ export class SPDataAdapter {
             if (customFilter != null)
                 query = customFilter;
 
-            this.getSustainabilityGoals().then( (susgoals:Array<SustainabilityGoal>) => { 
+            this.getSustainabilityGoals().then((susgoals: Array<SustainabilityGoal>) => {
                 var suggestions = new Array<Suggestion>();
-                $.get(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Forslag')/Items?$select=*,Author/Id,InspiredBy/Id,InspiredBy/Title&$expand=InspiredBy,Author&$top=" + numResults + sortStr + query).then((result: any) => 
-                {
+                $.get(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Forslag')/Items?$select=*,Author/Id,KmiInspiredBy/Id,KmiInspiredBy/Title&$expand=KmiInspiredBy,Author&$top=" + numResults + sortStr + query).then((result: any) => {
                     var results = result.d.results;
                     for (var i = 0; i < results.length; i++) {
                         var p = new Person();
                         var s = new Suggestion();
-                        p.Name = results[i].Name;
-                        p.Address = results[i].Address;
-                        p.City = results[i].City;
-                        p.CountyCode = results[i].CountyCode;
-                        p.Department = results[i].Department;
-                        p.MailAddress = results[i].MailAddress;
-                        p.Manager = results[i].ManagerId;
-                        p.Telephone = results[i].Telephone;
-                        p.Zipcode = results[i].Zipcode;
-                        s.Id = results[i].Id;
-                        s.Challenges = results[i].Challenges;
-                        s.Image = Tools.IsNull(results[i].Image) ? "" : results[i].Image;
-                        s.Likes = Tools.IsNull(results[i].Likes) ? 0 : results[i].Likes;
-                        s.Location = results[i].Location;
-                        s.NumberOfComments = Tools.IsNull(results[i].NumberOfComments) ? 0 : results[i].NumberOfComments;
-                        s.Status = Tools.convertStatus(results[i].Status);
+                        p.Name = results[i].KmiName;
+                        p.Address = results[i].KmiAddress;
+                        p.City = results[i].KmiCity;
+                        p.CountyCode = results[i].KmiCountyCode;
+                        p.Department = results[i].KmiDepartment;
+                        p.MailAddress = results[i].KmiMailAddress;
+                        p.Manager = results[i].KmiManagerId;
+                        p.Telephone = results[i].KmiTelephone;
+                        p.Zipcode = results[i].KmiZipcode;
+                        s.Id = results[i].KmiId;
+                        s.Challenges = results[i].KmiChallenges;
+                        s.Image = Tools.IsNull(results[i].KmiImage) ? "" : results[i].KmiImage;
+                        s.Likes = Tools.IsNull(results[i].KmiLikes) ? 0 : results[i].KmiLikes;
+                        s.Location = results[i].KmiLocation;
+                        s.NumberOfComments = Tools.IsNull(results[i].KmiNumberOfComments) ? 0 : results[i].KmiNumberOfComments;
+                        s.Status = Tools.convertStatus(results[i].KmiStatus);
                         s.Submitter = p;
-                        s.SuggestedSolution = results[i].SuggestedSolution;
-                        s.Summary = results[i].Summary;
-                        s.InspiredBy = (results[i].InspiredBy != null) ? results[i].InspiredBy.results : null;
-                        if (results[i].Tags != null)
-                            s.Tags = results[i].Tags.results;
-
+                        s.SuggestedSolution = results[i].KmiSuggestedSolution;
+                        s.Summary = results[i].KmiSummary;
+                        s.InspiredBy = (results[i].KmiInspiredBy != null) ? results[i].KmiInspiredBy.results : null;
+                        if (results[i].KmiTags != null)
+                            s.Tags = results[i].KmiTags.results;
                         s.Title = results[i].Title;
-                        s.UsefulForOthers = results[i].UsefulForOthers;
-                        s.UsefulnessType = results[i].UsefulnessType;
+                        s.UsefulForOthers = results[i].KmiUsefulForOthers;
+                        s.UsefulnessType = results[i].KmiUsefulnessType;
                         s.Created = new Date(results[i].Created);
-                        s.SendTilKS = results[i].SendToKS;
-                        
-                        var goals = results[i].B_x00e6_rekraftsm_x00e5_lId.results; 
-                        if(goals)
-                        {
-                            for(let goal of goals)
-                            {
-                                s.SustainabilityGoals.push(susgoals.filter( (s) => s.Id === goal )[0]);
+                        s.SendTilKS = results[i].KmiSendToKS;
+                        var goals = results[i].KmiSustainabilityGoals.results;
+                        if (goals) {
+                            for (let goal of goals) {
+                                s.SustainabilityGoals.push(susgoals.filter((s) => s.Id === goal)[0]);
                             }
                         }
-                        
                         suggestions.push(s);
                     }
                     resolve(suggestions);
@@ -152,7 +146,7 @@ export class SPDataAdapter {
             })
 
 
-            
+
         });
     }
 
@@ -162,11 +156,11 @@ export class SPDataAdapter {
     }
 
     public static getSuggestionByTitle(title: string): Promise<Array<Suggestion>> {
-        return this.getAllSuggestions(null, null, "&$filter=substringof('" + encodeURI(title) + "', Title) and Status ne 'Sendt inn'");
+        return this.getAllSuggestions(null, null, "&$filter=substringof('" + encodeURI(title) + "', Title) and KmiStatus ne 'Sendt inn'");
     }
 
     public static getMyUserProfile(): Promise<Person> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, _reject) => {
             $.get(_spPageContextInfo.webAbsoluteUrl + "/_api/SP.UserProfiles.PeopleManager/GetMyProperties")
                 .then((result: any) => {
                     var p = new Person();
@@ -225,6 +219,26 @@ export class SPDataAdapter {
 
     }
 
+    public static getAllCampaigns(): Promise<Array<Campaign>> {
+        return new Promise((resolve, _reject) => {
+
+            $.get(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Kampanje')/Items").then((s: any) => {
+                var campaigns = s.d.results.map((i: any) => {
+                    var campaign = new Campaign();
+                    campaign.CompRef = i.KmiCampaignRef;
+                    campaign.EndDate = i.KmiCampaignEndDate;
+                    campaign.Placement = i.KmiCampaignPlacement;
+                    campaign.StartDate = i.KmiCampaignStartDate;
+                    campaign.Text = i.KmiCampaignText;
+                    campaign.Type = i.KmiCampaignType;
+                    return campaign;
+                })
+                resolve(campaigns);
+
+            })
+        });
+    }
+
     /**
      * Submit suggestions
      * Returns: (Suggestion) The submitted suggestion
@@ -237,30 +251,30 @@ export class SPDataAdapter {
             var itemcreationinfo = new SP.ListItemCreationInformation();
             var item = list.addItem(itemcreationinfo);
             item.set_item("Title", s.Title);
-            item.set_item("Summary", s.Summary);
-            item.set_item("Challenges", s.Challenges);
-            item.set_item("SuggestedSolution", s.SuggestedSolution);
-            item.set_item("Location", s.Location);
-            item.set_item("UsefulForOthers", s.UsefulForOthers);
-            item.set_item("UsefulnessType", s.UsefulnessType);
-            item.set_item("CountyCode", s.Submitter.CountyCode);
-            item.set_item("Name", s.Submitter.Name);
-            item.set_item("Address", s.Submitter.Address);
-            item.set_item("MailAddress", s.Submitter.MailAddress);
-            item.set_item("Telephone", s.Submitter.Telephone);
-            item.set_item("Zipcode", s.Submitter.Zipcode);
-            item.set_item("City", s.Submitter.City);
-            item.set_item("Department", s.Submitter.Department);
-            item.set_item("Image", s.Image);
-            item.set_item("Status", Tools.statusToString(Status.Submitted));
-            item.set_item("CompRef", GetUrlKeyValue("ref"));
-            item.set_item("SendToKS", false);
-            item.set_item("IsPast", (GetUrlKeyValue("type") === "p"));
+            item.set_item("KmiSummary", s.Summary);
+            item.set_item("KmiChallenges", s.Challenges);
+            item.set_item("KmiSuggestedSolution", s.SuggestedSolution);
+            item.set_item("KmiLocation", s.Location);
+            item.set_item("KmiUsefulForOthers", s.UsefulForOthers);
+            item.set_item("KmiUsefulnessType", s.UsefulnessType);
+            item.set_item("KmiCountyCode", s.Submitter.CountyCode);
+            item.set_item("KmiName", s.Submitter.Name);
+            item.set_item("KmiAddress", s.Submitter.Address);
+            item.set_item("KmiMailAddress", s.Submitter.MailAddress);
+            item.set_item("KmiTelephone", s.Submitter.Telephone);
+            item.set_item("KmiZipcode", s.Submitter.Zipcode);
+            item.set_item("KmiCity", s.Submitter.City);
+            item.set_item("KmiDepartment", s.Submitter.Department);
+            item.set_item("KmiImage", s.Image);
+            item.set_item("KmiStatus", Tools.statusToString(Status.Submitted));
+            item.set_item("KmiCompRef", GetUrlKeyValue("ref"));
+            item.set_item("KmiSendToKS", false);
+            item.set_item("KmiIsPast", (GetUrlKeyValue("type") === "p"));
 
             if (s.Submitter.Manager != null && s.Submitter.Manager.Id != -1) {
                 var manager = new SP.FieldUserValue();
                 manager.set_lookupId(s.Submitter.Manager.Id);
-                item.set_item("Manager", s.Submitter.Manager.Id);
+                item.set_item("KmiManager", s.Submitter.Manager.Id);
             }
             if (s.InspiredBy != null) {
                 var inspiredByField = new Array<SP.FieldLookupValue>();
@@ -269,28 +283,26 @@ export class SPDataAdapter {
                     lookup.set_lookupId(v.Id);
                     inspiredByField.push(lookup);
                 }
-                item.set_item("InspiredBy", inspiredByField);
+                item.set_item("KmiInspiredBy", inspiredByField);
             }
 
-            if(s.SustainabilityGoals.length > 0)
-            {
-                var sustainabilityGoalsField = new Array<SP.FieldLookupValue>(); 
-                for(let v of s.SustainabilityGoals)
-                {
+            if (s.SustainabilityGoals.length > 0) {
+                var sustainabilityGoalsField = new Array<SP.FieldLookupValue>();
+                for (let v of s.SustainabilityGoals) {
                     var lookup = new SP.FieldLookupValue();
                     lookup.set_lookupId(v.Id);
-                    sustainabilityGoalsField.push(lookup); 
+                    sustainabilityGoalsField.push(lookup);
                 }
-                item.set_item("B_x00e6_rekraftsm_x00e5_l", sustainabilityGoalsField); 
+                item.set_item("KmiSustainabilityGoals", sustainabilityGoalsField);
             }
 
             item.update();
             context.load(item);
             context.executeQueryAsync(
-                (success: any) => {
+                () => {
                     resolve(s);
                 },
-                (fail: any, error: any) => {
+                (_fail: any, error: any) => {
                     console.log(error.get_message());
                     reject(error.get_message());
                 });
@@ -303,7 +315,7 @@ export class SPDataAdapter {
      * Returns: The suggestion with comments loaded
      */
     static getCommentsForSuggestion(suggestion: Suggestion): Promise<Suggestion> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, _reject) => {
             $.get(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Kommentarer')/Items?$orderby=Created desc&$filter=SuggestionId eq " + suggestion.Id + "").then(
                 (result: any) => {
                     var c = new Array<Comment>();
@@ -379,7 +391,7 @@ export class SPDataAdapter {
                     list.update();
                     ctx.executeQueryAsync(() => {
                         resolve();
-                    }, () => reject() );
+                    }, () => reject());
                 });
             })
         });
@@ -428,7 +440,7 @@ export class SPDataAdapter {
             context.load(item, 'FieldValuesAsText');
             context.executeQueryAsync(() => {
                 var current = item.get_fieldValuesAsText();
-                var cnt = current.get_item("Likes");
+                var cnt = current.get_item("KmiLikes");
 
                 var x = 0;
                 if (cnt.length <= 0 || cnt === "0")
@@ -438,7 +450,7 @@ export class SPDataAdapter {
 
                 item.refreshLoad();
 
-                item.set_item("Likes", x);
+                item.set_item("KmiLikes", x);
                 item.update();
 
                 context.executeQueryAsync(() => {
@@ -459,10 +471,10 @@ export class SPDataAdapter {
             var item = list.getItemById(id);
             item.deleteObject();
             context.executeQueryAsync(
-                (success: any) => {
+                (_success: any) => {
                     resolve();
                 },
-                (fail: any, error: any) => {
+                (_fail: any, error: any) => {
                     reject(error.get_message());
                 });
 
@@ -480,17 +492,17 @@ export class SPDataAdapter {
             item.update();
             context.load(item);
             context.executeQueryAsync(
-                (success: any) => {
+                (_success: any) => {
                     resolve();
                 },
-                (fail: any, error: any) => {
+                (_fail: any, error: any) => {
                     reject(error.get_message());
                 });
         });
     }
 
     public static getCityAndCountryCode(person: Person): Promise<Person> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, _reject) => {
             var p = person;
             $.get(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Kommunenumre')/Items?$filter=Postnummer eq '" + person.Zipcode + "'&$select=Kommunenummer,Sted&$top=1").then(
                 (result: any) => {
@@ -546,7 +558,7 @@ export class SPDataAdapter {
                     }
 
                     $.ajax({
-                        url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Forslag')/items("+suggestion.Id+")",
+                        url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Forslag')/items(" + suggestion.Id + ")",
                         method: "POST",
                         contentType: "application/json;odata=verbose",
                         data: JSON.stringify(updObj),
@@ -556,7 +568,7 @@ export class SPDataAdapter {
                             "IF-MATCH": "*",
                             "X-HTTP-Method": "MERGE"
                         }
-                    }).then((data) => { resolve(s.id) })
+                    }).then((_data) => { resolve(s.id) })
                         .fail((a, b) => { console.log(a, b.message); reject(); });
                 });
             });
@@ -564,7 +576,7 @@ export class SPDataAdapter {
     }
 
 
-    
+
     private static suggestionAsHtml(s: Suggestion) {
         return `
         <b>Sammendrag</b>

@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import { Searchbar } from "./Components/Frontpage/Searchbar";
 import { PromotedSuggestions } from "./Components/Frontpage/PromotedSuggestions";
 import { PopularSuggestions } from "./Components/Frontpage/PopularSuggestions";

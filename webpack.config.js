@@ -1,12 +1,11 @@
 module.exports = {
   entry: "./src/index.tsx",
   output: {
-    filename: "./siteassets/js/bundle.js",
+    filename: "./templates/root/SiteAssets/js/bundle.js",
 
   },
   mode: "development",
   resolve: {
-    // Add '.ts' and '.tsx' as resolvable extensions.
     extensions: [".ts", ".tsx", ".js", ".json"]
   },
   module: {
@@ -31,9 +30,5 @@ module.exports = {
         ]
       }
     ]
-  },
-  externals: {
-    /*  "react":"React", 
-      "react-dom":"ReactDOM"*/
-  },
+  }
 };

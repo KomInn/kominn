@@ -1,15 +1,135 @@
 
 <pnp:SiteFields xmlns:pnp="http://schemas.dev.office.com/PnP/2019/03/ProvisioningSchema">
-    <Field Type="Number" DisplayName="Score gjennomførbarhet" EnforceUniqueValues="FALSE" Indexed="FALSE" ID="{1db6fffa-830e-4372-85b3-2918d6a1c411}" Group="KomInn" StaticName="KmiScoreFeasability" Name="KmiScoreFeasability" />
-    <Field Type="Number" DisplayName="Score bruker/innbyggerinvolvering" EnforceUniqueValues="FALSE" Indexed="FALSE" ID="{793cf1bf-6338-42b6-9e8b-2054a642ff42}" Group="KomInn" StaticName="KmiScoreUserInvolvement" Name="KmiScoreUserInvolvement" />
-    <Field Type="Number" DisplayName="Score spredningspotensiale" EnforceUniqueValues="FALSE" Indexed="FALSE" ID="{63574edf-70bd-4ddb-bd15-2e02659d0d7b}" Group="KomInn" StaticName="KmiScoreDistributionPotential" Name="KmiScoreDistributionPotential" />
-    <Field Type="Number" DisplayName="Score innovasjonsgrad" EnforceUniqueValues="FALSE" Indexed="FALSE" ID="{e877ce76-ad5d-4f46-b1ab-479bd32dde87}" Group="KomInn" StaticName="KmiScoreDegreeOfInnovation" Name="KmiScoreDegreeOfInnovation" />
-    <Field Type="Boolean" DisplayName="Flere aktører?" EnforceUniqueValues="FALSE" Indexed="FALSE" ID="{e803d521-8b55-4e52-a3bb-6fbb6aa53740}" Group="KomInn" StaticName="KmiMoreActors" Name="KmiMoreActors">
+    <Field Type="Number" DisplayName="Score gjennomførbarhet" ID="{1db6fffa-830e-4372-85b3-2918d6a1c411}" Group="KomInn" StaticName="KmiScoreFeasability" Name="KmiScoreFeasability" />
+    <Field Type="Number" DisplayName="Score bruker/innbyggerinvolvering" ID="{793cf1bf-6338-42b6-9e8b-2054a642ff42}" Group="KomInn" StaticName="KmiScoreUserInvolvement" Name="KmiScoreUserInvolvement" />
+    <Field Type="Number" DisplayName="Score spredningspotensiale" ID="{63574edf-70bd-4ddb-bd15-2e02659d0d7b}" Group="KomInn" StaticName="KmiScoreDistributionPotential" Name="KmiScoreDistributionPotential" />
+    <Field Type="Number" DisplayName="Score innovasjonsgrad" ID="{e877ce76-ad5d-4f46-b1ab-479bd32dde87}" Group="KomInn" StaticName="KmiScoreDegreeOfInnovation" Name="KmiScoreDegreeOfInnovation" />
+    <Field Type="Boolean" DisplayName="Flere aktører?" ID="{e803d521-8b55-4e52-a3bb-6fbb6aa53740}" Group="KomInn" StaticName="KmiMoreActors" Name="KmiMoreActors">
         <Default>1</Default>
     </Field>
-    <Field Type="Boolean" DisplayName="Lovkrav?" EnforceUniqueValues="FALSE" Indexed="FALSE" ID="{2ca4c43c-487c-4acd-bf9a-b5b1c38e50a8}" Group="KomInn" StaticName="KmiLawRequirements" Name="KmiLawRequirements">
+    <Field Type="Boolean" DisplayName="Lovkrav?" ID="{2ca4c43c-487c-4acd-bf9a-b5b1c38e50a8}" Group="KomInn" StaticName="KmiLawRequirements" Name="KmiLawRequirements">
         <Default>1</Default>
     </Field>
-    <Field Type="Note" DisplayName="Kommentar" EnforceUniqueValues="FALSE" Indexed="FALSE" NumLines="6" RichText="FALSE" RichTextMode="Compatible" IsolateStyles="FALSE" Sortable="FALSE" ID="{6bd2842a-a0e1-4642-923d-7ea36c54aba4}" Group="KomInn" StaticName="KmiShortComment" Name="KmiShortComment" RestrictedMode="TRUE" AppendOnly="FALSE" />
+    <Field Type="Note" DisplayName="Kommentar" NumLines="6" RichText="FALSE" RichTextMode="Compatible" IsolateStyles="FALSE" Sortable="FALSE" ID="{6bd2842a-a0e1-4642-923d-7ea36c54aba4}" Group="KomInn" StaticName="KmiShortComment" Name="KmiShortComment" RestrictedMode="TRUE" AppendOnly="FALSE" />
     <Field Type="Lookup" DisplayName="Forslag" EnforceUniqueValues="FALSE" List="{listid:Forslag}" ShowField="Title" UnlimitedLengthInDocumentLibrary="FALSE" RelationshipDeleteBehavior="None" ID="{cab77638-1071-4cfb-8a89-057636f4e9c8}" Group="KomInn" StaticName="KmiSuggestion" Name="KmiSuggestion" />
+    <Field Type="Note" DisplayName="Oppsummering" ID="{9662dfaa-b386-4c92-af70-5a36f6455a1a}" Group="KomInn" StaticName="KmiSummary" Name="KmiSummary" />
+    <Field Type="Note" DisplayName="Utfordringer" ID="{92d3013b-ed8b-4e86-9f6b-cacec95aa86b}" Group="KomInn" StaticName="KmiChallenges" Name="KmiChallenges" />
+    <Field Type="Note" DisplayName="Forslag til løsning" ID="{54e5c384-0bef-46ec-9762-599ccd72899d}" Group="KomInn" StaticName="KmiSuggestedSolution" Name="KmiSuggestedSolution" />
+    <Field Type="Number" DisplayName="Likes" ID="{988a9f76-884b-4d5a-906a-55c6f896880d}" Group="KomInn" ShowInNewForm="FALSE" ShowInEditForm="FALSE" StaticName="KmiLikes" Name="KmiLikes" />
+    <Field Type="Text" DisplayName="Bilde" ID="{8183d7d5-5c96-4b67-947d-137300913bf2}" Group="KomInn" StaticName="KmiImage" Name="KmiImage" />
+    <Field Type="Text" DisplayName="Sted" ID="{973e62b2-79b2-46fd-bd59-21f17699b78e}" Group="KomInn" StaticName="KmiLocation" Name="KmiLocation" />
+    <Field Type="Note" DisplayName="Nyttig for andre" ID="{a07be058-665f-4713-b141-db7d14462125}" Group="KomInn" StaticName="KmiUsefulForOthers" Name="KmiUsefulForOthers" />
+    <Field Type="Choice" DisplayName="Type nytte" ID="{23b1f3d6-df10-45b4-91a0-210b1eca20ac}" Group="KomInn" StaticName="KmiUsefulnessType" Name="KmiUsefulnessType" FillInChoice="TRUE" Format="Dropdown">
+        <CHOICES>
+            <CHOICE>Effektivisering/Tidstyvjakt</CHOICE>
+            <CHOICE>Arbeidsmiljø</CHOICE>
+            <CHOICE>Tjenesteutvikling/Tjenesteinnovasjon</CHOICE>
+            <CHOICE>Samskaping/Gjøre noe med andre enn kommunens egne ansatte.</CHOICE>
+            <CHOICE>Annet (Beskriv i feltet under)</CHOICE>
+        </CHOICES>
+    </Field>
+    <Field Type="MultiChoice" DisplayName="Tags" ID="{19028c38-9950-4b22-96fa-c01ae1eae3f4}" Group="KomInn" StaticName="KmiTags" Name="KmiTags">
+        <CHOICES>
+            <CHOICE>Kommunalt</CHOICE>
+            <CHOICE>Skole</CHOICE>
+            <CHOICE>Barnehage</CHOICE>
+        </CHOICES>
+    </Field>
+    <Field Type="Number" DisplayName="Antall kommentarer" ID="{00aa7464-6dd6-4483-87bc-d80fd098badd}" Group="KomInn" ShowInNewForm="FALSE" ShowInEditForm="FALSE" StaticName="KmiNumberOfComments" Name="KmiNumberOfComments" />
+    <Field Type="User" DisplayName="Nærmeste leder" ID="{710ef48a-adb9-4f55-81bd-8a0f248e29ba}" Group="KomInn" StaticName="KmiManager" Name="KmiManager" />
+    <Field Type="Text" DisplayName="Kommunenummer" ID="{4574c53c-b0e2-415c-af76-5661de396f06}" Group="KomInn" StaticName="KmiCountyCode" Name="KmiCountyCode" />
+    <Field Type="Text" DisplayName="Navn" ID="{09010dd5-61fe-43ce-86a6-7e092922c3e2}" Group="KomInn" StaticName="KmiName" Name="KmiName" />
+    <Field Type="Text" DisplayName="Adresse" ID="{085a2f1b-67e4-433a-9b90-1f010bcb5f88}" Group="KomInn" StaticName="KmiAddress" Name="KmiAddress" />
+    <Field Type="Text" DisplayName="Epost adresse" ID="{1f549d6e-0127-4500-9346-4511762ed34e}" Group="KomInn" StaticName="KmiMailAddress" Name="KmiMailAddress" />
+    <Field Type="Text" DisplayName="Telefon" ID="{c591f503-6d83-49b0-a09e-580585b154ea}" Group="KomInn" StaticName="KmiTelephone" Name="KmiTelephone" />
+    <Field Type="Text" DisplayName="Postnummer" ID="{4540bb76-e42f-490e-a152-f940ebfb16af}" Group="KomInn" StaticName="KmiZipcode" Name="KmiZipcode" />
+    <Field Type="Text" DisplayName="By" ID="{e605364e-4956-4bad-9de0-5ac72a8f83aa}" Group="KomInn" StaticName="KmiCity" Name="KmiCity" />
+    <Field Type="Text" DisplayName="Avdeling" ID="{50d2c862-878a-4606-908a-025a75208200}" Group="KomInn" StaticName="KmiDepartment" Name="KmiDepartment" />
+    <Field Type="Choice" DisplayName="Status" ID="{ea84b6b5-fc0b-4f82-bc93-45941b8387e2}" Group="KomInn" StaticName="KmiStatus" Name="KmiStatus" FillInChoice="FALSE" Format="Dropdown">
+        <CHOICES>
+            <CHOICE>Sendt inn</CHOICE>
+            <CHOICE>Publisert</CHOICE>
+            <CHOICE>Suksess</CHOICE>
+            <CHOICE>Promotert</CHOICE>
+        </CHOICES>
+    </Field>
+    <Field Type="Text" DisplayName="Konkurransereferanse" ID="{9f0ed997-5cbd-43f7-ac8c-889cae958aea}" Group="KomInn" StaticName="KmiCompRef" Name="KmiCompRef" />
+    <Field Type="LookupMulti" DisplayName="Inspirert av" EnforceUniqueValues="FALSE" List="{listid:Forslag}" ShowField="Title" Mult="TRUE" Sortable="FALSE" UnlimitedLengthInDocumentLibrary="FALSE" RelationshipDeleteBehavior="None" ID="{07e827ec-c34f-48d6-b69c-6f0ef48f7c90}" Group="KomInn" StaticName="KmiInspiredBy" Name="KmiInspiredBy" />
+    <Field Type="Choice" DisplayName="Saksbehandlers status" Format="Dropdown" FillInChoice="FALSE" ID="{d07f2eaf-3a50-4bfb-949c-6eaf61cddce8}" Group="KomInn" StaticName="KmiCaseWorkerStatus" Name="KmiCaseWorkerStatus">
+        <Default>Sendt inn</Default>
+        <CHOICES>
+            <CHOICE>Sendt inn</CHOICE>
+            <CHOICE>Løftes til linja</CHOICE>
+            <CHOICE>Vurderes</CHOICE>
+            <CHOICE>Godtatt</CHOICE>
+            <CHOICE>Avslått</CHOICE>
+        </CHOICES>
+    </Field>
+    <Field Type="User" Name="KmiCaseWorker" DisplayName="Saksbehandler" ID="{29f6dc98-20a7-4ddc-ad37-5805b6a28d95}" Group="KomInn" StaticName="KmiCaseWorker" />
+    <Field Type="Boolean" Name="KmiSendToKS" DisplayName="Send til KS" ID="{5ffdb2cf-5ad9-4e54-8681-0e964b0bd42c}" Group="KomInn" StaticName="KmiSendToKS" />
+    <Field Type="DateTime" Name="KmiMonthlyStartDate" DisplayName="Månedens forslag startdato" ID="{f55199fd-8cb6-4583-a98e-a6363524f38f}" Group="KomInn" StaticName="KmiMonthlyStartDate" />
+    <Field Type="DateTime" Name="KmiMonthlyEndDate" DisplayName="Månedens forslag sluttdato" ID="{9b9500c1-b793-4511-b937-8b9dec9a8bb1}" Group="KomInn" StaticName="KmiMonthlyEndDate" />
+    <Field Type="Boolean" Name="KmiIsPast" DisplayName="Fortid" ID="{b199a8ff-b8f7-43f1-8f27-651774305077}" Group="KomInn" StaticName="KmiIsPast" />
+    <Field DisplayName="E-post til saksbehandler" Type="WorkflowStatus" ID="{011e220d-3b07-4231-ba73-34ceb71bef42}" Group="KomInn" StaticName="KmiEmailCaseOfficer" Name="KmiEmailCaseOfficer" WorkflowStatusURL="_layouts/15/WrkStat.aspx" ReadOnly="TRUE">
+        <CHOICES>
+            <CHOICE>Starter</CHOICE>
+            <CHOICE>Mislyktes ved start</CHOICE>
+            <CHOICE>Pågår</CHOICE>
+            <CHOICE>Feil oppstod</CHOICE>
+            <CHOICE>Avbrutt</CHOICE>
+            <CHOICE>Fullført</CHOICE>
+            <CHOICE>Mislyktes ved start (prøver på nytt)</CHOICE>
+            <CHOICE>Det oppstod en feil (prøver på nytt)</CHOICE>
+            <CHOICE />
+            <CHOICE />
+            <CHOICE />
+            <CHOICE />
+            <CHOICE />
+            <CHOICE />
+            <CHOICE />
+            <CHOICE>Canceled</CHOICE>
+            <CHOICE>Approved</CHOICE>
+            <CHOICE>Rejected</CHOICE>
+        </CHOICES>
+    </Field>
+    <Field DisplayName="E-post til forslagsstiller" Type="WorkflowStatus" ID="{329d0ddb-55a1-4f49-926b-515b761961c4}" Group="KomInn" StaticName="KmiEmailProposer" Name="KmiEmailProposer" WorkflowStatusURL="_layouts/15/WrkStat.aspx" ReadOnly="TRUE">
+        <CHOICES>
+            <CHOICE>Starter</CHOICE>
+            <CHOICE>Mislyktes ved start</CHOICE>
+            <CHOICE>Pågår</CHOICE>
+            <CHOICE>Feil oppstod</CHOICE>
+            <CHOICE>Avbrutt</CHOICE>
+            <CHOICE>Fullført</CHOICE>
+            <CHOICE>Mislyktes ved start (prøver på nytt)</CHOICE>
+            <CHOICE>Det oppstod en feil (prøver på nytt)</CHOICE>
+            <CHOICE />
+            <CHOICE />
+            <CHOICE />
+            <CHOICE />
+            <CHOICE />
+            <CHOICE />
+            <CHOICE />
+            <CHOICE>Canceled</CHOICE>
+            <CHOICE>Approved</CHOICE>
+            <CHOICE>Rejected</CHOICE>
+        </CHOICES>
+    </Field>
+    <Field Type="Number" DisplayName="Søker om:" Description="Her skriver du inn hvor mye du ønsker å søke." ID="{abd3c94e-048c-4730-8416-5b9c57b87784}" StaticName="KmiApplyingFor" Name="KmiApplyingFor" Group="KomInn" />
+    <Field Type="LookupMulti" DisplayName="Bærekraftsmål" EnforceUniqueValues="FALSE" List="{listid:Baerekraftsmaal}" ShowField="Title" Mult="TRUE" Sortable="FALSE" UnlimitedLengthInDocumentLibrary="FALSE" RelationshipDeleteBehavior="None" ID="{bc3203f8-17cb-4d08-a56d-f27163916c16}" Group="KomInn" StaticName="KmiSustainabilityGoals" Name="KmiSustainabilityGoals" />
+    <Field Type="Calculated" DisplayName="Forslag2018" Format="DateOnly" LCID="1044" ResultType="Text" ReadOnly="TRUE" ID="{06593844-a682-4ed2-b009-a4c1361ac9e6}" Group="KomInn" StaticName="KmiForslag2018" Name="KmiForslag2018">
+        <!-- <Formula>=IF([{fieldtitle:CompRef}]="innovasjonsmidler2018",[{fieldtitle:Title}],"")</Formula> -->
+        <Formula>=1</Formula>
+    </Field>
+    <Field Type="DateTime" DisplayName="Startdato" ID="{82d13436-de53-4289-ba37-53f1ead68953}" Group="KomInn Kampanje" StaticName="KmiCampaignStartDate" Name="KmiCampaignStartDate" />
+    <Field Type="DateTime" DisplayName="Sluttdato" ID="{a725579a-9c11-43d1-acbf-9b1037b06d3c}" Group="KomInn Kampanje" StaticName="KmiCampaignEndDate" Name="KmiCampaignEndDate" />
+    <Field Type="Text" DisplayName="Tekst" ID="{369c9b7d-161d-4716-88d0-8f8a8d21268a}" Group="KomInn Kampanje" StaticName="KmiCampaignText" Name="KmiCampaignText" />
+    <Field Type="Text" DisplayName="Kampanjereferanse" ID="{7bb945ec-c3f6-41a2-8484-354bc6691541}" Group="KomInn Kampanje" StaticName="KmiCampaignRef" Name="KmiCampaignRef" />
+    <Field Type="Number" DisplayName="Plassering" ID="{2c6a7efc-97b5-4c88-bdb9-53b0632e803c}" Group="KomInn Kampanje" StaticName="KmiCampaignPlacement" Name="KmiCampaignPlacement" />
+    <Field Type="Choice" DisplayName="Type" ID="{f5956bed-fc9f-4fb8-b5d8-d9bcbdfea6a6}" Group="KomInn Kampanje" StaticName="KmiCampaignType" Name="KmiCampaignType">
+        <CHOICES>
+            <CHOICE>Standard</CHOICE>
+            <CHOICE>Kampanje</CHOICE>
+            <CHOICE>Fortid</CHOICE>
+        </CHOICES>
+    </Field>
 </pnp:SiteFields>

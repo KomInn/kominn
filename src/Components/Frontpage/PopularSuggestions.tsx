@@ -10,13 +10,13 @@ import { SustainabilityGoal } from "../Common/SustainabilityGoal";
 
 enum SortTypes { DateAsc, DateDesc }
 class Filter { Value: string; Type: string }
-interface Props { Title:string, FromDate:string, ToDate:string }
+interface Props { Title: string, FromDate: string, ToDate: string }
 interface PopularSuggestionsState { suggestions: Array<Suggestion>, top?: number, maxReached?: boolean, sorting?: SortTypes, filter?: Array<Filter>, showSorting?: boolean, showFilter?: boolean, filterValues: Array<Filter> }
 export class PopularSuggestions extends React.Component<Props, PopularSuggestionsState>
 {
-    state = { suggestions: new Array<Suggestion>(), top: 3, maxReached: false, sorting: SortTypes.DateDesc, filter: new Array<Filter>(), showSorting: false, showFilter: false, filterValues: new Array<Filter>() };       
-    
-    componentWillMount() {       
+    state = { suggestions: new Array<Suggestion>(), top: 3, maxReached: false, sorting: SortTypes.DateDesc, filter: new Array<Filter>(), showSorting: false, showFilter: false, filterValues: new Array<Filter>() };
+
+    componentWillMount() {
         this.loadFilterValues();
         this.loadSuggestions(3);
     }
@@ -34,15 +34,12 @@ export class PopularSuggestions extends React.Component<Props, PopularSuggestion
                 customSort = "&$orderby=Created desc";
         }
 
-        var customFilter = "&$filter=Status eq 'Publisert'";
-        customFilter += " and Created gt '" + this.props.FromDate + "' and Created lt '"+this.props.ToDate +"'"; 
-        console.log("Customfilter ", customFilter); 
+        var customFilter = "&$filter=KmiStatus eq 'Publisert'";
+        customFilter += " and Created gt '" + this.props.FromDate + "' and Created lt '" + this.props.ToDate + "'";
         if (this.state.filter != null && this.state.filter.length > 0) {
             for (let f of this.state.filter)
                 customFilter += " and " + encodeURI(f.Type) + " eq '" + encodeURI(f.Value) + "'";
         }
-
-        var count = this.state.suggestions.length;
         var d = new DataAdapter();
         d.getAllSuggestions(Status.Published, this.state.top, customFilter, customSort).then((results: Array<Suggestion>) => {
             this.setState({ suggestions: results },
@@ -80,7 +77,7 @@ export class PopularSuggestions extends React.Component<Props, PopularSuggestion
         });
     }
 
-    suggestionCardTemplate(item: Suggestion): JSX.Element {       
+    suggestionCardTemplate(item: Suggestion): JSX.Element {
         var summary = item.Summary;
         var title = item.Title;
         let ellipsisLink = false;
@@ -97,37 +94,37 @@ export class PopularSuggestions extends React.Component<Props, PopularSuggestion
                     <img src={item.Image} width="298" height="200" alt="image description" />}
             </a>
             <div className="item-content">
-            <Row>
-                <Col xs={12}><h3><a href={item.Url}>{title}</a></h3></Col>
-            </Row>
-            <Row>
-                <Col xs={12}><p>{summary}{ellipsisLink ? <a href={item.Url}>...</a> : ''}</p></Col>
-               
-            </Row>
-            <Row>
-                <Col xs={12} >
-                <footer className="fixed-bottom">
-                    <div className="sustainabilityGoals">
-                    {item.SustainabilityGoals.map( (goal:SustainabilityGoal) => { 
-                    return <img src={goal.ImageSrc} style={{display:"inline-block", minHeight:"auto", height:"47px", width:"47px", marginTop:"2px", marginRight:"5px" }}  />
-                    })}
-                    </div>
-                    { (item.SustainabilityGoals.length > 0) ? <br/> : "" }
-                    <time>{item.Created.getDate() + "." + (item.Created.getMonth() + 1) + "." + item.Created.getFullYear()}</time>
-                    <strong className="author">{item.Submitter.Name}</strong>
-                    {(Tools.IsLatLong(item.Location)) ? "" :
-                        <span>{item.Location}</span>}
-                    <ul className="btn-list">
-                        <li>
-                            <a href="#"><i className="icon-like"></i><span className="counter">{item.Likes}</span></a>
-                        </li>
-                        <li>
-                            <a href="#"><i className="icon-comments"></i><span className="counter">{item.NumberOfComments}</span></a>
-                        </li>
-                    </ul>
-                </footer>
-                </Col>
-            </Row>
+                <Row>
+                    <Col xs={12}><h3><a href={item.Url}>{title}</a></h3></Col>
+                </Row>
+                <Row>
+                    <Col xs={12}><p>{summary}{ellipsisLink ? <a href={item.Url}>...</a> : ''}</p></Col>
+
+                </Row>
+                <Row>
+                    <Col xs={12} >
+                        <footer className="fixed-bottom">
+                            <div className="sustainabilityGoals">
+                                {item.SustainabilityGoals.map((goal: SustainabilityGoal) => {
+                                    return <img src={goal.ImageSrc} style={{ display: "inline-block", minHeight: "auto", height: "47px", width: "47px", marginTop: "2px", marginRight: "5px" }} />
+                                })}
+                            </div>
+                            {(item.SustainabilityGoals.length > 0) ? <br /> : ""}
+                            <time>{item.Created.getDate() + "." + (item.Created.getMonth() + 1) + "." + item.Created.getFullYear()}</time>
+                            <strong className="author">{item.Submitter.Name}</strong>
+                            {(Tools.IsLatLong(item.Location)) ? "" :
+                                <span>{item.Location}</span>}
+                            <ul className="btn-list">
+                                <li>
+                                    <a href="#"><i className="icon-like"></i><span className="counter">{item.Likes}</span></a>
+                                </li>
+                                <li>
+                                    <a href="#"><i className="icon-comments"></i><span className="counter">{item.NumberOfComments}</span></a>
+                                </li>
+                            </ul>
+                        </footer>
+                    </Col>
+                </Row>
             </div>
         </article>);
     }
@@ -172,11 +169,9 @@ export class PopularSuggestions extends React.Component<Props, PopularSuggestion
         this.setState({ filter: filters }, () => this.loadSuggestions(0));
     }
 
-    renderFiltering() {        
+    renderFiltering() {
         var usefulnessFilters = this.state.filterValues.filter((val: Filter) => { return val.Type === "UsefulnessType" });
         var tags = this.state.filterValues.filter((val: Filter) => { return val.Type === "Tags" });
-        var iterations = Math.max(usefulnessFilters.length, tags.length);
-        var sortedFilters = new Array<Filter>();
         return (
             <div className="filteroptions">
                 <Row>
@@ -184,21 +179,21 @@ export class PopularSuggestions extends React.Component<Props, PopularSuggestion
                 </Row>
                 <Row>
                     <Accordion>
-                        <Panel header="Kategori" eventKey="1" style={{ cursor: "pointer" }} className="filter-body">                          
-                             {_.chunk(tags, 2).map( 
+                        <Panel header="Kategori" eventKey="1" style={{ cursor: "pointer" }} className="filter-body">
+                            {_.chunk(tags, 2).map(
                                 (
-                                    (item:any) => { 
-                                        return <Row style={{width:'100%'}}>{item.map( (s:any) => { return this.renderFilter(s)})}</Row>
+                                    (item: any) => {
+                                        return <Row style={{ width: '100%' }}>{item.map((s: any) => { return this.renderFilter(s) })}</Row>
                                     }
-                                ).bind(this))}   
+                                ).bind(this))}
                         </Panel>
                         <Panel header="Nytteverdi" eventKey="2" style={{ cursor: "pointer" }} className="filter-body">
-                            {_.chunk(usefulnessFilters, 2).map( 
+                            {_.chunk(usefulnessFilters, 2).map(
                                 (
-                                    (item:any) => { 
-                                        return <Row style={{width:'100%'}}>{item.map( (s:any) => { return this.renderFilter(s)})}</Row>
+                                    (item: any) => {
+                                        return <Row style={{ width: '100%' }}>{item.map((s: any) => { return this.renderFilter(s) })}</Row>
                                     }
-                                ).bind(this))}                           
+                                ).bind(this))}
                         </Panel>
                     </Accordion>
                 </Row>
@@ -206,16 +201,16 @@ export class PopularSuggestions extends React.Component<Props, PopularSuggestion
         )
     }
 
-    renderFilter(filter:any) {
+    renderFilter(filter: any) {
         return (
-            <Col xs={6} style={{textAlign:'left'}}>
-            <span  >
-                <label className="switch">
-                    <input type="checkbox" name="filter" onChange={() => { this.toggleFilter(filter) }} />
-                    <div className="slider round"></div>
-                </label>
-                <span style={{ marginLeft: "10px", verticalAlign: "text-bottom", wordBreak:"break-all"  }}>{filter.Value}</span>
-            </span>
+            <Col xs={6} style={{ textAlign: 'left' }}>
+                <span  >
+                    <label className="switch">
+                        <input type="checkbox" name="filter" onChange={() => { this.toggleFilter(filter) }} />
+                        <div className="slider round"></div>
+                    </label>
+                    <span style={{ marginLeft: "10px", verticalAlign: "text-bottom", wordBreak: "break-all" }}>{filter.Value}</span>
+                </span>
             </Col>
         );
     }
@@ -236,7 +231,7 @@ export class PopularSuggestions extends React.Component<Props, PopularSuggestion
                 <section className="item-section">
                     <div className="item-container">
                         <h2>{this.props.Title}
-                    <div>
+                            <div>
                                 <Button onClick={this.showFilter.bind(this)} ><Glyphicon glyph="filter" /></Button>
                                 <Button onClick={this.showSorting.bind(this)} ><Glyphicon glyph="sort" /></Button>
                             </div>

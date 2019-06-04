@@ -4,7 +4,7 @@
   "description": "",
   "main": "",
   "scripts": {
-    "webpack": "webpack -w"
+    "webpack": "webpack -w --progress"
   },
   "author": "",
   "license": "ISC",
