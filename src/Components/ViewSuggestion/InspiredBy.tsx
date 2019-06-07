@@ -102,11 +102,10 @@ export class InspiredBy extends React.Component<InspiredByProps, InspiredByState
     
     componentDidMount() {
         var da = new DataAdapter();
-        da.getAllSuggestions(null, 2000, "&$filter=KmiStatus ne 'Sendt inn'&$select=Id,Title,Location,KmiInspiredBy/Id,KmiInspiredBy/Title&$expand=KmiInspiredBy&orderby=Created desc")
+        da.getAllSuggestions(null, 2000, "&$filter=KmiStatus ne 'Sendt inn'&$select=Id,Title,KmiLocation,KmiInspiredBy/Id,KmiInspiredBy/Title&$expand=KmiInspiredBy&orderby=Created desc")
             .then((results: Array<Suggestion>) => {
                 this.suggestions = results;
                 this.setState({suggestions:results});
-                var thisId = this.props.suggestion.Id;
                 this.drawMap();
             });
     }

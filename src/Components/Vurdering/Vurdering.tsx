@@ -35,14 +35,11 @@ export class Vurdering extends React.Component<any, State>
             url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Forslagsvurdering')/Items?$select=*,Forslag/Title&$expand=Forslag",
             contentType: "application/json;odata=verbose",
             success: (data: any) => {
-                console.log("Existing", data);
                 if (data.d.results.length < 0)
                     return;
 
                 var result = data.d.results.map((s: any) => {
                     var k = new FVurdering();
-
-
                     k.Innovasjonsgrad = s.ScoreDegreeOfInnovation;
                     k.Spredningspotensiale = s.ScoreDistributionPotential;
                     k.Gjennomforbarhet = s.ScoreFeasability;
@@ -70,7 +67,6 @@ export class Vurdering extends React.Component<any, State>
                     u.Title = k.Title;
 
                     for (let i of result) {
-                        console.log("Comparing ", i, " to ", u);
                         if (u.ForslagId === i.ForslagId) {
                             u.Gjennomforbarhet += i.Gjennomforbarhet;
                             u.Innbyggerinvolvering += i.Innbyggerinvolvering;
@@ -132,8 +128,6 @@ export class Vurdering extends React.Component<any, State>
 
 
     render() {
-
-        console.log("Ypp", this.state);
         return <div>
             <h3 style={{ color: "black" }}>Vurdering av mottatte forslag</h3>
             <p>Listen viser snitt av alle mottatte vurderinger per forslag</p>

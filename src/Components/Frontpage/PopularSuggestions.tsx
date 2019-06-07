@@ -63,7 +63,7 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
                 for (let item of data.d.results) {
                     for (let choice of item.Choices.results) {
                         var filter = new Filter();
-                        filter.Type = item.InternalName;
+                        filter.Type = item.InternalName.replace("Kmi", "");
                         filter.Value = choice;
                         filterValues.push(filter);
                     }
@@ -177,8 +177,8 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
     }
 
     renderFiltering() {
-        var usefulnessFilters = this.state.filterValues.filter((val: Filter) => val.Type === "KmiUsefulnessType");
-        var tags = this.state.filterValues.filter((val: Filter) => val.Type === "KmiTags");
+        var usefulnessFilters = this.state.filterValues.filter((val: Filter) => val.Type === "UsefulnessType");
+        var tags = this.state.filterValues.filter((val: Filter) => val.Type === "Tags");
         return (
             <div className="filteroptions">
                 <Row>
