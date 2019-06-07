@@ -15,7 +15,7 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
 {
     state = { suggestions: new Array<Suggestion>(), top: 3, maxReached: false, sorting: SortTypes.DateDesc, filter: new Array<Filter>(), showSorting: false, showFilter: false, filterValues: new Array<Filter>() };
 
-    componentWillMount() {
+    componentDidMount() {
         this.loadFilterValues();
         this.loadSuggestions(3);
     }
@@ -52,7 +52,7 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
     }
 
     loadFilterValues() {
-        var filters = new Array<Filter>();
+        var filterValues = new Array<Filter>();
         $.ajax({
             url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/fields?$filter=InternalName eq 'KmiUsefulnessType' or InternalName eq 'KmiTags'",
             type: "GET",
@@ -65,10 +65,10 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
                         var filter = new Filter();
                         filter.Type = item.InternalName;
                         filter.Value = choice;
-                        filters.push(filter);
+                        filterValues.push(filter);
                     }
                 }
-                this.setState({ filterValues: filters });
+                this.setState({ filterValues });
             },
             error: (error) => {
                 alert(JSON.stringify(error));
@@ -177,8 +177,8 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
     }
 
     renderFiltering() {
-        var usefulnessFilters = this.state.filterValues.filter((val: Filter) => { return val.Type === "UsefulnessType" });
-        var tags = this.state.filterValues.filter((val: Filter) => { return val.Type === "Tags" });
+        var usefulnessFilters = this.state.filterValues.filter((val: Filter) => val.Type === "KmiUsefulnessType");
+        var tags = this.state.filterValues.filter((val: Filter) => val.Type === "KmiTags");
         return (
             <div className="filteroptions">
                 <Row>

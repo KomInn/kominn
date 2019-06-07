@@ -44,10 +44,7 @@ export class SPDataAdapter {
                             resolve(results);
                         }
                     );
-
-
                 })
-
         }
         )
     }
