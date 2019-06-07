@@ -17,13 +17,11 @@ export class SubmitSuggestionButtons extends React.Component<any, Submitsuggesti
     }
 
     render() {
-        if (this.state.Campaigns === undefined || this.state.Campaigns.length === 0)
-            return (<span></span>);
-
+        if (this.state.Campaigns === undefined || this.state.Campaigns.length === 0) return null;
         var campaigns = _.orderBy(this.state.Campaigns, ['Placement'], ['asc']);
         return <Col md={6} mdPush={1} sm={8} xs={12} lg={5} lgPush={2}>
             {
-                this.state.Campaigns.map((c: Campaign) => {
+                campaigns.map((c: Campaign, index: number) => {
                     if (moment(c.StartDate) <= moment() && moment() > moment(c.EndDate))
                         return;
 
@@ -35,7 +33,13 @@ export class SubmitSuggestionButtons extends React.Component<any, Submitsuggesti
                     if (c.Type === "Fortid")
                         url += (c.CompRef) ? "&type=p" : "?type=p";
 
-                    return (<a href={url} className="btn green" style={{ marginLeft: "4px" }}>{c.Text}</a>);
+                    return (
+                        <a
+                            key={index}
+                            href={url}
+                            className="btn green"
+                            style={{ marginLeft: "4px" }}>{c.Text}</a>
+                    );
                 })
             }
         </Col>

@@ -1,8 +1,10 @@
+let path = require("path");
+
 module.exports = {
   entry: "./src/index.tsx",
   output: {
-    filename: "./templates/root/SiteAssets/js/bundle.js",
-
+    path: path.resolve(__dirname, 'templates/root/SiteAssets/js'),
+    filename: "bundle.js",
   },
   mode: "development",
   resolve: {

@@ -5,14 +5,13 @@ import { DataAdapter } from "../Common/DataAdapter";
 import { Status } from "../Common/Status";
 import { Tools } from "../Common/Tools";
 import * as _ from "lodash";
-import { SustainabilityGoals } from "../NewSuggestion/SustainabilityGoals";
 import { SustainabilityGoal } from "../Common/SustainabilityGoal";
 
 enum SortTypes { DateAsc, DateDesc }
 class Filter { Value: string; Type: string }
-interface Props { Title: string, FromDate: string, ToDate: string }
+interface IPopularSuggestionsProps { Title: string, FromDate: string, ToDate: string }
 interface PopularSuggestionsState { suggestions: Array<Suggestion>, top?: number, maxReached?: boolean, sorting?: SortTypes, filter?: Array<Filter>, showSorting?: boolean, showFilter?: boolean, filterValues: Array<Filter> }
-export class PopularSuggestions extends React.Component<Props, PopularSuggestionsState>
+export class PopularSuggestions extends React.Component<IPopularSuggestionsProps, PopularSuggestionsState>
 {
     state = { suggestions: new Array<Suggestion>(), top: 3, maxReached: false, sorting: SortTypes.DateDesc, filter: new Array<Filter>(), showSorting: false, showFilter: false, filterValues: new Array<Filter>() };
 
@@ -55,7 +54,7 @@ export class PopularSuggestions extends React.Component<Props, PopularSuggestion
     loadFilterValues() {
         var filters = new Array<Filter>();
         $.ajax({
-            url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Forslag')/fields?$filter=EntityPropertyName eq 'UsefulnessType' or EntityPropertyName eq 'Tags'",
+            url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/fields?$filter=InternalName eq 'KmiUsefulnessType' or InternalName eq 'KmiTags'",
             type: "GET",
             headers: {
                 "accept": "application/json;odata=verbose",
@@ -88,52 +87,60 @@ export class PopularSuggestions extends React.Component<Props, PopularSuggestion
         if (item.Title && item.Title.length > 100) {
             title = item.Title.substr(0, 100) + "...";
         }
-        return (<article className="item">
-            <a href={item.Url} className="img-block">
-                {item.Image == "" ? "" :
-                    <img src={item.Image} width="298" height="200" alt="image description" />}
-            </a>
-            <div className="item-content">
-                <Row>
-                    <Col xs={12}><h3><a href={item.Url}>{title}</a></h3></Col>
-                </Row>
-                <Row>
-                    <Col xs={12}><p>{summary}{ellipsisLink ? <a href={item.Url}>...</a> : ''}</p></Col>
+        return (
+            <article className="item">
+                <a href={item.Url} className="img-block">
+                    {item.Image == "" ? "" :
+                        <img src={item.Image} width="298" height="200" alt="image description" />}
+                </a>
+                <div className="item-content">
+                    <Row>
+                        <Col xs={12}><h3><a href={item.Url}>{title}</a></h3></Col>
+                    </Row>
+                    <Row>
+                        <Col xs={12}><p>{summary}{ellipsisLink ? <a href={item.Url}>...</a> : ''}</p></Col>
 
-                </Row>
-                <Row>
-                    <Col xs={12} >
-                        <footer className="fixed-bottom">
-                            <div className="sustainabilityGoals">
-                                {item.SustainabilityGoals.map((goal: SustainabilityGoal) => {
-                                    return <img src={goal.ImageSrc} style={{ display: "inline-block", minHeight: "auto", height: "47px", width: "47px", marginTop: "2px", marginRight: "5px" }} />
-                                })}
-                            </div>
-                            {(item.SustainabilityGoals.length > 0) ? <br /> : ""}
-                            <time>{item.Created.getDate() + "." + (item.Created.getMonth() + 1) + "." + item.Created.getFullYear()}</time>
-                            <strong className="author">{item.Submitter.Name}</strong>
-                            {(Tools.IsLatLong(item.Location)) ? "" :
-                                <span>{item.Location}</span>}
-                            <ul className="btn-list">
-                                <li>
-                                    <a href="#"><i className="icon-like"></i><span className="counter">{item.Likes}</span></a>
-                                </li>
-                                <li>
-                                    <a href="#"><i className="icon-comments"></i><span className="counter">{item.NumberOfComments}</span></a>
-                                </li>
-                            </ul>
-                        </footer>
-                    </Col>
-                </Row>
-            </div>
-        </article>);
+                    </Row>
+                    <Row>
+                        <Col xs={12} >
+                            <footer className="fixed-bottom">
+                                <div className="sustainabilityGoals">
+                                    {item.SustainabilityGoals.map((goal: SustainabilityGoal) => {
+                                        return <img src={goal.ImageSrc} style={{ display: "inline-block", minHeight: "auto", height: "47px", width: "47px", marginTop: "2px", marginRight: "5px" }} />
+                                    })}
+                                </div>
+                                {(item.SustainabilityGoals.length > 0) ? <br /> : ""}
+                                <time>{item.Created.getDate() + "." + (item.Created.getMonth() + 1) + "." + item.Created.getFullYear()}</time>
+                                <strong className="author">{item.Submitter.Name}</strong>
+                                {(Tools.IsLatLong(item.Location)) ? "" :
+                                    <span>{item.Location}</span>}
+                                <ul className="btn-list">
+                                    <li>
+                                        <a href="#"><i className="icon-like"></i><span className="counter">{item.Likes}</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i className="icon-comments"></i><span className="counter">{item.NumberOfComments}</span></a>
+                                    </li>
+                                </ul>
+                            </footer>
+                        </Col>
+                    </Row>
+                </div>
+            </article>
+        );
     }
 
 
     generatePopularSuggestions() {
         var items = this.state.suggestions;
-        return _.chunk(items, 3).map(((item: Array<Suggestion>) => {
-            return (<Row>{item.map((i: Suggestion) => { return (<Col xs={4}>{this.suggestionCardTemplate(i)}</Col>) })}</Row>)
+        return _.chunk(items, 3).map(((item: Array<Suggestion>, idx: number) => {
+            return (
+                <Row key={`Row_${idx}`}>
+                    {item.map((i: Suggestion, idx2: number) => (
+                        <Col key={`Col_${idx}_${idx2}`} xs={4}>{this.suggestionCardTemplate(i)}</Col>
+                    ))}
+                </Row>
+            )
         }).bind(this));
     }
 

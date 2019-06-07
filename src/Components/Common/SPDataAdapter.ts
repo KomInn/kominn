@@ -4,16 +4,15 @@
  * Data transmission and retrieval functions for interfacing SharePoint on-prem or in the cloud
  */
 
+$.ajaxSetup({ headers: { "Accept": "application/json;odata=verbose" } })
 import { Suggestion } from "./Suggestion";
 import { Person } from "./Person";
 import { Comment } from "./Comment";
 import { Status } from "./Status";
 import { Tools } from "./Tools";
 import { SustainabilityGoal } from "./SustainabilityGoal";
-$.ajaxSetup({ headers: { "Accept": "application/json;odata=verbose" } })
 import { Promise } from "es6-promise";
 import { Campaign } from "./Campaign";
-$.ajaxSetup({ headers: { "Accept": "application/json;odata=verbose" } })
 
 
 interface UserProfileProperty {
@@ -30,7 +29,7 @@ export class SPDataAdapter {
      * Returns: Array of sustainabilitygoals with id's
      */
     static getSustainabilityGoals(): Promise<Array<SustainabilityGoal>> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, _reject) => {
             var icons = new Array<SustainabilityIconObject>();
             $.get(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Ikoner')/Items?$select=Id,File/ServerRelativeUrl&$expand=File").then(
                 (result: SustainabilityIconRestRequest) => {
@@ -40,7 +39,6 @@ export class SPDataAdapter {
                         (result: SustainabilityGoalRestRequest) => {
                             var results = result.d.results.map((r) => {
                                 var icon = icons.filter((i) => i.Id === r.IkonId);
-
                                 return { Id: r.Id, Title: r.Title, ImageSrc: (icon.length > 0) ? icon[0].File.ServerRelativeUrl : "" } as SustainabilityGoal;
                             });
                             resolve(results);
@@ -88,7 +86,7 @@ export class SPDataAdapter {
      * Returns: Array with all suggestions, sorted by date. 
      */
     static getAllSuggestions(type?: Status, top?: number, customFilter?: string, customSort?: string): Promise<Array<Suggestion>> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, _reject) => {
             var numResults = (top == null) ? 100 : top;
             var query = (type == null) ? "" : "&$filter=KmiStatus ne 'Sendt inn' and KmiStatus eq '" + Tools.statusToString(type) + "'";
             var sortStr = "&$orderby=Created desc";
@@ -101,45 +99,41 @@ export class SPDataAdapter {
             this.getSustainabilityGoals().then((susgoals: Array<SustainabilityGoal>) => {
                 var suggestions = new Array<Suggestion>();
                 $.get(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Forslag')/Items?$select=*,Author/Id,KmiInspiredBy/Id,KmiInspiredBy/Title&$expand=KmiInspiredBy,Author&$top=" + numResults + sortStr + query).then((result: any) => {
-                    var results = result.d.results;
-                    for (var i = 0; i < results.length; i++) {
+                    suggestions = result.d.results.map((result: any) => {
                         var p = new Person();
                         var s = new Suggestion();
-                        p.Name = results[i].KmiName;
-                        p.Address = results[i].KmiAddress;
-                        p.City = results[i].KmiCity;
-                        p.CountyCode = results[i].KmiCountyCode;
-                        p.Department = results[i].KmiDepartment;
-                        p.MailAddress = results[i].KmiMailAddress;
-                        p.Manager = results[i].KmiManagerId;
-                        p.Telephone = results[i].KmiTelephone;
-                        p.Zipcode = results[i].KmiZipcode;
-                        s.Id = results[i].KmiId;
-                        s.Challenges = results[i].KmiChallenges;
-                        s.Image = Tools.IsNull(results[i].KmiImage) ? "" : results[i].KmiImage;
-                        s.Likes = Tools.IsNull(results[i].KmiLikes) ? 0 : results[i].KmiLikes;
-                        s.Location = results[i].KmiLocation;
-                        s.NumberOfComments = Tools.IsNull(results[i].KmiNumberOfComments) ? 0 : results[i].KmiNumberOfComments;
-                        s.Status = Tools.convertStatus(results[i].KmiStatus);
+                        p.Name = result.KmiName;
+                        p.Address = result.KmiAddress;
+                        p.City = result.KmiCity;
+                        p.CountyCode = result.KmiCountyCode;
+                        p.Department = result.KmiDepartment;
+                        p.MailAddress = result.KmiMailAddress;
+                        p.Manager = result.KmiManagerId;
+                        p.Telephone = result.KmiTelephone;
+                        p.Zipcode = result.KmiZipcode;
+                        s.Id = result.Id;
+                        s.Challenges = result.KmiChallenges;
+                        s.Image = Tools.IsNull(result.KmiImage) ? "" : result.KmiImage;
+                        s.Likes = Tools.IsNull(result.KmiLikes) ? 0 : result.KmiLikes;
+                        s.Location = result.KmiLocation;
+                        s.NumberOfComments = Tools.IsNull(result.KmiNumberOfComments) ? 0 : result.KmiNumberOfComments;
+                        s.Status = Tools.convertStatus(result.KmiStatus);
                         s.Submitter = p;
-                        s.SuggestedSolution = results[i].KmiSuggestedSolution;
-                        s.Summary = results[i].KmiSummary;
-                        s.InspiredBy = (results[i].KmiInspiredBy != null) ? results[i].KmiInspiredBy.results : null;
-                        if (results[i].KmiTags != null)
-                            s.Tags = results[i].KmiTags.results;
-                        s.Title = results[i].Title;
-                        s.UsefulForOthers = results[i].KmiUsefulForOthers;
-                        s.UsefulnessType = results[i].KmiUsefulnessType;
-                        s.Created = new Date(results[i].Created);
-                        s.SendTilKS = results[i].KmiSendToKS;
-                        var goals = results[i].KmiSustainabilityGoals.results;
-                        if (goals) {
-                            for (let goal of goals) {
-                                s.SustainabilityGoals.push(susgoals.filter((s) => s.Id === goal)[0]);
-                            }
+                        s.SuggestedSolution = result.KmiSuggestedSolution;
+                        s.Summary = result.KmiSummary;
+                        s.InspiredBy = (result.KmiInspiredBy != null) ? result.KmiInspiredBy.results : null;
+                        if (result.KmiTags != null)
+                            s.Tags = result.KmiTags.results;
+                        s.Title = result.Title;
+                        s.UsefulForOthers = result.KmiUsefulForOthers;
+                        s.UsefulnessType = result.KmiUsefulnessType;
+                        s.Created = new Date(result.Created);
+                        s.SendTilKS = result.KmiSendToKS;
+                        for (let goal of result.KmiSustainabilityGoalsId.results) {
+                            s.SustainabilityGoals.push(susgoals.filter((s) => s.Id === goal)[0]);
                         }
-                        suggestions.push(s);
-                    }
+                        return s;
+                    });
                     resolve(suggestions);
                 });
 
