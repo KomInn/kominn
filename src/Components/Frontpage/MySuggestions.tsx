@@ -1,10 +1,9 @@
 import * as React from "react";
-import { Row, Col } from "react-bootstrap";
 import { Suggestion } from "../Common/Suggestion";
 import { DataAdapter } from "../Common/DataAdapter";
-import { DetailsList } from "office-ui-fabric-react/lib/DetailsList";
-import { Status } from "../Common/Status";
-import { Tools } from "../Common/Tools";
+import { DetailsList, IColumn } from "office-ui-fabric-react/lib/DetailsList";
+import { Icon } from "office-ui-fabric-react/lib/Icon";
+import { autobind } from "office-ui-fabric-react/lib/Utilities";
 
 interface MySuggestionsState { suggestions: Array<Suggestion> }
 export class MySuggestions extends React.Component<any, MySuggestionsState>
@@ -17,24 +16,38 @@ export class MySuggestions extends React.Component<any, MySuggestionsState>
 			this.setState({ suggestions: results });
 		});
 	}
+
+	@autobind
+	onRenderItemColumn(item: Suggestion, _index: number, column: IColumn) {
+		const colValue = item[column.fieldName];
+		switch (column.key) {
+			case "Title": {
+				return <a href={item.Url}>{colValue}</a>;
+			}
+			case "Likes": {
+				return <span><Icon iconName="Like" /> {colValue}</span>;
+			}
+		}
+		return colValue;
+	}
+
 	render() {
 		return (
-			<Row>
-				<section className="section-offers hidden-xs">
-					<div className="container">
-						<h2>Mine forslag</h2>
-						<DetailsList
-							isHeaderVisible={false}
-							items={this.state.suggestions}
-							columns={[
-								{ key: "Title", name: "Title", fieldName: "Title", minWidth: 0 },
-								{ key: "Created", name: "Created", fieldName: "CreatedString", minWidth: 0 },
-								{ key: "Likes", name: "Likes", fieldName: "Likes", minWidth: 0 },
-								{ key: "Status", name: "Status", fieldName: "StatusString", minWidth: 0 },
-							]} />
-					</div>
-				</section>
-			</Row>
+			<section className="section-offers hidden-xs">
+				<div className="container">
+					<h2>Mine forslag</h2>
+					<DetailsList
+						isHeaderVisible={false}
+						items={this.state.suggestions}
+						columns={[
+							{ key: "Title", name: "Title", fieldName: "Title", minWidth: 0 },
+							{ key: "Created", name: "Created", fieldName: "CreatedString", minWidth: 0 },
+							{ key: "Likes", name: "Likes", fieldName: "Likes", minWidth: 0 },
+							{ key: "Status", name: "Status", fieldName: "StatusString", minWidth: 0 },
+						]}
+						onRenderItemColumn={this.onRenderItemColumn} />
+				</div>
+			</section>
 		)
 	}
 }

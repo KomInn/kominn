@@ -5,6 +5,7 @@ import { Status } from "../Common/Status";
 import { DefaultButton } from "office-ui-fabric-react/lib/Button";
 import { Toggle } from "office-ui-fabric-react/lib/Toggle";
 import { Dropdown, IDropdownOption } from "office-ui-fabric-react/lib/Dropdown";
+import { ImageFit } from "office-ui-fabric-react/lib/Image";
 import { DocumentCard, DocumentCardLocation, DocumentCardPreview, DocumentCardTitle, DocumentCardActions } from "office-ui-fabric-react/lib/DocumentCard";
 import { autobind } from "office-ui-fabric-react/lib/Utilities";
 import * as _ from "lodash";
@@ -104,11 +105,10 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
         return this.state.suggestions.map((i: Suggestion, idx: number) => (
             <div key={`Card_${idx}`} style={{ verticalAlign: "top", display: "inline-block", margin: "0 10px 10px 0" }}>
                 <DocumentCard onClickHref={i.Url}>
-                    <DocumentCardPreview previewImages={[{ previewImageSrc: i.Image }]} />
+                    <DocumentCardPreview previewImages={[{ previewImageSrc: i.Image, width: 318, height: 140, imageFit: ImageFit.cover }]} />
                     <DocumentCardTitle title={i.Title} />
                     <DocumentCardLocation location={i.Created.toLocaleDateString()} />
                     <DocumentCardLocation location={i.Submitter.Name} />
-                    <DocumentCardLocation location={i.Location} />
                     <DocumentCardActions actions={[
                         { onClick: () => this.dataAdapter.updateLike(i), iconProps: { iconName: "Like" }, name: `${i.Likes}`, },
                         { iconProps: { iconName: "Comment" }, name: `${i.NumberOfComments}`, },
