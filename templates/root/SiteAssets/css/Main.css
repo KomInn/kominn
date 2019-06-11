@@ -1245,6 +1245,7 @@ time {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
   border: 1px solid #b5cedd;
   background: #fff;
+  height: 322px;
 }
 
 .SuccessStories .container .item .title {
@@ -1258,7 +1259,7 @@ time {
 .SuccessStories .container .item .img-block {
   width: 100%;
   background-size: cover;
-  min-height: 276px;
+  height: 320px;
   margin: 0 0 0 4px;
 }
 
