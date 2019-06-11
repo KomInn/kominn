@@ -17,7 +17,11 @@
 
 .searchbar {
   background: #e2e3cd;
-  padding-top: 25px;
+  padding: 25px 0 25px 25px;
+}
+
+.ms-SearchBox input {
+  border: none !important;
 }
 
 .item-holder img {
@@ -25,9 +29,6 @@
   min-height: 150px;
 }
 
-.searchbar a {
-  margin-top: 2px;
-}
 .city {
   display: inline-block;
   margin-left: 6px;
@@ -144,14 +145,11 @@ a {
   background-color: transparent;
 }
 
-/**
- * Improve readability of focused elements when they are also in an
- * active/hover state.
- */
-
 a:active,
-a:hover {
+a:hover,
+a:visited {
   outline: 0;
+  color: inherit;
 }
 
 /* Text-level semantics
@@ -740,9 +738,6 @@ fieldset {
   display: none;
 }
 
-.breadcrumbs li a {
-  color: #93491c;
-}
 .search-area container {
   width: 100%;
   display: inline-block;
@@ -1077,11 +1072,6 @@ textarea.placeholder {
   display: block;
 }
 
-.item-holder h3 a {
-  color: #93491c;
-  text-decoration: none;
-}
-
 .item-holder h3 a:hover {
   text-decoration: underline;
 }
@@ -1265,7 +1255,6 @@ time {
 .carousel .title {
   font-size: 24px;
   line-height: 26px;
-  color: #93491c;
   display: block;
   margin-bottom: 12px;
   font-weight: 500;
@@ -1931,7 +1920,6 @@ address {
 }
 
 .tabset li a {
-  color: #93491c;
   display: block;
   padding: 21px 5px 15px;
   text-align: center;
