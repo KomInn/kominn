@@ -2,10 +2,11 @@ import * as React from "react";
 import { Suggestion } from "../Common/Suggestion";
 import { Comment } from "../Common/Comment";
 import { Tools } from "../Common/Tools";
-import { DataAdapter } from "../Common/DataAdaoffice-ui-fabric-react/lib/Buttonrom "office-ui-fabric-react/lib/Button";
-imporoffice-ui-fabric-react/lib/TextFieldic-react/lib/TextField";
+import { DataAdapter } from "../Common/DataAdapter";
+import { PrimaryButton } from "office-ui-fabric-react/lib/Button";
+import { TextField } from "office-ui-fabric-react/lib/TextField";
 import { autobind } from "office-ui-fabric-react/lib/Utilities";
-office-ui-fabric-react/lib/UtilitiesCommentsState { text: string }
+interface ICommentsState { text: string }
 interface ICommentsProps { suggestion: Suggestion, onCommentSubmitted(): void }
 export class Comments extends React.Component<ICommentsProps, ICommentsState>
 {

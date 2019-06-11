@@ -1,7 +1,8 @@
-import * as React from "reactider } from  Slider } from "office-ui-fabric-react/lib/Slider";
-import { TextField } from "office-ui-fabric-react/lib/TextField";import { Toggle } from "office-ui-fabric-react/lib/Toggle";
+import * as React from "react"
+import { Slider } from "office-ui-fabric-react/lib/Slider";
+import { TextField } from "office-ui-fabric-react/lib/TextField";
+import { Toggle } from "office-ui-fabric-react/lib/Toggle";
 import { DefaultButton } from "office-ui-fabric-react/lib/Button";
-import { Icon } from "office-ui-fabric-react/lib/Icon";
 import { autobind } from "office-ui-fabric-react/lib/Utilities";
 import { Suggestion } from "../Common/Suggestion";
 
