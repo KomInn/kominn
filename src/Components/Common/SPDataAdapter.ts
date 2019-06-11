@@ -115,6 +115,7 @@ export class SPDataAdapter {
                         s.Location = result.KmiLocation;
                         s.NumberOfComments = Tools.IsNull(result.KmiNumberOfComments) ? 0 : result.KmiNumberOfComments;
                         s.Status = Tools.convertStatus(result.KmiStatus);
+                        s.StatusString = result.KmiStatus;
                         s.Submitter = p;
                         s.SuggestedSolution = result.KmiSuggestedSolution;
                         s.Summary = result.KmiSummary;
@@ -125,6 +126,7 @@ export class SPDataAdapter {
                         s.UsefulForOthers = result.KmiUsefulForOthers;
                         s.UsefulnessType = result.KmiUsefulnessType;
                         s.Created = new Date(result.Created);
+                        s.CreatedString = s.Created.toLocaleDateString();
                         s.SendTilKS = result.KmiSendToKS;
                         for (let goal of result.KmiSustainabilityGoalsId.results) {
                             s.SustainabilityGoals.push(susgoals.filter((s) => s.Id === goal)[0]);
@@ -393,7 +395,7 @@ export class SPDataAdapter {
      * Returns: The suggestion with updated like count (Suggestion)
      */
     static updateLike(suggestion: Suggestion): Promise<Suggestion> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, _reject) => {
             // Get existing like 
             $.get(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Likes')/Items?$filter=(Forslag eq " + suggestion.Id + " and Author/Id eq " + _spPageContextInfo.userId + ")&$select=Id,Author/Id&$expand=Author").then(
                 (result: any) => {

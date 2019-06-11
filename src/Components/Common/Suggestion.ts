@@ -1,7 +1,6 @@
 /**
- * Data model for suggestions
+ * Data model for Suggestion
  */
-// TODO: Endre navn fra Person til Text 
 import { Comment } from "./Comment";
 import { Person } from "./Person";
 import { Status } from "./Status";
@@ -25,7 +24,9 @@ export class Suggestion {
     public Comments: Array<Comment>;
     public Tags: Array<string>;
     public Status: Status;
+    public StatusString: string;
     public Created: Date;
+    public CreatedString: string;
     public MonthlyStartDate: Date;
     public MonthlyEndDate: Date;
     public IsPast: boolean

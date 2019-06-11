@@ -20,7 +20,7 @@
      
      
     <script src="../SiteAssets/lib/bootstrap/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="../SiteAssets/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../SiteAssets/lib/office-ui-fabric-react/css/fabric.min.css" />
     <link rel="stylesheet" href="../SiteAssets/css/Main.css" />     
      
       

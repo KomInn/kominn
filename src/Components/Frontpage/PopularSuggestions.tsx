@@ -1,26 +1,49 @@
 import * as React from "react";
-import { Accordion, Panel, Row, Col, Glyphicon, Button, FormGroup, ControlLabel, Checkbox } from "react-bootstrap";
 import { Suggestion } from "../Common/Suggestion";
 import { DataAdapter } from "../Common/DataAdapter";
 import { Status } from "../Common/Status";
-import { Tools } from "../Common/Tools";
-import { DocumentCard, DocumentCardLocation, DocumentCardPreview, DocumentCardTitle, DocumentCardActions } from "office-ui-fabric-react";
+import { DefaultButton } from "office-ui-fabric-react/lib/Button";
+import { Toggle } from "office-ui-fabric-react/lib/Toggle";
+import { Dropdown, IDropdownOption } from "office-ui-fabric-react/lib/Dropdown";
+import { DocumentCard, DocumentCardLocation, DocumentCardPreview, DocumentCardTitle, DocumentCardActions } from "office-ui-fabric-react/lib/DocumentCard";
+import { autobind } from "office-ui-fabric-react/lib/Utilities";
 import * as _ from "lodash";
-import { SustainabilityGoal } from "../Common/SustainabilityGoal";
 
 enum SortTypes { DateAsc, DateDesc }
 class Filter { Value: string; Type: string }
 interface IPopularSuggestionsProps { Title: string, FromDate: string, ToDate: string }
-interface PopularSuggestionsState { suggestions: Array<Suggestion>, top?: number, maxReached?: boolean, sorting?: SortTypes, filter?: Array<Filter>, showSorting?: boolean, showFilter?: boolean, filterValues: Array<Filter> }
+interface PopularSuggestionsState {
+    suggestions: Array<Suggestion>,
+    top?: number,
+    maxReached?: boolean,
+    sorting?: SortTypes,
+    filter?: Array<Filter>,
+    showSorting?: boolean,
+    showFilter?: boolean,
+    filterValues: Array<Filter>
+}
 export class PopularSuggestions extends React.Component<IPopularSuggestionsProps, PopularSuggestionsState>
 {
-    state = { suggestions: new Array<Suggestion>(), top: 3, maxReached: false, sorting: SortTypes.DateDesc, filter: new Array<Filter>(), showSorting: false, showFilter: false, filterValues: new Array<Filter>() };
+    dataAdapter: DataAdapter;
+
+    constructor(props: IPopularSuggestionsProps) {
+        super(props);
+        this.state = {
+            suggestions: new Array<Suggestion>(),
+            top: 3,
+            sorting: SortTypes.DateDesc,
+            filter: new Array<Filter>(),
+            filterValues: new Array<Filter>(),
+        };
+        this.dataAdapter = new DataAdapter();
+    }
 
     componentDidMount() {
         this.loadFilterValues();
         this.loadSuggestions(3);
     }
 
+    @autobind
     loadMoreSuggestions() {
         this.loadSuggestions(3);
     }
@@ -38,9 +61,9 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
         customFilter += " and Created gt '" + this.props.FromDate + "' and Created lt '" + this.props.ToDate + "'";
         if (this.state.filter != null && this.state.filter.length > 0) {
             for (let f of this.state.filter)
-                customFilter += " and " + encodeURI(f.Type) + " eq '" + encodeURI(f.Value) + "'";
+                customFilter += ` and ${encodeURI(`Kmi${f.Type}`)} eq '${encodeURI(f.Value)}'`;
         }
-        new DataAdapter().getAllSuggestions(Status.Published, this.state.top, customFilter, customSort)
+        this.dataAdapter.getAllSuggestions(Status.Published, this.state.top, customFilter, customSort)
             .then((results: Array<Suggestion>) => {
                 this.setState({ suggestions: results },
                     () => {
@@ -55,7 +78,7 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
     loadFilterValues() {
         var filterValues = new Array<Filter>();
         $.ajax({
-            url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/fields?$filter=InternalName eq 'KmiUsefulnessType' or InternalName eq 'KmiTags'",
+            url: `${_spPageContextInfo.webAbsoluteUrl}/_api/web/fields?$filter=InternalName eq 'KmiUsefulnessType' or InternalName eq 'KmiTags'`,
             type: "GET",
             headers: {
                 "accept": "application/json;odata=verbose",
@@ -77,46 +100,42 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
         });
     }
 
-    generatePopularSuggestions() {
-        var items = this.state.suggestions;
-        return _.chunk(items, 3).map(((item: Array<Suggestion>, idx: number) => {
-            return (
-                <Row key={`Row_${idx}`}>
-                    {item.map((i: Suggestion, idx2: number) => (
-                        <Col key={`Col_${idx}_${idx2}`} xs={4}>
-                            <DocumentCard>
-                                <DocumentCardPreview previewImages={[{ previewImageSrc: i.Image }]} />
-                                <DocumentCardTitle title={i.Title} />
-                                <DocumentCardLocation location={i.Created.toLocaleDateString()} />
-                                <DocumentCardLocation location={i.Submitter.Name} />
-                                <DocumentCardLocation location={i.Location} />
-                                <DocumentCardActions actions={[
-                                    { iconProps: { iconName: "Like" }, name: `${i.Likes}`, },
-                                    { iconProps: { iconName: "Comment" }, name: `${i.NumberOfComments}`, },
-                                ]} />
-                            </DocumentCard>
-                        </Col>
-                    ))}
-                </Row>
-            )
-        }).bind(this));
+    renderPopularSuggestions() {
+        return this.state.suggestions.map((i: Suggestion, idx: number) => (
+            <div key={`Card_${idx}`} style={{ verticalAlign: "top", display: "inline-block", margin: "0 10px 10px 0" }}>
+                <DocumentCard onClickHref={i.Url}>
+                    <DocumentCardPreview previewImages={[{ previewImageSrc: i.Image }]} />
+                    <DocumentCardTitle title={i.Title} />
+                    <DocumentCardLocation location={i.Created.toLocaleDateString()} />
+                    <DocumentCardLocation location={i.Submitter.Name} />
+                    <DocumentCardLocation location={i.Location} />
+                    <DocumentCardActions actions={[
+                        { onClick: () => this.dataAdapter.updateLike(i), iconProps: { iconName: "Like" }, name: `${i.Likes}`, },
+                        { iconProps: { iconName: "Comment" }, name: `${i.NumberOfComments}`, },
+                    ]} />
+                </DocumentCard>
+            </div>
+        ));
     }
 
-    sortSuggestions(val: any) {
-        this.setState({ sorting: (val.target.value == 2) ? SortTypes.DateAsc : SortTypes.DateDesc }, () => { this.loadSuggestions(0); });
+    @autobind
+    sortSuggestions(option: IDropdownOption) {
+        this.setState({ sorting: option.data });
+        this.loadSuggestions(0);
     }
 
     renderSorting() {
         return (
-            <div className="sortoptions" style={{ paddingBottom: "10px" }}>
-                <FormGroup>
-                    <ControlLabel>Sorter på: </ControlLabel>
-                    <select className="form-control" onChange={this.sortSuggestions.bind(this)} style={{ maxWidth: "300px", margin: "0px auto" }}>
-                        <option value="1" selected={(this.state.sorting == SortTypes.DateDesc)}>Dato nyest - eldst</option>
-                        <option value="2" selected={(this.state.sorting == SortTypes.DateAsc)}>Dato eldst - nyest</option>
-                    </select>
-                </FormGroup>
-            </div>)
+            <div style={{ paddingBottom: "10px" }}>
+                <Dropdown
+                    onChange={(_event, option) => this.sortSuggestions(option)}
+                    defaultSelectedKey="DateDesc"
+                    options={[
+                        { key: "DateDesc", text: "Dato nyest - eldst", data: SortTypes.DateDesc },
+                        { key: "DateAsc", text: "Dato eldst - nyest", data: SortTypes.DateAsc }
+                    ]} />
+            </div>
+        );
     }
 
     toggleFilter(filter: Filter) {
@@ -135,81 +154,61 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
     }
 
     renderFiltering() {
-        var usefulnessFilters = this.state.filterValues.filter((val: Filter) => val.Type === "UsefulnessType");
         var tags = this.state.filterValues.filter((val: Filter) => val.Type === "Tags");
+        var usefulnessFilters = this.state.filterValues.filter((val: Filter) => val.Type === "UsefulnessType");
         return (
-            <div className="filteroptions">
-                <Row>
-                    <Col xs={12}><ControlLabel>Filtrer på:</ControlLabel></Col>
-                </Row>
-                <Row>
-                    <Accordion>
-                        <Panel header="Kategori" eventKey="1" style={{ cursor: "pointer" }} className="filter-body">
-                            {_.chunk(tags, 2).map(
-                                (
-                                    (item: any) => {
-                                        return <Row style={{ width: '100%' }}>{item.map((s: any) => { return this.renderFilter(s) })}</Row>
-                                    }
-                                ).bind(this))}
-                        </Panel>
-                        <Panel header="Nytteverdi" eventKey="2" style={{ cursor: "pointer" }} className="filter-body">
-                            {_.chunk(usefulnessFilters, 2).map(
-                                (
-                                    (item: any) => {
-                                        return <Row style={{ width: '100%' }}>{item.map((s: any) => { return this.renderFilter(s) })}</Row>
-                                    }
-                                ).bind(this))}
-                        </Panel>
-                    </Accordion>
-                </Row>
+            <div className="ms-Grid filteroptions">
+                <div className="ms-Grid-row">
+                    <h4 style={{ marginTop: 10 }}>Kategori</h4>
+
+                    {tags.map((filter) => this.renderFilter(filter))}
+                </div>
+                <div className="ms-Grid-row">
+                    <h4 style={{ marginTop: 10 }}>Nytteverdi</h4>
+                    {usefulnessFilters.map((filter) => this.renderFilter(filter))}
+                </div>
             </div>
         )
     }
 
-    renderFilter(filter: any) {
+    renderFilter(filter: Filter) {
         return (
-            <Col xs={6} style={{ textAlign: 'left' }}>
-                <span  >
-                    <label className="switch">
-                        <input type="checkbox" name="filter" onChange={() => { this.toggleFilter(filter) }} />
-                        <div className="slider round"></div>
-                    </label>
-                    <span style={{ marginLeft: "10px", verticalAlign: "text-bottom", wordBreak: "break-all" }}>{filter.Value}</span>
-                </span>
-            </Col>
+            <div className="ms-Grid-col ms-sm6">
+                <Toggle label={filter.Value} onChange={_ => this.toggleFilter(filter)} />
+            </div>
         );
     }
 
+    @autobind
     showFilter() {
         this.setState({ showSorting: false, showFilter: !this.state.showFilter });
     }
 
+    @autobind
     showSorting() {
         this.setState({ showFilter: false, showSorting: !this.state.showSorting });
     }
 
     render() {
+        if (this.state.suggestions.length === 0) {
+            return null;
+        }
         return (
-            <Row>
-                <section className="item-section">
-                    <div className="item-container">
-                        <h2>{this.props.Title}</h2>
-                        <div>
-                            <Button onClick={this.showFilter.bind(this)} ><Glyphicon glyph="filter" /></Button>
-                            <Button onClick={this.showSorting.bind(this)} ><Glyphicon glyph="sort" /></Button>
-                        </div>
-                        {(!this.state.showSorting) ? "" : this.renderSorting()}
-                        {(!this.state.showFilter) ? "" : this.renderFiltering()}
-                        <div className="item-holder">
-                            <Col xs={12}>
-                                {this.generatePopularSuggestions()}
-                            </Col>
-                        </div>
-                        {(this.state.maxReached) ? "" :
-                            <a href="#" className="btn" onClick={this.loadMoreSuggestions.bind(this)}>Vis flere innsendte forslag</a>}
+            <section className="item-section">
+                <div className="item-container">
+                    <h2>{this.props.Title}</h2>
+                    <div style={{ marginBottom: 20 }}>
+                        <DefaultButton onClick={this.showFilter} iconProps={{ iconName: "Filter" }} />
+                        <DefaultButton onClick={this.showSorting} iconProps={{ iconName: "Sort" }} />
                     </div>
-                </section>
-            </Row>
+                    {this.state.showSorting && this.renderSorting()}
+                    {this.state.showFilter && this.renderFiltering()}
+                    {this.renderPopularSuggestions()}
+                    <div style={{ marginTop: 20 }}>
+                        <DefaultButton onClick={this.loadMoreSuggestions} text="Vis flere innsendte forslag" hidden={this.state.maxReached} />
+                    </div>
+                </div>
+            </section>
         );
     }
 }

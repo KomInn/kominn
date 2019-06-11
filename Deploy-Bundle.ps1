@@ -14,3 +14,4 @@ $Credentials = New-Object -typename System.Management.Automation.PSCredential -A
 Connect-PnPOnline -Url $Url -Credentials $Credentials
 
 Add-PnPFile -Path $("./templates/root/SiteAssets/js/bundle.js") -Folder "SiteAssets\js" 
+Add-PnPFile -Path $("./templates/root/SiteAssets/css/Main.css") -Folder "SiteAssets\css" 
