@@ -1,12 +1,12 @@
-import * as React from "./node_modules/react";
+import * as React from "react";
 import { Suggestion } from "../Common/Suggestion";
 import { DataAdapter } from "../Common/DataAdapter";
 import { DoneThisModal } from "../Common/DoneThisModal";
 import { Status } from "../Common/Status";
 import { SuggestionRating } from "./SuggestionRating";
-import { DefaultButton } from "./node_modules/office-ui-fabric-react/lib/Button";
-import { Icon } from "./node_modules/office-ui-fabric-react/lib/Icon";
-import { autobind } from "./node_modules/office-ui-fabric-react/lib/Utilities";
+import { DefaultButton } from "office-ui-fabric-react/lib/Button";
+import { Icon } from "office-ui-fabric-react/lib/Icon";
+import { autobind } from "office-ui-fabric-react/lib/Utilities";
 
 interface IActionsState { showModal: boolean, numLikes: number, inspiredBy: Suggestion, updatingLike?: boolean }
 interface IActionsProps { suggestion?: Suggestion }

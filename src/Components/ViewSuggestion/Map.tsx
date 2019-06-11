@@ -1,5 +1,5 @@
-import * as React from "./node_modules/react";
-import { Row } from "./node_modules/react-bootstrap";
+import * as React from "react";
+import { Row } from "react-bootstrap";
 import { Suggestion } from "../Common/Suggestion";
 import { Tools } from "../Common/Tools";
 import { SustainabilityGoal } from "../Common/SustainabilityGoal";

@@ -1,5 +1,5 @@
-import * as React from "./node_modules/react";
-import { Ro./node_modules/react-bootstrapreact-bootstrap";
+import * as React from "react";
+import { Roreact-bootstrapreact-bootstrap";
 import { Suggestion } from "../Common/Suggestion";
 
 interface ContentProps { suggestion?:Suggestion }
