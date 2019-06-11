@@ -2,14 +2,14 @@ import 'core-js/es6/map';
 import 'core-js/es6/set';
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-
+import { initializeIcons } from "@uifabric/icons";
 import { NewSuggestion } from "./NewSuggestion";
 import { Frontpage } from "./Frontpage";
 import { ViewSuggestion } from "./ViewSuggestion";
 import { SendTilKS } from "./SendTilKS/SendTilKS";
 import { Vurdering } from './Components/Vurdering/Vurdering';
 $.ajaxSetup({ headers: { "Accept": "application/json;odata=verbose" } })
-
+initializeIcons(undefined, { disableWarnings: true });
 
 function renderSuggestionForm(id: string) {
     ReactDOM.render(

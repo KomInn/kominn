@@ -8,9 +8,6 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "linkify-urls": "^1.4.0"
-  },
   "devDependencies": {
     "@types/googlemaps": "^3.30.4",
     "@types/jquery": "^2.0.48",
@@ -18,13 +15,15 @@
     "@types/react": "^16.0.38",
     "@types/react-dom": "^16.0.4",
     "@types/sharepoint": "^2016.1.0",
+    "@uifabric/icons": "^6.5.2",
     "anchorme": "^1.1.2",
     "bootstrap": "3.3.7",
     "core-js": "^2.5.7",
     "es6-promise": "^4.2.4",
     "jquery": "^3.3.1",
+    "linkify-urls": "^1.4.0",
     "lodash": "^4.17.4",
-    "office-ui-fabric-react": "^5.124.0",
+    "office-ui-fabric-react": "^6.189.3",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.2.0",

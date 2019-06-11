@@ -4,6 +4,7 @@ import { Suggestion } from "../Common/Suggestion";
 import { DataAdapter } from "../Common/DataAdapter";
 import { Status } from "../Common/Status";
 import { Tools } from "../Common/Tools";
+import { DocumentCard, DocumentCardLocation, DocumentCardPreview, DocumentCardTitle, DocumentCardActions } from "office-ui-fabric-react";
 import * as _ from "lodash";
 import { SustainabilityGoal } from "../Common/SustainabilityGoal";
 
@@ -39,16 +40,16 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
             for (let f of this.state.filter)
                 customFilter += " and " + encodeURI(f.Type) + " eq '" + encodeURI(f.Value) + "'";
         }
-        var d = new DataAdapter();
-        d.getAllSuggestions(Status.Published, this.state.top, customFilter, customSort).then((results: Array<Suggestion>) => {
-            this.setState({ suggestions: results },
-                () => {
-                    if (this.state.top > results.length)
-                        this.setState({ maxReached: true });
+        new DataAdapter().getAllSuggestions(Status.Published, this.state.top, customFilter, customSort)
+            .then((results: Array<Suggestion>) => {
+                this.setState({ suggestions: results },
+                    () => {
+                        if (this.state.top > results.length)
+                            this.setState({ maxReached: true });
 
-                    this.setState({ top: this.state.top + incrementTop });
-                });
-        });
+                        this.setState({ top: this.state.top + incrementTop });
+                    });
+            });
     }
 
     loadFilterValues() {
@@ -76,68 +77,25 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
         });
     }
 
-    suggestionCardTemplate(item: Suggestion): JSX.Element {
-        var summary = item.Summary;
-        var title = item.Title;
-        let ellipsisLink = false;
-        if (item.Summary && item.Summary.length > 150) {
-            summary = item.Summary.substr(0, 150);
-            ellipsisLink = true;
-        }
-        if (item.Title && item.Title.length > 100) {
-            title = item.Title.substr(0, 100) + "...";
-        }
-        return (
-            <article className="item">
-                <a href={item.Url} className="img-block">
-                    {item.Image == "" ? "" :
-                        <img src={item.Image} width="298" height="200" alt="image description" />}
-                </a>
-                <div className="item-content">
-                    <Row>
-                        <Col xs={12}><h3><a href={item.Url}>{title}</a></h3></Col>
-                    </Row>
-                    <Row>
-                        <Col xs={12}><p>{summary}{ellipsisLink ? <a href={item.Url}>...</a> : ''}</p></Col>
-
-                    </Row>
-                    <Row>
-                        <Col xs={12} >
-                            <footer className="fixed-bottom">
-                                <div className="sustainabilityGoals">
-                                    {item.SustainabilityGoals.map((goal: SustainabilityGoal) => {
-                                        return <img src={goal.ImageSrc} style={{ display: "inline-block", minHeight: "auto", height: "47px", width: "47px", marginTop: "2px", marginRight: "5px" }} />
-                                    })}
-                                </div>
-                                {(item.SustainabilityGoals.length > 0) ? <br /> : ""}
-                                <time>{item.Created.getDate() + "." + (item.Created.getMonth() + 1) + "." + item.Created.getFullYear()}</time>
-                                <strong className="author">{item.Submitter.Name}</strong>
-                                {(Tools.IsLatLong(item.Location)) ? "" :
-                                    <span>{item.Location}</span>}
-                                <ul className="btn-list">
-                                    <li>
-                                        <a href="#"><i className="icon-like"></i><span className="counter">{item.Likes}</span></a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i className="icon-comments"></i><span className="counter">{item.NumberOfComments}</span></a>
-                                    </li>
-                                </ul>
-                            </footer>
-                        </Col>
-                    </Row>
-                </div>
-            </article>
-        );
-    }
-
-
     generatePopularSuggestions() {
         var items = this.state.suggestions;
         return _.chunk(items, 3).map(((item: Array<Suggestion>, idx: number) => {
             return (
                 <Row key={`Row_${idx}`}>
                     {item.map((i: Suggestion, idx2: number) => (
-                        <Col key={`Col_${idx}_${idx2}`} xs={4}>{this.suggestionCardTemplate(i)}</Col>
+                        <Col key={`Col_${idx}_${idx2}`} xs={4}>
+                            <DocumentCard>
+                                <DocumentCardPreview previewImages={[{ previewImageSrc: i.Image }]} />
+                                <DocumentCardTitle title={i.Title} />
+                                <DocumentCardLocation location={i.Created.toLocaleDateString()} />
+                                <DocumentCardLocation location={i.Submitter.Name} />
+                                <DocumentCardLocation location={i.Location} />
+                                <DocumentCardActions actions={[
+                                    { iconProps: { iconName: "Like" }, name: `${i.Likes}`, },
+                                    { iconProps: { iconName: "Comment" }, name: `${i.NumberOfComments}`, },
+                                ]} />
+                            </DocumentCard>
+                        </Col>
                     ))}
                 </Row>
             )
@@ -223,13 +181,11 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
     }
 
     showFilter() {
-        this.setState({ showSorting: false });
-        this.setState({ showFilter: !this.state.showFilter });
+        this.setState({ showSorting: false, showFilter: !this.state.showFilter });
     }
 
     showSorting() {
-        this.setState({ showFilter: false });
-        this.setState({ showSorting: !this.state.showSorting });
+        this.setState({ showFilter: false, showSorting: !this.state.showSorting });
     }
 
     render() {
@@ -237,12 +193,11 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
             <Row>
                 <section className="item-section">
                     <div className="item-container">
-                        <h2>{this.props.Title}
-                            <div>
-                                <Button onClick={this.showFilter.bind(this)} ><Glyphicon glyph="filter" /></Button>
-                                <Button onClick={this.showSorting.bind(this)} ><Glyphicon glyph="sort" /></Button>
-                            </div>
-                        </h2>
+                        <h2>{this.props.Title}</h2>
+                        <div>
+                            <Button onClick={this.showFilter.bind(this)} ><Glyphicon glyph="filter" /></Button>
+                            <Button onClick={this.showSorting.bind(this)} ><Glyphicon glyph="sort" /></Button>
+                        </div>
                         {(!this.state.showSorting) ? "" : this.renderSorting()}
                         {(!this.state.showFilter) ? "" : this.renderFiltering()}
                         <div className="item-holder">
@@ -254,6 +209,7 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
                             <a href="#" className="btn" onClick={this.loadMoreSuggestions.bind(this)}>Vis flere innsendte forslag</a>}
                     </div>
                 </section>
-            </Row>)
+            </Row>
+        );
     }
 }

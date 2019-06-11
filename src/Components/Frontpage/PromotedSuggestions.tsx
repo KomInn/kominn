@@ -1,11 +1,11 @@
 import * as React from "react";
-import { Row, Col } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import { Suggestion } from "../Common/Suggestion";
 import { DataAdapter } from "../Common/DataAdapter";
 import { Status } from "../Common/Status";
-interface PromotedSuggestionsState { suggestions?: Array<Suggestion>, CurrentImage?: number }
+interface IPromotedSuggestionsState { suggestions?: Array<Suggestion>, CurrentImage?: number }
 
-export class PromotedSuggestions extends React.Component<any, PromotedSuggestionsState>
+export class PromotedSuggestions extends React.Component<any, IPromotedSuggestionsState>
 {
 
 	state = { suggestions: new Array<Suggestion>(), CurrentImage: 0 };
