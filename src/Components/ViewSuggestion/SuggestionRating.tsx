@@ -1,6 +1,8 @@
-import * as React from "react";
-import { Row, Col } from "react-bootstrap";
-import { Slider, Toggle, TextField } from "office-ui-fabric-react";
+import * as React from "./node_modules/reactider } from  Slider } from "office-ui-fabric-react/lib/Slider";
+import { TextField } from "office-ui-fabric-react/lib/TextField";import { Toggle } from "office-ui-fabric-react/lib/Toggle";
+import { DefaultButton } from "office-ui-fabric-react/lib/Button";
+import { Icon } from "office-ui-fabric-react/lib/Icon";
+import { autobind } from "office-ui-fabric-react/lib/Utilities";
 import { Suggestion } from "../Common/Suggestion";
 
 
@@ -15,8 +17,7 @@ interface ISuggestionRatingState {
     ShortComment: string,
     ExistingId: number,
     Saved: boolean,
-    UserHasPermissions: boolean
-
+    userHasPermissions: boolean
 }
 
 interface ISuggestionRatingProps {
@@ -25,18 +26,21 @@ interface ISuggestionRatingProps {
 
 export class SuggestionRating extends React.Component<ISuggestionRatingProps, ISuggestionRatingState>
 {
-    state = {
-        ScoreFeasability: 5,
-        ScoreUserInvolvement: 5,
-        ScoreDistributionPotential: 5,
-        ScoreDegreeOfInnovation: 5,
-        MoreActors: false,
-        LawRequirements: false,
-        ShortComment: "",
-        Saving: false,
-        ExistingId: -1,
-        Saved: false,
-        UserHasPermissions: false
+    constructor(props: ISuggestionRatingProps) {
+        super(props);
+        this.state = {
+            ScoreFeasability: 5,
+            ScoreUserInvolvement: 5,
+            ScoreDistributionPotential: 5,
+            ScoreDegreeOfInnovation: 5,
+            MoreActors: false,
+            LawRequirements: false,
+            ShortComment: "",
+            Saving: false,
+            ExistingId: -1,
+            Saved: false,
+            userHasPermissions: false
+        }
     }
 
     private deleteExisting() {
@@ -49,30 +53,21 @@ export class SuggestionRating extends React.Component<ISuggestionRatingProps, IS
             var list = context.get_web().get_lists().getByTitle("Forslagsvurdering");
             var item = list.getItemById(this.state.ExistingId);
             item.deleteObject();
-            context.executeQueryAsync(() => {
-                resolve();
-            }, () => {
-                reject();
-            })
+            context.executeQueryAsync(resolve, reject)
         });
 
     }
 
-    private save() {
+    @autobind
+    private async save() {
         if (this.state.Saving)
             return;
-
-        this.setState({ Saving: true, Saved: false }, () => {
-            this.deleteExisting().then(() => {
-                this.setState({ Saving: true, Saved: false }, () => {
-                    this.submit().then(() => {
-                        this.setState({ Saving: false, Saved: true });
-                    });
-                });
-            });
-        });
-
+        this.setState({ Saving: true, Saved: false });
+        await this.deleteExisting();
+        await this.submit();
+        this.setState({ Saving: false, Saved: true });
     }
+
     private submit() {
         return new Promise((resolve, reject) => {
             var s = this.state;
@@ -95,11 +90,10 @@ export class SuggestionRating extends React.Component<ISuggestionRatingProps, IS
             context.load(item);
             context.executeQueryAsync(
                 () => {
-                    this.setState({ ExistingId: item.get_id() }, () => {
-                        resolve(s);
-                    });
+                    this.setState({ ExistingId: item.get_id() });
+                    resolve(s);
                 },
-                (fail: any, error: any) => {
+                (_sender: any, error: any) => {
                     console.log(error.get_message());
                     reject(error.get_message());
                 });
@@ -108,17 +102,15 @@ export class SuggestionRating extends React.Component<ISuggestionRatingProps, IS
 
 
     checkPermissionsToList(): Promise<boolean> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, _reject) => {
             $.ajax({
                 url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Forslagsvurdering')/Items",
                 contentType: "application/json;odata=verbose",
-                success: () => this.setState({ UserHasPermissions: true }, () => resolve(true)),
-                error: () => this.setState({ UserHasPermissions: false }, () => resolve(false))
+                success: () => resolve(true),
+                error: () => resolve(false),
             })
         });
     }
-
-
 
     getExisting() {
         var exId = this.props.sugggestion.Id;
@@ -146,98 +138,67 @@ export class SuggestionRating extends React.Component<ISuggestionRatingProps, IS
     }
 
     componentWillMount() {
-        this.checkPermissionsToList().then((result: boolean) => {
-            if (result) {
-                this.setState({ UserHasPermissions: true }, () => {
-                    this.getExisting();
-                });
-            }
-
-        });
-
-
+        this.checkPermissionsToList()
+            .then((userHasPermissions: boolean) => {
+                this.setState({ userHasPermissions });
+                if (userHasPermissions) this.getExisting();
+            });
     }
 
     render() {
-        if (!this.state.UserHasPermissions)
-            return <div></div>;
-
-        var saveText = "";
-        if (this.state.Saving)
-            saveText = "Lagrer...";
-
-        if (this.state.Saved)
-            saveText = "Lagret";
+        if (!this.state.userHasPermissions)
+            return null;
 
         return (
             <div className="SuggestionRatingBox">
-                <Row>
-                    <Col xs={12}><h3>Forslagsvurdering</h3></Col>
-                </Row>
+                <h3>Forslagsvurdering</h3>
 
-                <Row>
-                    <Col xs={12}><Slider label="Score gjennomførbarhet?" max={10} min={0} value={this.state.ScoreFeasability}
-                        onChange={(s) => {
-                            this.setState({ ScoreFeasability: s });
-                        }} /> </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}><Slider label="Score bruker/innbyggerinvolvering?" max={10} min={0} value={this.state.ScoreUserInvolvement}
-                        onChange={(s) => {
-                            this.setState({ ScoreUserInvolvement: s });
-                        }} /> </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}><Slider label="Score spredningspotensial" max={10} min={0} value={this.state.ScoreDistributionPotential}
-                        onChange={(s) => {
-                            this.setState({ ScoreDistributionPotential: s });
-                        }} /> </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}><Slider label="Score innovasjonsgrad" max={10} min={0} value={this.state.ScoreDegreeOfInnovation}
-                        onChange={(s) => {
-                            this.setState({ ScoreDegreeOfInnovation: s });
-                        }} /> </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}>
-                        <Toggle label="Flere aktører?" onText="Ja" offText="Nei" checked={this.state.MoreActors}
-
-                            onChanged={(s) => {
-                                this.setState({ MoreActors: s });
-                            }} />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}>
-                        <Toggle label="Lovkrav?" onText="Ja" offText="Nei" checked={this.state.LawRequirements}
-                            onChanged={(s) => {
-                                this.setState({ LawRequirements: s });
-                            }} />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}>
-                        <TextField label="Kort kommentar" multiline={true} rows={5} value={this.state.ShortComment}
-                            onChanged={(s) => {
-                                this.setState({ ShortComment: s });
-                            }} />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={4}>
-                        <input type="button" value="Lagre" style={{ margin: "0", marginTop: "10px" }} onClick={() => {
-                            this.save();
-                        }} />
-                    </Col>
-                    <Col xs={4}>
-                        <p>{saveText}</p>
-                    </Col>
-                </Row>
+                <Slider
+                    label="Score gjennomførbarhet?"
+                    max={10}
+                    min={0}
+                    value={this.state.ScoreFeasability}
+                    onChange={newValue => this.setState({ ScoreFeasability: newValue })} />
+                <Slider
+                    label="Score bruker/innbyggerinvolvering?"
+                    max={10}
+                    min={0}
+                    value={this.state.ScoreUserInvolvement}
+                    onChange={newValue => this.setState({ ScoreUserInvolvement: newValue })} />
+                <Slider
+                    label="Score spredningspotensial"
+                    max={10}
+                    min={0}
+                    value={this.state.ScoreDistributionPotential}
+                    onChange={newValue => this.setState({ ScoreDistributionPotential: newValue })} />
+                <Slider
+                    label="Score innovasjonsgrad"
+                    max={10}
+                    min={0}
+                    value={this.state.ScoreDegreeOfInnovation}
+                    onChange={newValue => this.setState({ ScoreDegreeOfInnovation: newValue })} />
+                <Toggle
+                    label="Flere aktører?"
+                    onText="Ja"
+                    offText="Nei"
+                    checked={this.state.MoreActors}
+                    onChanged={newValue => this.setState({ MoreActors: newValue })} />
+                <Toggle
+                    label="Lovkrav?"
+                    onText="Ja"
+                    offText="Nei"
+                    checked={this.state.LawRequirements}
+                    onChanged={newValue => this.setState({ LawRequirements: newValue })} />
+                <TextField
+                    label="Kort kommentar"
+                    multiline={true}
+                    rows={5}
+                    value={this.state.ShortComment}
+                    onChanged={newValue => this.setState({ ShortComment: newValue })} />
+                <div style={{ marginTop: 10 }}>
+                    <DefaultButton text="Lagre forslagsvurdering" iconProps={{ iconName: "Save" }} onClick={this.save} disabled={this.state.Saving} />
+                </div>
             </div>
         )
-
     }
-
-
 }

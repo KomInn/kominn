@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Row, Col } from "react-bootstrap";
+import * as React from "./node_modules/react";
+import { Row, Col } from "./node_modules/react-bootstrap";
 import { Suggestion } from "../Common/Suggestion";
-import * as vis from "vis"; 
+import * as vis from "./node_modules/vis"; 
 
 interface NodeViewProps { Origin?:Suggestion, Suggestions?:Array<Suggestion>}
 export class NodeView extends React.Component<NodeViewProps, any>

@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Row, Col } from "react-bootstrap";
+import * as React from "./node_modules/react";
+import { Row, Col } from "./node_modules/react-bootstrap";
 import { Suggestion } from "../Common/Suggestion";
-import anchorme from "anchorme";
+import anchorme from "./node_modules/anchorme";
 
 
 

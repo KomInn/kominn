@@ -6,7 +6,7 @@ import { Suggestion } from "../Common/Suggestion";
 import { DataAdapter } from "../Common/DataAdapter";
 import { SubmitSuggestionButtons } from "../Common/SubmitSuggestionButtons"
 
-interface InspiredByState { inspiredBy: Array<Suggestion>, suggestions: Array<Suggestion>, searchval?: string }
+interface InspiredByState { inspiredBy: Array<Suggestion>, suggestions: Array<Suggestion>, searchTerm?: string }
 interface SearchbarProps { isBackNavigation?: boolean }
 
 export class Searchbar extends React.Component<SearchbarProps, InspiredByState>
@@ -16,27 +16,26 @@ export class Searchbar extends React.Component<SearchbarProps, InspiredByState>
         this.state = {
             suggestions: new Array<Suggestion>(),
             inspiredBy: new Array<Suggestion>(),
-            searchval: "",
+            searchTerm: "",
         };
     }
 
     @autobind
-    searchSuggestion(evt: any) {
-        this.setState({ searchval: evt.target.value }, () => {
-            var title = this.state.searchval;
-            if (title == null || title == "" || title.length <= 3) {
-                this.setState({ suggestions: new Array<Suggestion>() });
-                return;
-            }
-            new DataAdapter().getSuggestionByTitle(title).then((suggestions: Array<Suggestion>) => {
-                this.setState({ suggestions });
-            });
+    searchSuggestion(searchTerm: string) {
+        this.setState({ searchTerm });
+        if (searchTerm.length <= 3) {
+            this.setState({ suggestions: new Array<Suggestion>() });
+            return;
+        }
+        new DataAdapter().getSuggestionByTitle(searchTerm).then((suggestions: Array<Suggestion>) => {
+            this.setState({ suggestions });
         });
     }
 
     renderSearchResults() {
         if (this.state.suggestions.length === 0)
             return null;
+        console.log(this.state);
         return (
             <div className="ms-Grid-row">
                 {this.state.suggestions.map((item: Suggestion, idx: number) => {

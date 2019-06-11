@@ -1,53 +1,60 @@
-import * as React from "react";
-import { Row, Col } from "react-bootstrap";
+import * as React from "./node_modules/react";
 import { Suggestion } from "../Common/Suggestion";
 import { Comment } from "../Common/Comment";
 import { Tools } from "../Common/Tools";
-import { DataAdapter } from "../Common/DataAdapter";
-interface CommentsState { text:string }
-interface CommentsProps { suggestion:Suggestion, onCommentSubmitted():void  }
-export class Comments extends React.Component<CommentsProps, CommentsState>
+import { DataAdapter } from "../Common/DataAda./node_modules/office-ui-fabric-react/lib/Buttonrom "office-ui-fabric-react/lib/Button";
+impor./node_modules/office-ui-fabric-react/lib/TextFieldic-react/lib/TextField";
+import { autobind } from "office-ui-fabric-react/lib/Utilities";
+./node_modules/office-ui-fabric-react/lib/UtilitiesCommentsState { text: string }
+interface ICommentsProps { suggestion: Suggestion, onCommentSubmitted(): void }
+export class Comments extends React.Component<ICommentsProps, ICommentsState>
 {
-       
-    state = { text:""}
-    
-    submitComment(evt:any)
-    {
-        evt.preventDefault(); 
-        var da = new DataAdapter();       
-        da.submitCommentForSuggestion(this.state.text, this.props.suggestion).then( () => {  this.props.onCommentSubmitted(); this.setState({text:""})});
-        
-    }    
+    constructor(props: ICommentsProps) {
+        super(props);
+        this.state = { text: "" };
+    }
 
-    render()
-    {        
+    @autobind
+    async submitComment(evt: any) {
+        evt.preventDefault();
+        await new DataAdapter().submitCommentForSuggestion(this.state.text, this.props.suggestion);
+        this.props.onCommentSubmitted();
+        this.setState({ text: "" });
+    }
+
+    render() {
         return (
-            <Row>                 
-                <form action="#" className="comments-form" id="kommentar">
-                    <label htmlFor="kommentarer">Kommentarer</label>
-                    <textarea id="kommentarer" onChange={ (e:any) => { this.setState({text:e.target.value}); }} value={this.state.text} cols={30} rows={10} placeholder="Hva syntes du om forslaget?"></textarea>
-                    <button className="btn" onClick={this.submitComment.bind(this)}>Send kommentar</button>
-                </form>
+            <div>
+                <TextField
+                    label="Kommentarer"
+                    placeholder="Hva syntes du om forslaget?"
+                    multiline={true}
+                    onChange={(_event, newValue) => this.setState({ text: newValue })} />
+                <div style={{ marginTop: 10 }}>
+                    <PrimaryButton text="Send kommentar" disabled={this.state.text.length < 3} onClick={this.submitComment} />
+                </div>
                 <ul className="comments-list">
-                    { this.props.suggestion.Comments.map( (item:Comment, index:number) => { 
-             return( <li>
-                        <div className="img-block">
-                            <div className="img-wrapp">
-                                <img src={item.Image} width="80" height="80" alt="image description"/>
-                            </div>
-                        </div>
-                        <div className="text-block">
-                            <strong className="title">{item.CreatedBy} - <time >{Tools.FormatDate(item.Created)}</time></strong>
-                            <div className="comment-area">
-                                <div className="text-wrapp">
-                                    <p>{item.Text}</p>
+                    {this.props.suggestion.Comments.map((item: Comment, idx: number) => {
+                        return (
+                            <li key={idx}>
+                                <div className="img-block">
+                                    <div className="img-wrapp">
+                                        <img src={item.Image} width="80" height="80" />
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </li>)
-                    })}                  
+                                <div className="text-block">
+                                    <strong className="title">{item.CreatedBy} - <time >{Tools.FormatDate(item.Created)}</time></strong>
+                                    <div className="comment-area">
+                                        <div className="text-wrapp">
+                                            <p>{item.Text}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        )
+                    })}
                 </ul>
-            </Row>                    
+            </div>
         )
     }
 }

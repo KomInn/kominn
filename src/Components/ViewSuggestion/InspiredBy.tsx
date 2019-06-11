@@ -1,11 +1,11 @@
-import * as React from "react";
-import { Row, Col, Button } from "react-bootstrap";
+import * as React from "./node_modules/react";
+import { Row, Col, Button } from "./node_modules/react-bootstrap";
 import { Suggestion } from "../Common/Suggestion";
 import { DataAdapter } from "../Common/DataAdapter";
 import { Status } from "../Common/Status";
 import { NodeView } from "./NodeView"; 
-import "vis"; 
-import * as vis from "vis";
+import "./node_modules/vis"; 
+import * as vis from "./node_modules/vis";
 
 
 enum InspiredByView { Map, Node }

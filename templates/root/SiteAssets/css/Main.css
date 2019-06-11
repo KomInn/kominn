@@ -17,7 +17,7 @@
 
 .searchbar {
   background: #e2e3cd;
-  padding: 25px 0 25px 25px;
+  padding: 25px 0 25px 25px !important;
 }
 
 .ms-SearchBox input {
@@ -44,9 +44,10 @@
 }
 
 .SuggestionRatingBox {
-  border: 1px solid gray;
-  border-radius: 5px;
-  padding: 5px;
+  border-top: 1px dotted gray;
+  border-bottom: 1px dotted gray;
+  padding: 15px 0 15px 0;
+  margin: 15px 0 15px 0;
 }
 
 .input-group {
@@ -652,15 +653,12 @@ body > .jcf-select-drop.jcf-drop-flipped {
 /* common styles */
 
 .breadcrumbs,
-.item-holder .btn-list,
-.carousel .btn-list,
 .carousel .pagination ul,
 .offers-table,
-#sidebar .btn-list,
+.btn-list,
 .social-network,
 address ul,
 .comments-list,
-.contacts-form .btn-list,
 .tabset {
   margin: 0;
   padding: 0;

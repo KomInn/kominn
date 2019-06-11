@@ -21,7 +21,7 @@ export class SubmitSuggestionButtons extends React.Component<any, ISubmitsuggest
     render() {
         if (this.state.Campaigns === undefined || this.state.Campaigns.length === 0) return null;
         var campaigns = _.orderBy(this.state.Campaigns, ['Placement'], ['asc']);
-        return campaigns.map((c: Campaign, index: number) => {
+        return campaigns.map((c: Campaign, idx: number) => {
             if (moment(c.StartDate) <= moment() && moment() > moment(c.EndDate))
                 return;
 
@@ -33,7 +33,7 @@ export class SubmitSuggestionButtons extends React.Component<any, ISubmitsuggest
             if (c.Type === "Fortid")
                 url += (c.CompRef) ? "&type=p" : "?type=p";
 
-            return <DefaultButton href={url} text={c.Text} />;
+            return <DefaultButton key={idx} href={url} text={c.Text} />;
         });
     }
 }

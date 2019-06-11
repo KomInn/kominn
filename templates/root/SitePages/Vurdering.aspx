@@ -20,9 +20,7 @@
   <link rel="stylesheet" href="../SiteAssets/lib/office-ui-fabric-react/css/fabric.min.css" />
   <link rel="stylesheet" href="../SiteAssets/css/Main.css" />
   <script src="../SiteAssets/lib/vis/vis.min.js"></script>
-  <link rel="stylesheet" href="../SiteAssets/lib/vis/vis.min.css" />
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEQC7aWXruMiVIMfR_ev-7AFFqs96xn2c"></script>
-
 </asp:Content>
 
 <%-- The markup in the following Content element will be placed in the TitleArea of the page --%>
