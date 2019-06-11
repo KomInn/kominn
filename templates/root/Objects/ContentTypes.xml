@@ -31,14 +31,16 @@
             <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" Required="true" />
             <pnp:FieldRef ID="23b1f3d6-df10-45b4-91a0-210b1eca20ac" Name="KmiUsefulnessType" />
             <pnp:FieldRef ID="9662dfaa-b386-4c92-af70-5a36f6455a1a" Name="KmiSummary" />
+            <pnp:FieldRef ID="92d3013b-ed8b-4e86-9f6b-cacec95aa86b" Name="KmiChallenges" />
+            <pnp:FieldRef ID="54e5c384-0bef-46ec-9762-599ccd72899d" Name="KmiSuggestedSolution" />
+            <pnp:FieldRef ID="a07be058-665f-4713-b141-db7d14462125" Name="KmiUsefulForOthers" />
             <pnp:FieldRef ID="19028c38-9950-4b22-96fa-c01ae1eae3f4" Name="KmiTags" />
             <pnp:FieldRef ID="085a2f1b-67e4-433a-9b90-1f010bcb5f88" Name="KmiAddress" Hidden="true" />
-            <pnp:FieldRef ID="50d2c862-878a-4606-908a-025a75208200" Name="KmiDepartment" />
+            <pnp:FieldRef ID="50d2c862-878a-4606-908a-025a75208200" Name="KmiDepartment" Hidden="true" />
             <pnp:FieldRef ID="8183d7d5-5c96-4b67-947d-137300913bf2" Name="KmiImage" />
             <pnp:FieldRef ID="e605364e-4956-4bad-9de0-5ac72a8f83aa" Name="KmiCity" Hidden="true" />
             <pnp:FieldRef ID="bc3203f8-17cb-4d08-a56d-f27163916c16" Name="KmiSustainabilityGoals" />
             <pnp:FieldRef ID="1f549d6e-0127-4500-9346-4511762ed34e" Name="KmiMailAddress" Hidden="true" />
-            <pnp:FieldRef ID="54e5c384-0bef-46ec-9762-599ccd72899d" Name="KmiSuggestedSolution" />
             <pnp:FieldRef ID="06593844-a682-4ed2-b009-a4c1361ac9e6" Name="KmiForslag2018" />
             <pnp:FieldRef ID="b199a8ff-b8f7-43f1-8f27-651774305077" Name="KmiIsPast" />
             <pnp:FieldRef ID="07e827ec-c34f-48d6-b69c-6f0ef48f7c90" Name="KmiInspiredBy" />
@@ -46,8 +48,7 @@
             <pnp:FieldRef ID="9f0ed997-5cbd-43f7-ac8c-889cae958aea" Name="KmiCompRef" />
             <pnp:FieldRef ID="9b9500c1-b793-4511-b937-8b9dec9a8bb1" Name="KmiMonthlyEndDate" />
             <pnp:FieldRef ID="f55199fd-8cb6-4583-a98e-a6363524f38f" Name="KmiMonthlyStartDate" />
-            <pnp:FieldRef ID="09010dd5-61fe-43ce-86a6-7e092922c3e2" Name="KmiName" />
-            <pnp:FieldRef ID="a07be058-665f-4713-b141-db7d14462125" Name="KmiUsefulForOthers" />
+            <pnp:FieldRef ID="09010dd5-61fe-43ce-86a6-7e092922c3e2" Name="KmiName" Hidden="true" />
             <pnp:FieldRef ID="710ef48a-adb9-4f55-81bd-8a0f248e29ba" Name="KmiManager" Hidden="true" />
             <pnp:FieldRef ID="4540bb76-e42f-490e-a152-f940ebfb16af" Name="KmiZipcode" Hidden="true" />
             <pnp:FieldRef ID="29f6dc98-20a7-4ddc-ad37-5805b6a28d95" Name="KmiCaseWorker" />
@@ -57,7 +58,6 @@
             <pnp:FieldRef ID="973e62b2-79b2-46fd-bd59-21f17699b78e" Name="KmiLocation" />
             <pnp:FieldRef ID="abd3c94e-048c-4730-8416-5b9c57b87784" Name="KmiApplyingFor" />
             <pnp:FieldRef ID="c591f503-6d83-49b0-a09e-580585b154ea" Name="KmiTelephone" Hidden="true" />
-            <pnp:FieldRef ID="92d3013b-ed8b-4e86-9f6b-cacec95aa86b" Name="KmiChallenges" />
             <pnp:FieldRef ID="00aa7464-6dd6-4483-87bc-d80fd098badd" Name="KmiNumberOfComments" />
             <pnp:FieldRef ID="988a9f76-884b-4d5a-906a-55c6f896880d" Name="KmiLikes" />
         </pnp:FieldRefs>

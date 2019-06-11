@@ -1243,7 +1243,7 @@ time {
 }
 
 .SuccessStories .container .item {
-  margin: 10px;
+  margin: 2% 2% 0 0; 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
   border: 1px solid #b5cedd;
   background: #fff;
@@ -1260,10 +1260,8 @@ time {
 .SuccessStories .container .item .img-block {
   width: 100%;
   background-size: cover;
-  background-position: 0 0;
-  background-repeat: no-repeat;
   min-height: 276px;
-  margin: 0 0 12px;
+  margin: 0 0 0 4px;
 }
 
 .SuccessStories .container .item .content-area {
@@ -1273,26 +1271,6 @@ time {
 
 .SuccessStories .container .item .content-area p {
   margin: 0 0 40px;
-}
-
-.SuccessStories .container .item .btn-list {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.SuccessStories .container .item .btn-list li {
-  padding: 0 0 18px;
-}
-
-.SuccessStories .container .item .btn-list .btn {
-  display: block;
 }
 
 .section-offers {

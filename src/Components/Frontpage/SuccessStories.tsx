@@ -31,9 +31,9 @@ export class SuccessStories extends React.Component<any, SuccessStoriesState>
 					<div className="ms-Grid-row container">
 						{this.state.suggestions.map((item: Suggestion, idx: number) => {
 							return (
-								<div key={idx} className="ms-Grid-col ms-sm6 item">
+								<div key={idx} className="ms-Grid-col ms-sm5 ms-smPush1 item">
 									<article className="item-holder">
-										<div className="img-block" style={{ backgroundImage: "url('" + item.Image + "')" }}></div>
+										<div className="img-block" style={{ backgroundImage: `url('${item.Image}')` }}></div>
 										<div className="content-area">
 											<strong className="title">{item.Title}</strong>
 											<p>{item.Summary}</p>
