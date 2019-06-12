@@ -12,6 +12,8 @@ interface ISearchbarProps { isBackNavigation?: boolean }
 
 export class Searchbar extends React.Component<ISearchbarProps, ISearchbarState>
 {
+    private dataAdapter = new DataAdapter();
+
     constructor(props: ISearchbarProps) {
         super(props);
         this.state = {
@@ -29,7 +31,7 @@ export class Searchbar extends React.Component<ISearchbarProps, ISearchbarState>
             this.setState({ suggestions: new Array<Suggestion>() });
             return;
         }
-        new DataAdapter().getSuggestionByTitle(searchTerm).then((suggestions: Array<Suggestion>) => {
+        this.dataAdapter.getSuggestionByTitle(searchTerm).then((suggestions: Array<Suggestion>) => {
             this.setState({ suggestions, showSuggestions: suggestions.length > 0 });
         });
     }
