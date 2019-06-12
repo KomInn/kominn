@@ -1,22 +1,24 @@
 import * as React from "react";
 import { DefaultButton } from "office-ui-fabric-react/lib/Button";
 import { SearchBox } from "office-ui-fabric-react/lib/SearchBox";
+import { Callout } from "office-ui-fabric-react/lib/Callout";
 import { autobind } from "office-ui-fabric-react/lib/Utilities";
 import { Suggestion } from "../Common/Suggestion";
 import { DataAdapter } from "../Common/DataAdapter";
 import { SubmitSuggestionButtons } from "../Common/SubmitSuggestionButtons"
 
-interface InspiredByState { inspiredBy: Array<Suggestion>, suggestions: Array<Suggestion>, searchTerm?: string }
-interface SearchbarProps { isBackNavigation?: boolean }
+interface ISearchbarState { inspiredBy: Array<Suggestion>, suggestions: Array<Suggestion>, searchTerm?: string, showSuggestions?: boolean }
+interface ISearchbarProps { isBackNavigation?: boolean }
 
-export class Searchbar extends React.Component<SearchbarProps, InspiredByState>
+export class Searchbar extends React.Component<ISearchbarProps, ISearchbarState>
 {
-    constructor(props: SearchbarProps) {
+    constructor(props: ISearchbarProps) {
         super(props);
         this.state = {
             suggestions: new Array<Suggestion>(),
             inspiredBy: new Array<Suggestion>(),
             searchTerm: "",
+            showSuggestions: false,
         };
     }
 
@@ -28,24 +30,22 @@ export class Searchbar extends React.Component<SearchbarProps, InspiredByState>
             return;
         }
         new DataAdapter().getSuggestionByTitle(searchTerm).then((suggestions: Array<Suggestion>) => {
-            this.setState({ suggestions });
+            this.setState({ suggestions, showSuggestions: suggestions.length > 0 });
         });
     }
 
     renderSearchResults() {
-        if (this.state.suggestions.length === 0)
-            return null;
-        console.log(this.state);
         return (
-            <div className="ms-Grid-row">
-                {this.state.suggestions.map((item: Suggestion, idx: number) => {
-                    return (
-                        <div>
-                            <a href={item.Url}>{item.Title}</a>
-                        </div>
-                    )
-                })}
-            </div >
+            <Callout
+                hidden={!this.state.showSuggestions}
+                target={this.refs["SearchBox"] as any}
+                isBeakVisible={false}
+                gapSpace={10}
+                onDismiss={_ => this.setState({ showSuggestions: false })}>
+                <div style={{ padding: 25 }}>
+                    {this.state.suggestions.map((item: Suggestion, idx: number) => <div key={idx}><a href={item.Url}>{item.Title}</a></div>)}
+                </div>
+            </Callout>
         );
     }
 
@@ -56,10 +56,13 @@ export class Searchbar extends React.Component<SearchbarProps, InspiredByState>
                 <div className="ms-Grid-row">
                     {this.props.isBackNavigation &&
                         <div className="ms-Grid-col ms-sm2 ms-smPush1">
-                            <DefaultButton href={_spPageContextInfo.webAbsoluteUrl} text="Tilbake" />
+                            <DefaultButton
+                                href={_spPageContextInfo.webAbsoluteUrl}
+                                iconProps={{ iconName: "Home" }}
+                                text="Tilbake" />
                         </div>
                     }
-                    <div className="ms-Grid-col ms-sm4">
+                    <div ref="SearchBox" className="ms-Grid-col ms-sm4">
                         <SearchBox placeholder="Søk etter forslag..." onChange={this.searchSuggestion} />
                     </div>
                     <div className="ms-Grid-col ms-sm4">

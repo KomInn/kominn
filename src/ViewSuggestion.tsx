@@ -8,6 +8,8 @@ import { autobind } from "office-ui-fabric-react/lib/Utilities";
 interface IViewSuggestionState { suggestion: Suggestion }
 export class ViewSuggestion extends React.Component<any, IViewSuggestionState>
 {
+    private dataAdapter = new DataAdapter();
+
     constructor(props: any) {
         super(props);
         this.state = { suggestion: new Suggestion() };
@@ -25,15 +27,14 @@ export class ViewSuggestion extends React.Component<any, IViewSuggestionState>
             this.redirectToFrontpage();
             return;
         }
-        var da = new DataAdapter();
-        da.getSuggestionById(id).then(
+        this.dataAdapter.getSuggestionById(id).then(
             (s: Array<Suggestion>) => {
                 if (s.length <= 0) {
                     this.redirectToFrontpage();
                     return;
                 }
-                da.getCommentsForSuggestion(s[0]).then((result: Suggestion) => {
-                    this.setState({ suggestion: result });
+                this.dataAdapter.getCommentsForSuggestion(s[0]).then((suggestion: Suggestion) => {
+                    this.setState({ suggestion });
                 });
             });
     }
