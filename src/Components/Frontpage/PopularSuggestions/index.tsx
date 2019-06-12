@@ -1,7 +1,8 @@
 import * as React from "react";
-import { Suggestion } from "../Common/Suggestion";
-import { DataAdapter } from "../Common/DataAdapter";
-import { Status } from "../Common/Status";
+import "./PopularSuggestions.module.scss";
+import { Suggestion } from "../../Common/Suggestion";
+import { DataAdapter } from "../../Common/DataAdapter";
+import { Status } from "../../Common/Status";
 import { DefaultButton } from "office-ui-fabric-react/lib/Button";
 import { Toggle } from "office-ui-fabric-react/lib/Toggle";
 import { Dropdown, IDropdownOption } from "office-ui-fabric-react/lib/Dropdown";
@@ -9,34 +10,24 @@ import { ImageFit } from "office-ui-fabric-react/lib/Image";
 import { DocumentCard, DocumentCardLocation, DocumentCardPreview, DocumentCardTitle, DocumentCardActions } from "office-ui-fabric-react/lib/DocumentCard";
 import { autobind } from "office-ui-fabric-react/lib/Utilities";
 import * as _ from "lodash";
+import { PopularSuggestionsSortTypes } from "./PopularSuggestionsSortTypes";
+import { PopularSuggestionsFilter } from "./PopularSuggestionsFilter";
+import { IPopularSuggestionsState } from "./IPopularSuggestionsState";
+import { IPopularSuggestionsProps } from "./IPopularSuggestionsProps";
 
-enum SortTypes { DateAsc, DateDesc }
-class Filter { Value: string; Type: string }
-interface IPopularSuggestionsProps { Title: string, FromDate: string, ToDate: string }
-interface PopularSuggestionsState {
-    suggestions: Array<Suggestion>,
-    top?: number,
-    maxReached?: boolean,
-    sorting?: SortTypes,
-    filter?: Array<Filter>,
-    showSorting?: boolean,
-    showFilter?: boolean,
-    filterValues: Array<Filter>
-}
-export class PopularSuggestions extends React.Component<IPopularSuggestionsProps, PopularSuggestionsState>
+export class PopularSuggestions extends React.Component<IPopularSuggestionsProps, IPopularSuggestionsState>
 {
-    dataAdapter: DataAdapter;
+    private dataAdapter: DataAdapter = new DataAdapter();
 
     constructor(props: IPopularSuggestionsProps) {
         super(props);
         this.state = {
             suggestions: new Array<Suggestion>(),
             top: 3,
-            sorting: SortTypes.DateDesc,
-            filter: new Array<Filter>(),
-            filterValues: new Array<Filter>(),
+            sorting: PopularSuggestionsSortTypes.DateDesc,
+            filter: [],
+            filterValues: [],
         };
-        this.dataAdapter = new DataAdapter();
     }
 
     componentDidMount() {
@@ -45,14 +36,14 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
     }
 
     @autobind
-    loadMoreSuggestions() {
+    private loadMoreSuggestions() {
         this.loadSuggestions(3);
     }
 
-    loadSuggestions(incrementTop?: number) {
+    private async loadSuggestions(incrementTop?: number) {
         var customSort = "";
         if (this.state.sorting != null) {
-            if (this.state.sorting == SortTypes.DateAsc)
+            if (this.state.sorting == PopularSuggestionsSortTypes.DateAsc)
                 customSort = "&$orderby=Created asc";
             else
                 customSort = "&$orderby=Created desc";
@@ -64,20 +55,16 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
             for (let f of this.state.filter)
                 customFilter += ` and ${encodeURI(`Kmi${f.Type}`)} eq '${encodeURI(f.Value)}'`;
         }
-        this.dataAdapter.getAllSuggestions(Status.Published, this.state.top, customFilter, customSort)
-            .then((results: Array<Suggestion>) => {
-                this.setState({ suggestions: results },
-                    () => {
-                        if (this.state.top > results.length)
-                            this.setState({ maxReached: true });
-
-                        this.setState({ top: this.state.top + incrementTop });
-                    });
-            });
+        let suggestions = await this.dataAdapter.getAllSuggestions(Status.Published, this.state.top, customFilter, customSort);
+        this.setState({
+            suggestions,
+            top: this.state.top + incrementTop,
+            maxReached: this.state.top > suggestions.length,
+        });
     }
 
-    loadFilterValues() {
-        var filterValues = new Array<Filter>();
+    private loadFilterValues() {
+        var filterValues = [];
         $.ajax({
             url: `${_spPageContextInfo.webAbsoluteUrl}/_api/web/fields?$filter=InternalName eq 'KmiUsefulnessType' or InternalName eq 'KmiTags'`,
             type: "GET",
@@ -87,7 +74,7 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
             success: (data: any) => {
                 for (let item of data.d.results) {
                     for (let choice of item.Choices.results) {
-                        var filter = new Filter();
+                        var filter = new PopularSuggestionsFilter();
                         filter.Type = item.InternalName.replace("Kmi", "");
                         filter.Value = choice;
                         filterValues.push(filter);
@@ -101,7 +88,7 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
         });
     }
 
-    renderPopularSuggestions() {
+    private renderPopularSuggestions() {
         return this.state.suggestions.map((i: Suggestion, idx: number) => (
             <div key={`Card_${idx}`} style={{ verticalAlign: "top", display: "inline-block", margin: "0 10px 10px 0" }}>
                 <DocumentCard onClickHref={i.Url}>
@@ -119,26 +106,12 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
     }
 
     @autobind
-    sortSuggestions(option: IDropdownOption) {
+    private sortSuggestions(option: IDropdownOption) {
         this.setState({ sorting: option.data });
         this.loadSuggestions(0);
     }
 
-    renderSorting() {
-        return (
-            <div style={{ paddingBottom: "10px" }}>
-                <Dropdown
-                    onChange={(_event, option) => this.sortSuggestions(option)}
-                    defaultSelectedKey="DateDesc"
-                    options={[
-                        { key: "DateDesc", text: "Dato nyest - eldst", data: SortTypes.DateDesc },
-                        { key: "DateAsc", text: "Dato eldst - nyest", data: SortTypes.DateAsc }
-                    ]} />
-            </div>
-        );
-    }
-
-    toggleFilter(filter: Filter) {
+    private toggleFilter(filter: PopularSuggestionsFilter) {
         var filters = this.state.filter;
         var existed = false;
         for (var i = 0; i < filters.length; i++) {
@@ -153,25 +126,39 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
         this.setState({ filter: filters }, () => this.loadSuggestions(0));
     }
 
-    renderFiltering() {
-        var tags = this.state.filterValues.filter((val: Filter) => val.Type === "Tags");
-        var usefulnessFilters = this.state.filterValues.filter((val: Filter) => val.Type === "UsefulnessType");
+    private renderFiltering() {
+        var tags = this.state.filterValues.filter((val: PopularSuggestionsFilter) => val.Type === "Tags");
+        var usefulnessFilters = this.state.filterValues.filter((val: PopularSuggestionsFilter) => val.Type === "UsefulnessType");
         return (
-            <div className="ms-Grid filteroptions">
+            <div className="ms-Grid filters">
                 <div className="ms-Grid-row">
-                    <h4 style={{ marginTop: 10 }}>Kategori</h4>
-
+                    <h3 style={{ marginTop: 10 }}>Kategori</h3>
                     {tags.map((filter) => this.renderFilter(filter))}
                 </div>
                 <div className="ms-Grid-row">
-                    <h4 style={{ marginTop: 10 }}>Nytteverdi</h4>
+                    <h3 style={{ marginTop: 10 }}>Nytteverdi</h3>
                     {usefulnessFilters.map((filter) => this.renderFilter(filter))}
                 </div>
             </div>
         )
     }
 
-    renderFilter(filter: Filter) {
+    private renderSorting() {
+        return (
+            <div className="sorting">
+                <Dropdown
+                    style={{ width: 200 }}
+                    onChange={(_event, option) => this.sortSuggestions(option)}
+                    defaultSelectedKey="DateDesc"
+                    options={[
+                        { key: "DateDesc", text: "Dato nyest - eldst", data: PopularSuggestionsSortTypes.DateDesc },
+                        { key: "DateAsc", text: "Dato eldst - nyest", data: PopularSuggestionsSortTypes.DateAsc }
+                    ]} />
+            </div>
+        );
+    }
+
+    renderFilter(filter: PopularSuggestionsFilter) {
         return (
             <div className="ms-Grid-col ms-sm6">
                 <Toggle label={filter.Value} onChange={_ => this.toggleFilter(filter)} />
@@ -194,19 +181,17 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
             return null;
         }
         return (
-            <section className="item-section">
-                <div className="item-container">
-                    <h2>{this.props.Title}</h2>
-                    <div style={{ marginBottom: 20 }}>
-                        <DefaultButton onClick={this.showFilter} iconProps={{ iconName: "Filter" }} />
-                        <DefaultButton onClick={this.showSorting} iconProps={{ iconName: "Sort" }} />
-                    </div>
-                    {this.state.showSorting && this.renderSorting()}
-                    {this.state.showFilter && this.renderFiltering()}
-                    {this.renderPopularSuggestions()}
-                    <div style={{ marginTop: 20 }}>
-                        <DefaultButton onClick={this.loadMoreSuggestions} text="Vis flere innsendte forslag" hidden={this.state.maxReached} />
-                    </div>
+            <section className="PopularSuggestions">
+                <h2>{this.props.Title}</h2>
+                <div className="actions">
+                    <DefaultButton onClick={this.showFilter} iconProps={{ iconName: "Filter" }} />
+                    <DefaultButton onClick={this.showSorting} iconProps={{ iconName: "Sort" }} />
+                </div>
+                {this.state.showSorting && this.renderSorting()}
+                {this.state.showFilter && this.renderFiltering()}
+                {this.renderPopularSuggestions()}
+                <div className="footer actions">
+                    <DefaultButton onClick={this.loadMoreSuggestions} text="Vis flere innsendte forslag" hidden={this.state.maxReached} />
                 </div>
             </section>
         );
