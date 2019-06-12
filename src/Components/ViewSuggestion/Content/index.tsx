@@ -1,8 +1,7 @@
 import * as React from "react";
-import { Suggestion } from "../Common/Suggestion";
+import { IContentProps } from "./IContentProps";
 
-interface ContentProps { suggestion?:Suggestion }
-export class Content extends React.Component<ContentProps, any>
+export class Content extends React.Component<IContentProps, any>
 {
     render()
     {

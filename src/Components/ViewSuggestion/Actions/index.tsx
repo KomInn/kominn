@@ -1,15 +1,14 @@
-import * as React from "react";
-import { Suggestion } from "../Common/Suggestion";
-import { DataAdapter } from "../Common/DataAdapter";
-import { DoneThisModal } from "../Common/DoneThisModal";
-import { Status } from "../Common/Status";
-import { SuggestionRating } from "./SuggestionRating";
+import * as React from "react"
+import { Suggestion } from "../../Common/Suggestion";
+import { DataAdapter } from "../../Common/DataAdapter";
+import { DoneThisModal } from "../../Common/DoneThisModal";
+import { Status } from "../../Common/Status";
+import { SuggestionRating } from "../SuggestionRating";
 import { DefaultButton } from "office-ui-fabric-react/lib/Button";
 import { Icon } from "office-ui-fabric-react/lib/Icon";
 import { autobind } from "office-ui-fabric-react/lib/Utilities";
-
-interface IActionsState { showModal: boolean, numLikes: number, inspiredBy: Suggestion, updatingLike?: boolean }
-interface IActionsProps { suggestion?: Suggestion }
+import { IActionsState } from "./IActionsState";
+import { IActionsProps } from "./IActionsProps";
 
 export class Actions extends React.Component<IActionsProps, IActionsState>
 {
@@ -59,8 +58,8 @@ export class Actions extends React.Component<IActionsProps, IActionsState>
 		return (
 			<div>
 				<div>
-					<Icon iconName="Tag" />
-					<span>{type}</span>
+					<span><Icon iconName="Tag" /></span>
+					<span>&nbsp;{type}</span>
 				</div>
 				<DoneThisModal show={this.state.showModal} inspiredBy={this.state.inspiredBy} onClose={this.closeModal.bind(this)} />
 				<div className="sub-box">

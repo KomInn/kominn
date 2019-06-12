@@ -1,13 +1,13 @@
 import * as React from "react";
-import { Suggestion } from "../Common/Suggestion";
-import { Comment } from "../Common/Comment";
-import { Tools } from "../Common/Tools";
-import { DataAdapter } from "../Common/DataAdapter";
+import { Comment } from "../../Common/Comment";
+import { Tools } from "../../Common/Tools";
+import { DataAdapter } from "../../Common/DataAdapter";
 import { PrimaryButton } from "office-ui-fabric-react/lib/Button";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
 import { autobind } from "office-ui-fabric-react/lib/Utilities";
-interface ICommentsState { text: string }
-interface ICommentsProps { suggestion: Suggestion, onCommentSubmitted(): void }
+import { ICommentsState } from "./ICommentsState";
+import { ICommentsProps } from "./ICommentsProps";
+
 export class Comments extends React.Component<ICommentsProps, ICommentsState>
 {
     constructor(props: ICommentsProps) {

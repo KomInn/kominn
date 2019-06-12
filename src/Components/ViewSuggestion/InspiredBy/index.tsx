@@ -1,16 +1,15 @@
 import * as React from "react";
 import { Row, Col, Button } from "react-bootstrap";
-import { Suggestion } from "../Common/Suggestion";
-import { DataAdapter } from "../Common/DataAdapter";
-import { NodeView } from "./NodeView";
+import { Suggestion } from "../../Common/Suggestion";
+import { DataAdapter } from "../../Common/DataAdapter";
+import { NodeView } from "../NodeView";
+import { IInspiredByProps } from "./IInspiredByProps";
+import { IInspiredByState } from "./IInspiredByState";
+import { InspiredByView } from "./InspiredByView";
+import { PinTypes } from "./PinTypes";
+import { IConnection } from "./IConnection";
 
-
-enum InspiredByView { Map, Node }
-interface InspiredByProps { suggestion: Suggestion }
-interface InspiredByState { suggestions?: Suggestion[], SelectedView?: InspiredByView }
-enum PinTypes { Start, After, Previous }
-interface Connection { From: Suggestion, To: Suggestion }
-export class InspiredBy extends React.Component<InspiredByProps, InspiredByState>
+export class InspiredBy extends React.Component<IInspiredByProps, IInspiredByState>
 {
     private suggestions: Array<Suggestion>;
     private map: google.maps.Map;
@@ -59,7 +58,7 @@ export class InspiredBy extends React.Component<InspiredByProps, InspiredByState
         this.getFutureConnections(this.props.suggestion);
         this.getPastConnections(this.props.suggestion);
     }
-    createMarker(suggestion: Suggestion, type: PinTypes, connection: Connection) {
+    createMarker(suggestion: Suggestion, type: PinTypes, connection: IConnection) {
         var marker = new google.maps.Marker({
             position: suggestion.LocationLatLng,
             map: this.map,

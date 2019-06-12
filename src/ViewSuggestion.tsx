@@ -1,11 +1,6 @@
 import * as React from "react";
 import { Searchbar } from "./Components/Frontpage/Searchbar";
-import { Content } from "./Components/ViewSuggestion/Content";
-import { Actions } from "./Components/ViewSuggestion/Actions";
-import { Summary } from "./Components/ViewSuggestion/Summary";
-import { MapView } from "./Components/ViewSuggestion/Map";
-import { InspiredBy } from "./Components/ViewSuggestion/InspiredBy";
-import { Comments } from "./Components/ViewSuggestion/Comments";
+import { Content, Actions, Summary, MapView, InspiredBy, Comments } from "./Components/ViewSuggestion";
 import { Suggestion } from "./Components/Common/Suggestion";
 import { DataAdapter } from "./Components/Common/DataAdapter";
 import { autobind } from "office-ui-fabric-react/lib/Utilities";

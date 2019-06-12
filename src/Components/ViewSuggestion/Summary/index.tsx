@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Row, Col } from "react-bootstrap";
-import { Suggestion } from "../Common/Suggestion";
+import { Suggestion } from "../../Common/Suggestion";
 import anchorme from "anchorme";
 
 

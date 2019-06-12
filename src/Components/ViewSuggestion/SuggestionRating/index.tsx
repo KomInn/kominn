@@ -4,7 +4,7 @@ import { TextField } from "office-ui-fabric-react/lib/TextField";
 import { Toggle } from "office-ui-fabric-react/lib/Toggle";
 import { DefaultButton } from "office-ui-fabric-react/lib/Button";
 import { autobind } from "office-ui-fabric-react/lib/Utilities";
-import { Suggestion } from "../Common/Suggestion";
+import { Suggestion } from "../../Common/Suggestion";
 
 
 interface ISuggestionRatingState {

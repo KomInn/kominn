@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Row } from "react-bootstrap";
-import { Suggestion } from "../Common/Suggestion";
-import { Tools } from "../Common/Tools";
-import { SustainabilityGoal } from "../Common/SustainabilityGoal";
+import { Suggestion } from "../../Common/Suggestion";
+import { Tools } from "../../Common/Tools";
+import { SustainabilityGoal } from "../../Common/SustainabilityGoal";
 
 interface MapProps { suggestion: Suggestion }
 export class MapView extends React.Component<MapProps, any>
