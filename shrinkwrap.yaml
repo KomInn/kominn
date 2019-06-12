@@ -21,7 +21,9 @@ devDependencies:
   react-bootstrap: 0.32.4
   react-dom: 16.8.6
   react-google-maps: 6.3.0
+  react-slick: 0.24.0
   sass-loader: 7.1.0
+  slick-carousel: 1.8.1
   source-map-loader: 0.1.6
   style-loader: 0.23.1
   ts-loader: 4.5.0
@@ -1184,6 +1186,10 @@ packages:
       node: '>=6.9.0'
     resolution:
       integrity: sha512-F/7vkyTtyc/llOIn8oWclcB25KdRaiPBpZYDgJHgh/UHtpgT2p2eldQgtQnLtUvfMKPKxbRaQM/hHkvLHt1Vng==
+  /enquire.js/2.1.6:
+    dev: true
+    resolution:
+      integrity: sha1-PoeAybi4NQhMP2DhZtvDwqPImBQ=
   /errno/0.1.7:
     dependencies:
       prr: 1.0.1
@@ -2060,6 +2066,12 @@ packages:
     dev: true
     resolution:
       integrity: sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus=
+  /json2mq/0.2.0:
+    dependencies:
+      string-convert: 0.2.1
+    dev: true
+    resolution:
+      integrity: sha1-tje9O6nqvhIsg+lyBIOusQ0skEo=
   /json5/0.5.1:
     dev: true
     hasBin: true
@@ -2190,6 +2202,10 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-7AO748wWnIhNqAuaty2ZWHkQHRSNfPVIsPIfwEOWO22AmaoVrWavlOcMR5nzTLNYvp36X220/maaRsrec1G65A==
+  /lodash.debounce/4.0.8:
+    dev: true
+    resolution:
+      integrity: sha1-gteb/zCmfEAF/9XiUVMArZyk168=
   /lodash.tail/4.1.1:
     dev: true
     resolution:
@@ -3216,6 +3232,19 @@ packages:
       react: '>=0.14.0'
     resolution:
       integrity: sha1-+ZsL+0AGkpya8gUefBQUpcdbk9A=
+  /react-slick/0.24.0:
+    dependencies:
+      classnames: 2.2.6
+      enquire.js: 2.1.6
+      json2mq: 0.2.0
+      lodash.debounce: 4.0.8
+      resize-observer-polyfill: 1.5.1
+    dev: true
+    peerDependencies:
+      react: ^0.14.0 || ^15.0.1 || ^16.0.0
+      react-dom: ^0.14.0 || ^15.0.1 || ^16.0.0
+    resolution:
+      integrity: sha512-Pvo0B74ohumQdYOf0qP+pdQpj9iUbAav7+2qiF3uTc5XeQp/Y/cnIeDBM2tB3txthfSe05jKIqLMJTS6qVvt5g==
   /react-transition-group/2.9.0:
     dependencies:
       dom-helpers: 3.4.0
@@ -3367,6 +3396,10 @@ packages:
     dev: true
     resolution:
       integrity: sha1-l/cXtp1IeE9fUmpsWqj/3aBVpNE=
+  /resize-observer-polyfill/1.5.1:
+    dev: true
+    resolution:
+      integrity: sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==
   /resolve-cwd/2.0.0:
     dependencies:
       resolve-from: 3.0.0
@@ -3573,6 +3606,12 @@ packages:
     dev: true
     resolution:
       integrity: sha1-tf3AjxKH6hF4Yo5BXiUTK3NkbG0=
+  /slick-carousel/1.8.1:
+    dev: true
+    peerDependencies:
+      jquery: '>=1.8.0'
+    resolution:
+      integrity: sha512-XB9Ftrf2EEKfzoQXt3Nitrt/IPbT+f1fgqBdoxO3W/+JYvtEOW6EgxnWfr9GH6nmULv7Y2tPmEX3koxThVmebA==
   /snapdragon-node/2.1.1:
     dependencies:
       define-property: 1.0.0
@@ -3777,6 +3816,10 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-J5siXfHVgrH1TmWt3UNS4Y+qBxM=
+  /string-convert/0.2.1:
+    dev: true
+    resolution:
+      integrity: sha1-aYLMMEn7tM2F+LJFaLnZvznu/5c=
   /string-width/1.0.2:
     dependencies:
       code-point-at: 1.1.0
@@ -4396,7 +4439,9 @@ specifiers:
   react-bootstrap: ^0.32.4
   react-dom: ^16.2.0
   react-google-maps: ^6.0.1
+  react-slick: ^0.24.0
   sass-loader: ^7.1.0
+  slick-carousel: ^1.8.1
   source-map-loader: ^0.1.5
   style-loader: ^0.23.1
   ts-loader: ^4.3.0

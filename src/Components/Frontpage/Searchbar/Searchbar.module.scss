@@ -1,4 +1,8 @@
 .SearchBar {
   background: #e2e3cd;
   padding: 25px 0 25px 25px !important;
+
+  input {
+    border: none !important;
+  }
 }

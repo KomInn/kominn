@@ -9,16 +9,11 @@
   min-width: 0 !important;
 }
 
-.NewSuggestion {
-  max-width: 500px;
-  margin: 0 0 0 50px;
-}
 
 .item-holder img {
   /*	max-height:150px; */
   min-height: 150px;
 }
-
 
 .SuggestionRatingBox {
   padding: 15px 0 15px 0;
@@ -277,95 +272,6 @@ a:hover,
 a:focus {
   text-decoration: none;
 }
-
-
-.gallery-block {
-  padding: 0 0 50px;
-  margin: 0 0 25px;
-}
-
-.gallery-block .text-box {
-  background: #fff;
-  position: relative;
-  z-index: 5;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
-  padding: 15px 30px;
-  text-align: center;
-  font-size: 15px;
-  line-height: 18px;
-  max-width: 460px;
-  margin: -36px auto;
-}
-
-.gallery-block .text-box p {
-  margin: 0 0 6px;
-}
-
-.gallery {
-  position: relative;
-}
-
-.gallery .slide {
-  white-space: nowrap;
-  text-align: center;
-  background-size: cover;
-  background-position: 0 15%;
-  background-repeat: no-repeat;
-  position: relative;
-}
-
-.gallery .slide:after {
-  content: "";
-  display: inline-block;
-  vertical-align: middle;
-  width: 0;
-  min-height: 246px;
-}
-
-.gallery .slide > * {
-  white-space: normal;
-  display: inline-block;
-  vertical-align: middle;
-  max-width: 99%;
-}
-
-.gallery .slide:before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 0;
-  background: rgba(0, 0, 0, 0.38);
-}
-
-.gallery .text-block {
-  color: #fff;
-  font-size: 14px;
-  line-height: 16px;
-  position: relative;
-  font-weight: 500;
-  margin-bottom: 48px;
-}
-
-.gallery .text-block p {
-  margin: 0 0 25px;
-}
-
-.gallery .text-block h1 {
-  position: relative;
-}
-
-.gallery .text-block h1:before {
-  content: "";
-  position: absolute;
-  bottom: -13px;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: #fff;
-}
-
 
 .item-holder {
   display: -webkit-box;

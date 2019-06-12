@@ -1,25 +1,18 @@
 import * as React from "react";
-import { Searchbar } from "./Components/Frontpage/Searchbar";
-import { CommonFields } from "./Components/NewSuggestion/CommonFields"
-import { Personalia } from "./Components/NewSuggestion/Personalia";
-import { UploadImages } from "./Components/NewSuggestion/UploadImages";
-import { AddLocation } from "./Components/NewSuggestion/AddLocation";
-import { InspiredBy } from "./Components/NewSuggestion/InspiredBy";
-import { Suggestion } from "./Components/Common/Suggestion";
-import { Person } from "./Components/Common/Person";
-import { DataAdapter } from "./Components/Common/DataAdapter";
-import { SustainabilityGoals } from "./Components/NewSuggestion/SustainabilityGoals";
-import { SustainabilityGoal } from "./Components/Common/SustainabilityGoal";
+import "./NewSuggestion.module.scss";
+import { Searchbar } from "../Components/Frontpage";
+import { InspiredBy, AddLocation, UploadImages, Personalia, CommonFields, SustainabilityGoals } from "../Components/NewSuggestion";
+import { SustainabilityGoal, DataAdapter, Person, Suggestion } from "../Components/Common";
 import { PrimaryButton } from "office-ui-fabric-react/lib/Button";
 import { autobind } from "office-ui-fabric-react/lib/Utilities";
+import { INewSuggestionState } from "./INewSuggestionState";
+import { INewSuggestionProps } from "./INewSuggestionProps";
 
-interface INewSuggestionState { suggestion: Suggestion, formInvalid: boolean, submitted?: boolean }
-
-export class NewSuggestion extends React.Component<any, INewSuggestionState>
+export class NewSuggestion extends React.Component<INewSuggestionProps, INewSuggestionState>
 {
     private dataAdapter = new DataAdapter();
 
-    constructor(props: any) {
+    constructor(props: INewSuggestionProps) {
         super(props);
         this.state = {
             suggestion: new Suggestion(),
@@ -29,60 +22,59 @@ export class NewSuggestion extends React.Component<any, INewSuggestionState>
 
     @autobind
     updateSuggestion(s: Suggestion) {
-        var su = this.state.suggestion;
-        su.Title = s.Title;
-        su.Challenges = s.Challenges;
-        su.Summary = s.Summary;
-        su.SuggestedSolution = s.SuggestedSolution;
-        su.UsefulnessType = s.UsefulnessType;
-        su.UsefulForOthers = s.UsefulForOthers;
-        this.setState({ suggestion: su });
+        let { suggestion } = { ...this.state } as INewSuggestionState;
+        suggestion.Title = s.Title;
+        suggestion.Challenges = s.Challenges;
+        suggestion.Summary = s.Summary;
+        suggestion.SuggestedSolution = s.SuggestedSolution;
+        suggestion.UsefulnessType = s.UsefulnessType;
+        suggestion.UsefulForOthers = s.UsefulForOthers;
+        this.setState({ suggestion });
     }
 
     @autobind
-    updatePerson(p: Person) {
-        var s = this.state.suggestion;
-        s.Submitter = p;
-        this.setState({ suggestion: s }, () => console.log(this.state.suggestion));
+    updatePerson(submittter: Person) {
+        let { suggestion } = { ...this.state } as INewSuggestionState;
+        suggestion.Submitter = submittter;
+        this.setState({ suggestion });
     }
 
     @autobind
     updateImage(pictureURL: string) {
-        var s = this.state.suggestion;
-        s.Image = pictureURL;
-        this.setState({ suggestion: s });
+        let { suggestion } = { ...this.state } as INewSuggestionState;
+        suggestion.Image = pictureURL;
+        this.setState({ suggestion });
     }
 
     @autobind
     updateLocation(lat: number, lon: number) {
-        var s = this.state.suggestion;
-        s.Location = lat + "," + lon;
-        this.setState({ suggestion: s });
+        let { suggestion } = { ...this.state } as INewSuggestionState;
+        suggestion.Location = lat + "," + lon;
+        this.setState({ suggestion });
     }
 
     @autobind
     updateInspiredBy(inspiredby: Array<Suggestion>) {
-        var s = this.state.suggestion;
-        s.InspiredBy = inspiredby;
-        this.setState({ suggestion: s });
+        let { suggestion } = { ...this.state } as INewSuggestionState;
+        suggestion.InspiredBy = inspiredby;
+        this.setState({ suggestion });
     }
 
     @autobind
     updateGoals(goals: Array<SustainabilityGoal>) {
-        var s = this.state.suggestion;
-        s.SustainabilityGoals = goals;
-        this.setState({ suggestion: s });
+        let { suggestion } = { ...this.state } as INewSuggestionState;
+        suggestion.SustainabilityGoals = goals;
+        this.setState({ suggestion });
     }
 
     @autobind
-    submitSuggestion() {
+    async submitSuggestion() {
         if (!this.state.suggestion.Validates) {
             this.setState({ formInvalid: true });
             return;
         }
-        this.dataAdapter.submitSuggestion(this.state.suggestion).then(() => {
-            this.setState({ submitted: true });
-        })
+        await this.dataAdapter.submitSuggestion(this.state.suggestion);
+        this.setState({ submitted: true });
     }
 
     render() {
