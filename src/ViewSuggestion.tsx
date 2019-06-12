@@ -51,7 +51,7 @@ export class ViewSuggestion extends React.Component<any, IViewSuggestionState>
             <div className="ms-Grid">
                 <div className="ms-Grid-row">
                     <section className="ms-Grid-col ms-sm12">
-                        <Searchbar isBackNavigation={true} />
+                        <Searchbar showBackButton={true} />
                     </section>
                     <section className="ms-Grid-col ms-sm7 ms-smPush1">
                         <Content suggestion={this.state.suggestion} />

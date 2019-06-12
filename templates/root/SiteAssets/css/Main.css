@@ -8,20 +8,15 @@
   margin: 0 !important;
   min-width: 0 !important;
 }
-.newsuggestion-container {
+.NewSuggestion {
   max-width: 500px;
-}
-.form-control {
-  height: 50px;
+  margin: 0 0 0 50px;
 }
 
-.searchbar {
+.SearchBar {
   background: #e2e3cd;
   padding: 25px 0 25px 25px !important;
-}
-
-.ms-SearchBox input {
-  border: none !important;
+  margin: 0 0 25px 0;
 }
 
 .item-holder img {
@@ -29,50 +24,12 @@
   min-height: 150px;
 }
 
-.city {
-  display: inline-block;
-  margin-left: 6px;
-  margin-bottom: -29px;
-  position: relative;
-  top: -12px;
-}
-.custombtn {
-  display: inline-block !important;
-  height: 50px !important;
-  line-height: 0 !important;
-  min-width: 20px !important;
-}
 
 .SuggestionRatingBox {
   padding: 15px 0 15px 0;
   margin: 15px 0 15px 0;
 }
 
-.input-group {
-  width: 100%;
-}
-
-/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-
-/**
- * 1. Set default font family to sans-serif.
- * 2. Prevent iOS and IE text size adjust after device orientation change,
- *    without disabling user zoom.
- */
-
-html {
-  font-family: sans-serif; /* 1 */
-  -ms-text-size-adjust: 100%; /* 2 */
-  -webkit-text-size-adjust: 100%; /* 2 */
-}
-
-/**
- * Remove default margin.
- */
-
-body {
-  margin: 0;
-}
 
 /* HTML5 display definitions
    ========================================================================== */
@@ -111,26 +68,6 @@ progress,
 video {
   display: inline-block; /* 1 */
   vertical-align: baseline; /* 2 */
-}
-
-/**
- * Prevent modern browsers from displaying `audio` without controls.
- * Remove excess height in iOS 5 devices.
- */
-
-audio:not([controls]) {
-  display: none;
-  height: 0;
-}
-
-/**
- * Address `[hidden]` styling not present in IE 8/9/10.
- * Hide the `template` element in IE 8/9/10/11, Safari, and Firefox < 22.
- */
-
-[hidden],
-template {
-  display: none;
 }
 
 /* Links
@@ -293,109 +230,6 @@ samp {
  * styling of `select`, unless a `border` property is set.
  */
 
-/**
- * 1. Correct color not being inherited.
- *    Known issue: affects color of disabled elements.
- * 2. Correct font properties not being inherited.
- * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.
- */
-
-button,
-input,
-optgroup,
-select,
-textarea {
-  color: inherit; /* 1 */
-  font: inherit; /* 2 */
-  margin: 0; /* 3 */
-}
-
-/**
- * Address `overflow` set to `hidden` in IE 8/9/10/11.
- */
-
-button {
-  overflow: visible;
-}
-
-/**
- * Address inconsistent `text-transform` inheritance for `button` and `select`.
- * All other form control elements do not inherit `text-transform` values.
- * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.
- * Correct `select` style inheritance in Firefox.
- */
-
-button,
-select {
-  text-transform: none;
-}
-
-/**
- * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
- *    and `video` controls.
- * 2. Correct inability to style clickable `input` types in iOS.
- * 3. Improve usability and consistency of cursor style between image-type
- *    `input` and others.
- */
-
-button,
-html input[type="button"],
-input[type="reset"],
-input[type="submit"] {
-  -webkit-appearance: button; /* 2 */
-  cursor: pointer; /* 3 */
-}
-
-/**
- * Re-set default cursor for disabled elements.
- */
-
-button[disabled],
-html input[disabled] {
-  cursor: default;
-}
-
-/**
- * Remove inner padding and border in Firefox 4+.
- */
-
-button::-moz-focus-inner,
-input::-moz-focus-inner {
-  border: 0;
-  padding: 0;
-}
-
-/**
- * Address Firefox 4+ setting `line-height` on `input` using `!important` in
- * the UA stylesheet.
- */
-
-input {
-  line-height: normal;
-}
-
-
-/**
- * Fix the cursor style for Chrome's increment/decrement buttons. For certain
- * `font-size` values of the `input`, it causes the cursor style of the
- * decrement button to change from `default` to `text`.
- */
-
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  height: auto;
-}
-
-/**
- * Remove inner padding and search cancel button in Safari and Chrome on OS X.
- * Safari (but not Chrome) clips the cancel button when the search input has
- * padding (and `textfield` appearance).
- */
-
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-decoration {
-  -webkit-appearance: none;
-}
 
 /**
  * Define consistent border, margin, and padding.
@@ -417,13 +251,6 @@ legend {
   padding: 0; /* 2 */
 }
 
-/**
- * Remove default vertical scrollbar in IE 8/9/10/11.
- */
-
-textarea {
-  overflow: auto;
-}
 
 /**
  * Don't inherit the `font-weight` (applied by a rule above).
@@ -434,219 +261,7 @@ optgroup {
   font-weight: bold;
 }
 
-/* Tables
-   ========================================================================== */
 
-/**
- * Remove most spacing between table cells.
- */
-
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-td,
-th {
-  padding: 0;
-}
-
-/* select */
-
-.jcf-select {
-  display: inline-block;
-  vertical-align: top;
-  position: relative;
-  margin: 0 0 12px;
-  min-width: 150px;
-  height: 50px;
-  width: 100%;
-  background: #fff;
-  border: 1px solid #cbcdb3;
-  border-radius: 4px;
-  padding: 6px 55px 6px 18px;
-}
-
-.jcf-select select {
-  z-index: 1;
-  left: 0;
-  top: 0;
-}
-
-.jcf-select .jcf-select-text {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  cursor: default;
-  display: block;
-  font-size: 14px;
-  line-height: 36px;
-}
-
-.jcf-select .jcf-select-opener {
-  position: absolute;
-  text-align: center;
-  background: #459f67;
-  width: 50px;
-  bottom: 0;
-  right: 0;
-  top: 0;
-}
-
-.jcf-select .jcf-select-opener:after {
-  position: absolute;
-  content: "";
-  top: 50%;
-  right: 5px;
-  -webkit-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
-  transform: translateX(-50%);
-  border-style: solid;
-  border-width: 20px 10px 0 10px;
-  border-color: #fff transparent transparent transparent;
-  position: absolute;
-  z-index: 1;
-  margin: -7px 0;
-}
-
-body > .jcf-select-drop {
-  position: absolute;
-  margin: -1px 0 0;
-  z-index: 9999;
-}
-
-body > .jcf-select-drop.jcf-drop-flipped {
-  margin: 1px 0 0;
-}
-
-.jcf-select .jcf-select-drop {
-  position: absolute;
-  margin-top: 0;
-  z-index: 9999;
-  top: 100%;
-  left: -1px;
-  right: -1px;
-}
-
-.jcf-select .jcf-drop-flipped {
-  bottom: 100%;
-  top: auto;
-}
-
-.jcf-select.jcf-compact-multiple {
-  max-width: 220px;
-}
-
-.jcf-select.jcf-compact-multiple .jcf-select-opener:before {
-  display: inline-block;
-  padding-top: 2px;
-  content: "...";
-}
-
-.jcf-select-drop .jcf-select-drop-content {
-  border: 1px solid #cbcdb3;
-}
-
-.jcf-select-drop.jcf-compact-multiple .jcf-hover {
-  background: none;
-}
-
-.jcf-select-drop.jcf-compact-multiple .jcf-selected {
-  background: #e6e6e6;
-  color: #000;
-}
-
-.jcf-select-drop.jcf-compact-multiple .jcf-selected:before {
-  display: inline-block;
-  content: "";
-  height: 4px;
-  width: 8px;
-  margin: -7px 5px 0 -3px;
-  border: 3px solid #777;
-  border-width: 0 0 3px 3px;
-  -ms-transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-  -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.7071067811865483, M12=0.7071067811865467, M21=-0.7071067811865467, M22=0.7071067811865483, SizingMethod='auto expand')";
-}
-
-/* multiple select styles */
-
-.jcf-list-box {
-  overflow: hidden;
-  display: inline-block;
-  border: 1px solid #b8c3c9;
-  min-width: 200px;
-  margin: 0 15px;
-}
-
-/* select options styles */
-
-.jcf-list {
-  display: inline-block;
-  vertical-align: top;
-  position: relative;
-  background: #fff;
-  line-height: 14px;
-  font-size: 12px;
-  width: 100%;
-}
-
-.jcf-list .jcf-list-content {
-  vertical-align: top;
-  display: inline-block;
-  overflow: auto;
-  width: 100%;
-}
-
-.jcf-list ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.jcf-list ul li {
-  overflow: hidden;
-  display: block;
-}
-
-.jcf-list .jcf-overflow {
-  overflow: auto;
-}
-
-.jcf-list .jcf-option {
-  overflow: hidden;
-  cursor: default;
-  display: block;
-  padding: 5px 18px;
-  color: #656565;
-  min-height: 14px;
-  height: 1%;
-}
-
-.jcf-list .jcf-disabled {
-  background: #fff !important;
-  color: #aaa !important;
-}
-
-.jcf-select-drop .jcf-hover,
-.jcf-list-box .jcf-selected {
-  background: #459f67;
-  color: #fff;
-}
-
-.jcf-list .jcf-optgroup-caption {
-  white-space: nowrap;
-  font-weight: bold;
-  display: block;
-  padding: 5px 9px;
-  cursor: default;
-  color: #000;
-}
-
-.jcf-list .jcf-optgroup .jcf-option {
-  padding-left: 30px;
-}
 
 /* common styles */
 
@@ -667,21 +282,6 @@ address ul,
   content: "";
   display: block;
   clear: both;
-}
-
-.ellipsis {
-  white-space: nowrap; /* 1 */
-  text-overflow: ellipsis; /* 2 */
-  overflow: hidden;
-}
-
-body {
-  color: #425762;
-  background: #f5f7f4;
-  font: 15px/22px "Arial", "Helvetica Neue", "Helvetica", sans-serif;
-  min-width: 320px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 
@@ -706,222 +306,7 @@ fieldset {
   padding: 0 20px;
 }
 
-.breadcrumbs {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding: 12px 19px;
-  font-size: 14px;
-  line-height: 16px;
-  background: #fff;
-}
 
-.breadcrumbs li {
-  position: relative;
-}
-
-.breadcrumbs li:before {
-  content: "/";
-  display: inline-block;
-  vertical-align: middle;
-  margin: 0 5px;
-}
-
-.breadcrumbs li:first-child:before {
-  display: none;
-}
-
-.search-area container {
-  width: 100%;
-  display: inline-block;
-  flex-direction: column;
-}
-.search-area-container .search-form {
-  width: 100%;
-  max-width: 100%;
-  padding: 0;
-  margin: 0 0 20px;
-}
-.search-area {
-  background: #e2e3cd;
-  padding: 20px 0;
-  text-align: center;
-}
-
-.search-form {
-  position: relative;
-  max-width: 460px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.search-form button[type="submit"] {
-  position: absolute;
-  right: 25px;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-  margin: 2px 0 0;
-  height: 100%;
-}
-
-.search-form input[type="search"] {
-  padding: 14px 40px 14px 40px;
-}
-
-.search-form input[type="search"]::-webkit-input-placeholder {
-  text-align: center;
-}
-
-.search-form input[type="search"]::-moz-placeholder {
-  opacity: 1;
-  text-align: center;
-}
-
-.search-form input[type="search"]:-moz-placeholder {
-  text-align: center;
-}
-
-.search-form input[type="search"]:-ms-input-placeholder {
-  text-align: center;
-}
-
-.search-form input[type="search"].placeholder {
-  text-align: center;
-}
-
-button[type="submit"] {
-  background: none;
-  border: none;
-  color: #757779;
-  font-size: 24px;
-  outline: none;
-  -webkit-transition: color 0.3s ease-in-out;
-  transition: color 0.3s ease-in-out;
-}
-
-button[type="submit"]:hover {
-  color: #000;
-}
-
-button[type="submit"].btn {
-  background: #fff;
-  color: #459f67;
-  border: 2px solid #459f67;
-  padding: 19px 10px;
-  -webkit-transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
-  transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
-}
-
-button[type="submit"].btn:hover {
-  color: #fff;
-  background: #459f67;
-}
-
-input[type="search"],
-input[type="email"],
-input[type="text"],
-textarea {
-  background: #fff;
-  border: 1px solid #cbcdb3;
-  border-radius: 4px;
-  height: 50px;
-  width: 100%;
-  outline: none;
-  padding: 14px;
-}
-
-input[type="search"]::-webkit-input-placeholder,
-input[type="email"]::-webkit-input-placeholder,
-input[type="text"]::-webkit-input-placeholder,
-textarea::-webkit-input-placeholder {
-  color: #616161;
-  font-size: 14px;
-  line-height: 19px;
-}
-
-input[type="search"]::-moz-placeholder,
-input[type="email"]::-moz-placeholder,
-input[type="text"]::-moz-placeholder,
-textarea::-moz-placeholder {
-  opacity: 1;
-  color: #616161;
-  font-size: 14px;
-  line-height: 19px;
-}
-
-input[type="search"]:-moz-placeholder,
-input[type="email"]:-moz-placeholder,
-input[type="text"]:-moz-placeholder,
-textarea:-moz-placeholder {
-  color: #616161;
-  font-size: 14px;
-  line-height: 19px;
-}
-
-input[type="search"]:-ms-input-placeholder,
-input[type="email"]:-ms-input-placeholder,
-input[type="text"]:-ms-input-placeholder,
-textarea:-ms-input-placeholder {
-  color: #616161;
-  font-size: 14px;
-  line-height: 19px;
-}
-
-input[type="search"].placeholder,
-input[type="email"].placeholder,
-input[type="text"].placeholder,
-textarea.placeholder {
-  color: #616161;
-  font-size: 14px;
-  line-height: 19px;
-}
-
-label {
-  color: #883605;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 18px;
-  display: block;
-  margin-bottom: 10px;
-}
-
-textarea {
-  min-height: 100px;
-  margin-bottom: 10px;
-  padding: 17px;
-  color: #54602c;
-  width: 100%;
-}
-
-textarea::-webkit-input-placeholder {
-  color: #54602c;
-}
-
-textarea::-moz-placeholder {
-  opacity: 1;
-  color: #54602c;
-}
-
-textarea:-moz-placeholder {
-  color: #54602c;
-}
-
-textarea:-ms-input-placeholder {
-  color: #54602c;
-}
-
-textarea.placeholder {
-  color: #54602c;
-}
-
-.comments-form button[type="submit"] {
-  font-size: 16px;
-  line-height: 18px;
-  padding: 12px 10px;
-}
 
 .gallery-block {
   padding: 0 0 50px;
@@ -1363,7 +748,6 @@ time {
   -ms-flex-align: center;
   align-items: center;
   text-decoration: none;
-  color: #883605;
 }
 
 .offers-table .title-block:hover {
@@ -1371,7 +755,6 @@ time {
 }
 
 .offers-table .table-title {
-  color: #883605;
   font-size: 14px;
   line-height: 16px;
   font-weight: normal;
@@ -1410,8 +793,7 @@ time {
 }
 
 .offers-table .btn-link:hover {
-  color: #883605;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .btn-close {
@@ -1539,7 +921,6 @@ time {
 
 #sidebar .sub-box h3 {
   font-weight: 500;
-  color: #883605;
   font-size: 16px;
   line-height: 18px;
   display: block;
@@ -1591,7 +972,6 @@ time {
   font-size: 16px;
   line-height: 18px;
   font-weight: 500;
-  color: #883605;
   display: block;
   margin-bottom: 3px;
 }
@@ -1723,7 +1103,7 @@ address {
 }
 
 .form-section {
-  /*	padding: 23px 0;*/
+  padding: 23px 0;
 }
 
 .form-section .container {
@@ -1735,83 +1115,12 @@ address {
   text-align: center;
 }
 
-.contacts-form {
-  color: #54602c;
-}
-
-.contacts-form input,
-.contacts-form textarea {
-  margin-bottom: 30px;
-}
-
-.contacts-form label {
-  margin-bottom: 3px;
-}
-
-.contacts-form p {
-  margin: 0 0 18px;
-  font-size: 14px;
-}
-
-.contacts-form .btn {
-  font-size: 20px;
-  line-height: 22px;
-  padding: 11px 27px;
-}
-
-.contacts-form .row {
-  margin-bottom: 2px;
-}
-
-.contacts-form .form-area {
-  position: relative;
-  padding: 60px 0 12px;
-}
-
-.contacts-form .form-area:before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 28px;
-  height: 1px;
-  background: #d8dbbd;
-}
-
-.contacts-form .btn-list {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  margin: 0 -10px;
-}
-
-.contacts-form .btn-list li {
-  padding: 0 10px;
-}
-
-.contacts-form .separator {
-  display: block;
-  margin: -17px 0 9px 12px;
-  font-size: 14px;
-  line-height: 16px;
-}
-
 .contacts-form .title {
-  color: #883605;
   font-weight: 500;
   display: block;
   margin-bottom: 6px;
   font-size: 16px;
   line-height: 18px;
-}
-
-.contacts-form button[type="submit"] {
-  padding: 15px 10px;
 }
 
 .tab-content {
@@ -1878,393 +1187,3 @@ address {
   width: auto;
   height: auto;
 }
-
-@media (min-width: 768px) {
-  h1 {
-    font-size: 60px;
-    line-height: 64px;
-  }
-
-  h2 {
-    font-size: 36px;
-    line-height: 40px;
-    margin: 0 0 29px;
-  }
-
-  .breadcrumbs {
-    display: none;
-  }
-
-  textarea {
-    min-height: 150px;
-  }
-
-  .comments-form button[type="submit"] {
-    font-size: 24px;
-    line-height: 26px;
-    padding: 19px 10px;
-  }
-
-  .gallery-block {
-    margin: 0 0 42px;
-  }
-
-  .gallery-block .text-box {
-    padding: 15px 80px;
-  }
-
-  .gallery .slide {
-    white-space: nowrap;
-    text-align: center;
-  }
-
-  .gallery .slide:after {
-    content: "";
-    display: inline-block;
-    vertical-align: middle;
-    width: 0;
-    min-height: 323px;
-  }
-
-  .gallery .slide > * {
-    white-space: normal;
-    display: inline-block;
-    vertical-align: middle;
-    max-width: 99%;
-  }
-
-  .gallery .text-block {
-    margin: 0;
-  }
-
-  .gallery .text-block p {
-    margin: 0 0 5px;
-  }
-
-  .gallery .text-block h1:before {
-    bottom: -10px;
-  }
-
-  .btn-next {
-    right: 38px;
-  }
-
-  .btn-prev {
-    left: 38px;
-  }
-
-  .item-section {
-    padding: 0 0 60px;
-  }
-
-  .item-holder {
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    margin: 0 -11px 28px;
-  }
-
-  .item-holder .item-wrapp {
-    width: 33.333%;
-    padding: 0 11px 20px;
-    max-width: 100%;
-    margin: 0;
-  }
-
-  .SuccessStories {
-    padding: 35px 0 50px;
-  }
-
-  .SuccessStories h2 {
-    margin: 0 0 10px;
-  }
-
-  .carousel {
-    padding: 40px 50px 45px;
-  }
-
-  .carousel .title {
-    margin-bottom: 10px;
-  }
-
-  .carousel .img-block {
-    width: 45%;
-    margin: 0;
-    float: left;
-  }
-
-  .carousel .content-area {
-    padding: 14px 15px 0 15px;
-  }
-
-  .carousel .content-area p {
-    margin: 0 0 35px;
-  }
-
-  .carousel .btn-list {
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    margin: 0 -5px;
-    -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-  }
-
-  .carousel .btn-list li {
-    width: 50%;
-    padding: 0 5px;
-  }
-
-  .carousel .btn-prev,
-  .carousel .btn-next {
-    display: block;
-    color: #425762;
-    margin: -10px 0 0;
-  }
-
-  .offers-table.alt .col {
-    padding: 7px;
-  }
-
-  .offers-table.alt .col:first-child {
-    width: 90%;
-  }
-
-  .offers-table.alt .col:last-child {
-    width: 10%;
-  }
-
-  .offers-table .table-title {
-    font-size: 16px;
-    line-height: 18px;
-  }
-
-  .section-frame {
-    padding: 42px 0 0;
-  }
-
-  .content {
-    width: 64%;
-    float: left;
-    margin: 0;
-  }
-
-  .box-wrapp {
-    float: left;
-    width: 64%;
-  }
-
-  .box-wrapp h2 {
-    margin: 0 0 29px;
-  }
-
-  #sidebar {
-    float: right;
-    width: 36%;
-    padding: 64px 30px 0;
-  }
-
-  #sidebar .list-holder {
-    max-width: 100%;
-    margin: 0;
-  }
-
-  #sidebar .title-block {
-    margin-bottom: 5px;
-  }
-
-  #sidebar .sub-box h3 {
-    margin-bottom: 10px;
-  }
-
-  #sidebar .sub-box p {
-    margin: 0 0 30px;
-  }
-
-  #sidebar .type-frame {
-    margin-bottom: 18px;
-  }
-
-  .img-frame {
-    margin-bottom: 50px;
-  }
-
-  .text-area {
-    margin-bottom: 38px;
-    line-height: 20px;
-  }
-
-  .comments-list .img-wrapp {
-    width: 80px;
-    height: 80px;
-  }
-
-  .comments-list .img-block {
-    width: 16%;
-  }
-
-  .comments-list .comment-area {
-    /*	padding: 17px 20px;*/
-  }
-
-  .form-section {
-    /*	padding: 30px 0;*/
-  }
-
-  .form-section h2 {
-    text-align: left;
-    margin-bottom: 40px;
-  }
-
-  .contacts-form label {
-    margin-bottom: 7px;
-  }
-
-  .contacts-form p {
-    margin: 0 0 10px;
-  }
-
-  .contacts-form .btn {
-    font-size: 24px;
-    line-height: 26px;
-    min-width: 220px;
-    padding: 15px;
-  }
-
-  .contacts-form .row {
-    /*	margin-bottom: 50px;*/
-  }
-
-  .contacts-form .form-area {
-    padding: 60px 0;
-  }
-
-  .contacts-form .form-area:before {
-    left: -80px;
-    right: -80px;
-    top: 0;
-  }
-
-  .contacts-form .separator {
-    margin: -14px 0 17px 22px;
-  }
-
-  .contacts-form .title {
-    margin-bottom: 3px;
-  }
-
-  .tab-content {
-    background: none;
-    padding: 0;
-  }
-
-  .tabset {
-    display: none;
-  }
-}
-
-@media (min-width: 1024px) {
-  .search-area .search-container .search-form {
-    max-width: 460px;
-  }
-  .carousel {
-    padding: 40px 80px 45px;
-  }
-
-  .carousel .img-block {
-    width: 38%;
-  }
-
-  .carousel .content-area {
-    padding: 44px 25px 10px 35px;
-  }
-
-  #sidebar {
-    padding: 64px 48px 0;
-  }
-}
-
-@media (max-width: 767px) {
-  .hidden-xs {
-    display: none;
-  }
-
-  .js-tab-hidden {
-    display: block !important;
-    left: -9999px !important;
-    position: absolute !important;
-    top: -9999px !important;
-  }
-}
-
-/* The switch - the box around the slider */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 49px;
-  height: 23px;
-}
-
-/* Hide default HTML checkbox */
-.switch input {
-  display: none;
-}
-
-/* The slider */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
-}
-
-input:checked + .slider {
-  background-color: #459f67;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #459f67;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-
-.panel-body {
-  display: flex !important;
-  flex-wrap: wrap !important;
-} */

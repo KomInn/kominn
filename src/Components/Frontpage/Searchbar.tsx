@@ -7,33 +7,47 @@ import { Suggestion } from "../Common/Suggestion";
 import { DataAdapter } from "../Common/DataAdapter";
 import { SubmitSuggestionButtons } from "../Common/SubmitSuggestionButtons"
 
-interface ISearchbarState { inspiredBy: Array<Suggestion>, suggestions: Array<Suggestion>, searchTerm?: string, showSuggestions?: boolean }
-interface ISearchbarProps { isBackNavigation?: boolean }
+interface ISearchbarState {
+    inspiredBy: Array<Suggestion>;
+    suggestions: Array<Suggestion>;
+    searchTerm?: string;
+    showSuggestions?: boolean;
+}
+interface ISearchbarProps {
+    showBackButton?: boolean;
+    showSearchBox?: boolean;
+    showSuggestionButtons?: boolean;
+}
+
 
 export class Searchbar extends React.Component<ISearchbarProps, ISearchbarState>
 {
+    public static defaultProps: Partial<ISearchbarProps> = {
+        showSearchBox: true,
+        showSuggestionButtons: true,
+    }
     private dataAdapter = new DataAdapter();
 
     constructor(props: ISearchbarProps) {
         super(props);
         this.state = {
-            suggestions: new Array<Suggestion>(),
-            inspiredBy: new Array<Suggestion>(),
+            suggestions: [],
+            inspiredBy: [],
             searchTerm: "",
             showSuggestions: false,
         };
     }
 
     @autobind
-    searchSuggestion(searchTerm: string) {
+    async searchSuggestion(searchTerm: string) {
         this.setState({ searchTerm });
         if (searchTerm.length <= 3) {
-            this.setState({ suggestions: new Array<Suggestion>() });
+            this.setState({ suggestions: [] });
             return;
         }
-        this.dataAdapter.getSuggestionByTitle(searchTerm).then((suggestions: Array<Suggestion>) => {
-            this.setState({ suggestions, showSuggestions: suggestions.length > 0 });
-        });
+        let suggestions = await this.dataAdapter.getSuggestionByTitle(searchTerm);
+        suggestions = suggestions.filter(s => this.state.inspiredBy.indexOf(s) === -1);
+        this.setState({ suggestions, showSuggestions: suggestions.length > 0 });
     }
 
     renderSearchResults() {
@@ -54,20 +68,18 @@ export class Searchbar extends React.Component<ISearchbarProps, ISearchbarState>
 
     render() {
         return (
-            <div className="ms-Grid searchbar">
+            <div className="ms-Grid SearchBar">
                 <div className="ms-Grid-row">
-                    {this.props.isBackNavigation &&
-                        <div className="ms-Grid-col ms-sm2 ms-smPush1">
-                            <DefaultButton
-                                href={_spPageContextInfo.webAbsoluteUrl}
-                                iconProps={{ iconName: "Home" }}
-                                text="Tilbake" />
-                        </div>
-                    }
-                    <div ref="SearchBox" className="ms-Grid-col ms-sm4">
+                    <div hidden={!this.props.showBackButton} className="ms-Grid-col ms-sm2 ms-smPush1">
+                        <DefaultButton
+                            href={_spPageContextInfo.webAbsoluteUrl}
+                            iconProps={{ iconName: "Home" }}
+                            text="Tilbake" />
+                    </div>
+                    <div ref="SearchBox" hidden={!this.props.showSearchBox} className="ms-Grid-col ms-sm4">
                         <SearchBox placeholder="Søk etter forslag..." onChange={this.searchSuggestion} />
                     </div>
-                    <div className="ms-Grid-col ms-sm4">
+                    <div hidden={!this.props.showSuggestionButtons} className="ms-Grid-col ms-sm4">
                         <SubmitSuggestionButtons />
                     </div>
                 </div>
