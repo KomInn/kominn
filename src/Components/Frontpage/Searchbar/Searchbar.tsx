@@ -3,9 +3,9 @@ import { DefaultButton } from "office-ui-fabric-react/lib/Button";
 import { SearchBox } from "office-ui-fabric-react/lib/SearchBox";
 import { Callout } from "office-ui-fabric-react/lib/Callout";
 import { autobind } from "office-ui-fabric-react/lib/Utilities";
-import { Suggestion } from "../Common/Suggestion";
-import { DataAdapter } from "../Common/DataAdapter";
-import { SubmitSuggestionButtons } from "../Common/SubmitSuggestionButtons"
+import { Suggestion } from "../../Common/Suggestion";
+import { DataAdapter } from "../../Common/DataAdapter";
+import { SubmitSuggestionButtons } from "../../Common/SubmitSuggestionButtons"
 
 interface ISearchbarState {
     inspiredBy: Array<Suggestion>;
