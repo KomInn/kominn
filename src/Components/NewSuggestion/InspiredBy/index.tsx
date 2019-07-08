@@ -80,7 +80,7 @@ export class InspiredBy extends React.Component<IInspiredByProps, IInspiredBySta
 
     render() {
         return (
-            <div>
+            <section>
                 <TextField
                     label="Inspirasjon (valgfritt)"
                     placeholder="Søk..."
@@ -111,7 +111,7 @@ export class InspiredBy extends React.Component<IInspiredByProps, IInspiredBySta
                     </MarqueeSelection>
                     <DefaultButton text="Fjerne" onClick={this.removeInspiredBy} />
                 </div>
-            </div>
+            </section>
         )
     }
 }

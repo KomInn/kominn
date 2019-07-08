@@ -63,9 +63,7 @@ export class AddLocation extends React.Component<IAddLocationProps, IAddLocation
     }
 
     submitLocation() {
-        if (this.state.selectedLocation == null)
-            return;
-
+        if (this.state.selectedLocation == null) return;
         this.props.onDataUpdate(this.state.selectedLocation.lat(), this.state.selectedLocation.lng());
     }
 
@@ -78,14 +76,16 @@ export class AddLocation extends React.Component<IAddLocationProps, IAddLocation
 
     render() {
         return (
-            <div>
+            <section>
                 <Label>Sted (valgfritt)</Label>
                 <p>Klikk i kartet for å markere, eller bruk søkefeltet.</p>
                 <div id="map" style={{ width: "470px", height: "400px", marginBottom: "20px" }}></div>
                 <TextField placeholder="Skriv inn sted" onChange={(_event, newValue) => this.setState({ searchTerm: newValue })} />
-                <DefaultButton text="Søk" onClick={this.geocodeAddress} />
-                {navigator.geolocation != null && <DefaultButton text="Bruk mitt sted" onClick={this.getPosition} />}
-            </div>
+                <div className="actions">
+                    <DefaultButton text="Søk" onClick={this.geocodeAddress} />
+                    {navigator.geolocation != null && <DefaultButton text="Bruk mitt sted" onClick={this.getPosition} />}
+                </div>
+            </section>
         )
     }
 }

@@ -34,7 +34,7 @@ export class Personalia extends React.Component<IPersonaliaProps, IPersonaliaSta
 
     render() {
         return (
-            <div>
+            <section>
                 <TextField
                     label="Navn"
                     required={true}
@@ -57,7 +57,7 @@ export class Personalia extends React.Component<IPersonaliaProps, IPersonaliaSta
                     label="Telefon"
                     defaultValue={this.state.profile.Telephone}
                     onChange={(_event, newValue) => { this.updateField(newValue, "Telephone") }} />
-            </div>
+            </section>
         )
     }
 }

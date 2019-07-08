@@ -8,7 +8,7 @@ import { ICommonFieldsProps } from "./ICommonFieldsProps";
 
 export class CommonFields extends React.Component<ICommonFieldsProps, ICommonFieldsState>
 {
-    private _suggestion: Suggestion;
+    private suggestion: Suggestion;
 
     constructor(props: ICommonFieldsProps) {
         super(props);
@@ -16,24 +16,19 @@ export class CommonFields extends React.Component<ICommonFieldsProps, ICommonFie
     }
 
     componentWillMount() {
-        this._suggestion = new Suggestion();
+        this.suggestion = new Suggestion();
         this.setUsefulnessType();
     }
 
-    setUsefulnessType() {
-        $.get(`${_spPageContextInfo.webAbsoluteUrl}/_api/web/fields?$select=Choices&$filter=InternalName eq 'KmiUsefulnessType'`)
-            .then((result: any) => {
-                let usefulnessTypeChoices = result.d.results[0].Choices.results.map((choice: string) => ({ key: choice, text: choice }));
-                this.setState({ usefulnessTypeChoices });
-                this._suggestion.UsefulnessType = this.state.usefulnessTypeChoices[0].text;
-            });
+    async setUsefulnessType() {
+        let result = await $.get(`${_spPageContextInfo.webAbsoluteUrl}/_api/web/fields?$select=Choices&$filter=InternalName eq 'KmiUsefulnessType'`);
+        let usefulnessTypeChoices = result.d.results[0].Choices.results.map((choice: string) => ({ key: choice, text: choice }));
+        this.setState({ usefulnessTypeChoices });
+        this.suggestion.UsefulnessType = this.state.usefulnessTypeChoices[0].text;
     }
 
-    set(event: any) {
-        return event.target.value;
-    }
     update() {
-        this.props.onSuggestionUpdate(this._suggestion);
+        this.props.onSuggestionUpdate(this.suggestion);
     }
 
     render() {
@@ -46,56 +41,55 @@ export class CommonFields extends React.Component<ICommonFieldsProps, ICommonFie
         var usefulnessPlaceholderText = (past) ? "Er løsningen nyttig for andre?" : "Kan forslaget ditt være nyttig for andre enn deg/din virksomhet?";
         var title = (past) ? "Dette har vi gjort" : "Nytt forslag";
         return (
-            <div>
+            <section>
                 <h2>{title}</h2>
                 <div>
                     <TextField
                         label="Tittel"
                         required={true}
-                        defaultValue={this._suggestion.Title}
-                        onChange={(_event, newValue) => { this._suggestion.Title = newValue; this.update(); }} />
+                        defaultValue={this.suggestion.Title}
+                        onChange={(_event, newValue) => { this.suggestion.Title = newValue; this.update(); }} />
                     <TextField
                         label="Sammendrag"
                         placeholder={summaryPlaceholder}
                         required={true}
                         multiline={true}
-                        defaultValue={this._suggestion.Summary}
-                        onChange={(_event, newValue) => { this._suggestion.Summary = newValue; this.update(); }} />
+                        defaultValue={this.suggestion.Summary}
+                        onChange={(_event, newValue) => { this.suggestion.Summary = newValue; this.update(); }} />
                     <TextField
                         label={challengeText}
                         placeholder={challengePlaceholder}
                         required={true}
                         multiline={true}
-                        defaultValue={this._suggestion.Challenges}
-                        onChange={(_event, newValue) => { this._suggestion.Challenges = newValue; this.update(); }} />
+                        defaultValue={this.suggestion.Challenges}
+                        onChange={(_event, newValue) => { this.suggestion.Challenges = newValue; this.update(); }} />
                     <TextField
                         label={solutionText}
                         placeholder={solutionPlaceholder}
                         required={true}
                         multiline={true}
-                        defaultValue={this._suggestion.SuggestedSolution}
-                        onChange={(_event, newValue) => { this._suggestion.SuggestedSolution = newValue; this.update(); }} />
+                        defaultValue={this.suggestion.SuggestedSolution}
+                        onChange={(_event, newValue) => { this.suggestion.SuggestedSolution = newValue; this.update(); }} />
                     <Dropdown
                         label="Hvilken type nytte?"
                         options={this.state.usefulnessTypeChoices}
-                        defaultSelectedKey={this._suggestion.UsefulnessType}
-                        onChange={(_event, option) => { this._suggestion.UsefulnessType === option.text; this.update(); }} />
+                        defaultSelectedKey={this.suggestion.UsefulnessType}
+                        onChange={(_event, option) => { this.suggestion.UsefulnessType === option.text; this.update(); }} />
 
-                    {this._suggestion.UsefulnessType === "Annet" && (
+                    {this.suggestion.UsefulnessType === "Annet" && (
                         <TextField
                             required={true}
                             multiline={true}
-                            onChange={(_event, newValue) => { this._suggestion.UsefulnessType = newValue; this.update(); }} />
+                            onChange={(_event, newValue) => { this.suggestion.UsefulnessType = newValue; this.update(); }} />
                     )}
-
                     <TextField
                         label="Nyttig for andre?"
                         placeholder={usefulnessPlaceholderText}
                         required={true}
                         multiline={true}
-                        onChange={(_event, newValue) => { this._suggestion.UsefulForOthers = newValue; this.update(); }} />
+                        onChange={(_event, newValue) => { this.suggestion.UsefulForOthers = newValue; this.update(); }} />
                 </div>
-            </div>
+            </section>
         )
     }
 }

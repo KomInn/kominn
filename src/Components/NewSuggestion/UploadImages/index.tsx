@@ -27,13 +27,13 @@ export class UploadImages extends React.Component<IUploadImagesProps, IUploadIma
     }
     render() {
         return (
-            <div>
-                {this.state.uploadedImageUrl && <img src={this.state.uploadedImageUrl} width={500} />}
+            <section>
                 <Label>Bilde (valgfritt)</Label>
+                {this.state.uploadedImageUrl && <img src={this.state.uploadedImageUrl} width={500} />}
                 <p>Bildet må være mindre enn 1.5 Mb, og av typen .png, .jpg eller .gif</p>
                 <input type="file" style={{ height: 0, overflow: "hidden", position: "absolute", top: "-10000px" }} id="fileUpload" onChange={this.uploadImage} />
                 <DefaultButton text="Velg bilde" onClick={_ => $("#fileUpload").click()} />
-            </div>
+            </section>
         )
     }
 }

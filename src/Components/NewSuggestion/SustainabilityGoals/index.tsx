@@ -1,4 +1,5 @@
 import * as React from "react";
+import "./SustainabilityGoals.module.scss";
 import { DataAdapter } from "../../Common/DataAdapter";
 import { SustainabilityGoal } from "../../Common/SustainabilityGoal";
 import { Toggle } from "office-ui-fabric-react/lib/Toggle";
@@ -15,10 +16,10 @@ export class SustainabilityGoals extends React.Component<ISustainabilityGoalsPro
         this.state = { selectedGoals: [], goals: [] };
     }
 
-    componentWillMount() {
-        this.dataAdapter.getSustainabilityGoals().then((goals: Array<SustainabilityGoal>) => {
-            this.setState({ goals });
-        });
+    async componentWillMount() {
+        let goals = await this.dataAdapter.getSustainabilityGoals();
+        this.setState({ goals });
+
     }
 
     toggleGoal(goal: SustainabilityGoal) {
@@ -41,10 +42,14 @@ export class SustainabilityGoals extends React.Component<ISustainabilityGoalsPro
 
     render() {
         return (
-            <>
+            <section className="SustainabilityGoals">
                 <Label>Bærekraftsmål</Label>
-                {this.state.goals.map((goal: SustainabilityGoal, idx: number) => <Toggle key={idx} label={goal.Title} onChange={() => this.toggleGoal(goal)} />)}
-            </>
+                {this.state.goals.map((goal: SustainabilityGoal, idx: number) => (
+                    <Toggle
+                        key={idx}
+                        label={goal.Title}
+                        onChange={() => this.toggleGoal(goal)} />))}
+            </section>
         )
     }
 }

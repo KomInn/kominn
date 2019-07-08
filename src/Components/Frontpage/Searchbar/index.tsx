@@ -60,16 +60,16 @@ export class Searchbar extends React.Component<ISearchbarProps, ISearchbarState>
         return (
             <div className="ms-Grid SearchBar">
                 <div className="ms-Grid-row">
-                    <div hidden={!this.props.showBackButton} className="ms-Grid-col ms-sm2 ms-smPush1">
+                    <div hidden={!this.props.showBackButton} className="ms-Grid-col ms-sm2">
                         <DefaultButton
                             href={_spPageContextInfo.webAbsoluteUrl}
                             iconProps={{ iconName: "Home" }}
                             text="Tilbake" />
                     </div>
-                    <div ref="SearchBox" hidden={!this.props.showSearchBox} className="ms-Grid-col ms-sm4">
+                    <div ref="SearchBox" hidden={!this.props.showSearchBox} className="ms-Grid-col ms-sm5">
                         <SearchBox placeholder="Søk etter forslag..." onChange={this.searchSuggestion} />
                     </div>
-                    <div hidden={!this.props.showSuggestionButtons} className="ms-Grid-col ms-sm4">
+                    <div hidden={!this.props.showSuggestionButtons} className="ms-Grid-col ms-sm5">
                         <SubmitSuggestionButtons />
                     </div>
                 </div>
