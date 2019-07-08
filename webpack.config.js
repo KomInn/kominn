@@ -1,6 +1,5 @@
 let path = require("path");
-let MiniCssExtractPlugin = require('mini-css-extract-plugin')
-let isDevelopment = true;
+let isDevelopment = false;
 
 module.exports = {
   entry: "./src/index.tsx",
@@ -29,7 +28,7 @@ module.exports = {
       {
         test: /\.module\.s(a|c)ss$/,
         loader: [
-          isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'style-loader',
           {
             loader: 'css-loader'
           },
@@ -43,7 +42,7 @@ module.exports = {
         test: /\.s(a|c)ss$/,
         exclude: /\.module.(s(a|c)ss)$/,
         loader: [
-          isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'style-loader',
           'css-loader',
           {
             loader: 'sass-loader',
@@ -52,11 +51,5 @@ module.exports = {
         ]
       }
     ]
-  },
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: isDevelopment ? '[name].css' : '[name].[hash].css',
-      chunkFilename: isDevelopment ? '[id].css' : '[id].[hash].css'
-    })
-  ]
+  }
 };

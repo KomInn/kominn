@@ -4,6 +4,7 @@
   "description": "",
   "main": "",
   "scripts": {
+    "build-install": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command ./scripts/Build-Install.ps1",
     "webpack-build": "webpack --progress",
     "webpack-watch": "webpack -w --progress"
   },

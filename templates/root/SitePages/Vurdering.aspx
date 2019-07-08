@@ -10,17 +10,17 @@
 <asp:Content ContentPlaceHolderID="PlaceHolderAdditionalPageHead" runat="server">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-  <script src="../SiteAssets/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="../SiteAssets/js/jquery.min.js"></script>
   <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/4.0/1/MicrosoftAjax.js"></script>
   <script type="text/javascript" src="../_layouts/15/sp.runtime.js"></script>
   <script type="text/javascript" src="../_layouts/15/sp.js"></script>
   <script type="text/javascript" src="../_layouts/15/sp.ui.controls.js"></script>
   <script type="text/javascript" src="../_layouts/15/sp.taxonomy.js"></script>
   <meta name="WebPartPageExpansion" content="full" />
-  <link rel="stylesheet" href="../SiteAssets/lib/office-ui-fabric-react/css/fabric.min.css" />
+  <link rel="stylesheet" href="../SiteAssets/css/fabric.min.css" />
   <link rel="stylesheet" href="../SiteAssets/css/Main.css" />
-  <script src="../SiteAssets/lib/vis/vis.min.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEQC7aWXruMiVIMfR_ev-7AFFqs96xn2c"></script>
+  <script type="text/javascript" src="../SiteAssets/lib/vis/vis.min.js"></script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEQC7aWXruMiVIMfR_ev-7AFFqs96xn2c"></script>
 </asp:Content>
 
 <%-- The markup in the following Content element will be placed in the TitleArea of the page --%>
@@ -31,5 +31,5 @@
 <%-- The markup and script in the following Content element will be placed in the <body> of the page --%>
 <asp:Content ContentPlaceHolderID="PlaceHolderMain" runat="server">
   <div id="vurdering"></div>
-  <script src="../SiteAssets/js/bundle.js"></script>
+  <script type="text/javascript" src="../SiteAssets/js/bundle.js"></script>
 </asp:Content>

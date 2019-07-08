@@ -4,6 +4,8 @@
     <pnp:File Src="SitePages\NyttForslag.aspx" Folder="SitePages" Level="Published" Overwrite="true" />
     <pnp:File Src="SitePages\SendTilKS.aspx" Folder="SitePages" Level="Published" Overwrite="true" />
     <pnp:File Src="SitePages\Vurdering.aspx" Folder="SitePages" Level="Published" Overwrite="true" />
-    <!-- <pnp:Directory Src="SiteAssets" Folder="SiteAssets" Overwrite="true" Recursive="true" IncludedExtensions="*.js,*.css,*.eot,*.svg,*.ttf,*.woff" />
-    <pnp:Directory Src="Ikoner" Folder="Ikoner" Overwrite="true" Recursive="true" IncludedExtensions="*.png" MetadataMappingFile=".\Ikoner\MetadataMappingFile.json" /> -->
+    <pnp:Directory Src="SiteAssets\js" Folder="SiteAssets\js" Overwrite="true" IncludedExtensions="*.js" />
+    <pnp:Directory Src="SiteAssets\css" Folder="SiteAssets\css" Overwrite="true" IncludedExtensions="*.css" />
+    <pnp:Directory Src="SiteAssets\fonts" Folder="SiteAssets\fonts" Overwrite="true" IncludedExtensions="*.eot,*.svg,*.ttf,*.woff" />
+    <pnp:Directory Src="Ikoner" Folder="Ikoner" Overwrite="false" Recursive="true" IncludedExtensions="*.png" MetadataMappingFile="MetadataMappingFile.Ikoner.json" />
 </pnp:Files>
