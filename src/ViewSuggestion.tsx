@@ -9,6 +9,7 @@ interface IViewSuggestionState { suggestion: Suggestion }
 export class ViewSuggestion extends React.Component<any, IViewSuggestionState>
 {
     private dataAdapter = new DataAdapter();
+    private config: any;
 
     constructor(props: any) {
         super(props);
@@ -16,8 +17,11 @@ export class ViewSuggestion extends React.Component<any, IViewSuggestionState>
     }
 
     componentWillMount() {
-        setInterval(this.loadSuggestion, 30000);
-        this.loadSuggestion();
+        this.dataAdapter.getConfig().then(config => {
+            this.config = config;
+            setInterval(this.loadSuggestion, 30000);
+            this.loadSuggestion();
+        });
     }
 
     @autobind
@@ -60,7 +64,7 @@ export class ViewSuggestion extends React.Component<any, IViewSuggestionState>
                     </section>
                     <section className="ms-Grid-col ms-sm3 ms-smPush1">
                         <Actions suggestion={this.state.suggestion} />
-                        <MapView suggestion={this.state.suggestion} />
+                        <MapView apiKey={this.config.GOOGLE_MAPS_API_KEY} suggestion={this.state.suggestion} />
                     </section>
                     <section className="ms-Grid-col ms-sm10 ms-smPush1 ms-smPull1">
                         <Comments suggestion={this.state.suggestion} onCommentSubmitted={this.loadSuggestion.bind(this)} />

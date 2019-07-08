@@ -1,15 +1,14 @@
 import * as React from "react";
-import { Row } from "react-bootstrap";
-import { Suggestion } from "../../Common/Suggestion";
+import { MessageBar, MessageBarType } from "office-ui-fabric-react/lib/MessageBar";
 import { Tools } from "../../Common/Tools";
 import { SustainabilityGoal } from "../../Common/SustainabilityGoal";
+import { IMapProps } from "./IMapProps";
 
-interface MapProps { suggestion: Suggestion }
-export class MapView extends React.Component<MapProps, any>
+export class MapView extends React.Component<IMapProps, any>
 {
     render() {
         return (
-            <Row>
+            <>
                 <div className="sub-box">
                     <time>{Tools.FormatDate(this.props.suggestion.Created)}</time>
                     <strong className="author">{this.props.suggestion.Submitter.Name}</strong>
@@ -25,14 +24,22 @@ export class MapView extends React.Component<MapProps, any>
                     </span>
                 </div>
                 <div className="map-block hidden-xs">
-                    {(this.props.suggestion.Location == null) ? "" :
-                        <iframe
-                            src={this.props.suggestion.MapUrl}
-                            width="600"
-                            height="450"
-                        ></iframe>}
+                    {(this.props.suggestion.Location != null && this.props.apiKey)
+                        ?
+                        (
+
+                            <iframe
+                                src={this.props.suggestion.GetMapUrl(this.props.apiKey)}
+                                width="600"
+                                height="450"
+                            ></iframe>
+                        )
+                        : (
+                            <MessageBar messageBarType={MessageBarType.severeWarning}>Installasjonen er ikke riktig konfigurert. Kan ikke vise kart.</MessageBar>
+                        )
+                    }
                 </div>
-            </Row>
+            </>
         )
     }
 }

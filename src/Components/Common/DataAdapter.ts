@@ -134,4 +134,13 @@ export class DataAdapter {
             })
         });
     }
+
+    
+
+    /**
+     * Get config
+     */
+    getConfig(): Promise<Object> {
+        return adapter.getConfig();
+    }
 }

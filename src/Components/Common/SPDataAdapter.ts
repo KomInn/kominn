@@ -135,11 +135,7 @@ export class SPDataAdapter {
                     });
                     resolve(suggestions);
                 });
-
             })
-
-
-
         });
     }
 
@@ -568,7 +564,25 @@ export class SPDataAdapter {
         });
     }
 
-
+    /**
+     * Get config
+     */
+    public static getConfig(): Promise<Object> {
+        return new Promise((resolve) => {
+            $.ajax({
+                url: `${_spPageContextInfo.webAbsoluteUrl}/_api/web/lists/getbytitle('Konfigurasjon')/items?$select=KmiKey,KmiValue`,
+                headers: { "Accept": "application/json;odata=verbose" },
+            }).done(data => {
+                let config = (data.d.results as any[]).reduce((obj, item) => {
+                    obj[item.KmiKey] = item.KmiValue;
+                    return obj;
+                }, {});
+                resolve(config);
+            }).fail(_ => {
+                resolve({});
+            });
+        });
+    }
 
     private static suggestionAsHtml(s: Suggestion) {
         return `

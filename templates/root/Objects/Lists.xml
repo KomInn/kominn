@@ -96,10 +96,6 @@
         </pnp:FieldRefs>
     </pnp:ListInstance>
     <pnp:ListInstance Title="InductKonfigurasjon" Description="" DocumentTemplate="" TemplateType="100" Url="Lists/InductKonfigurasjon" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" EnableFolderCreation="false" ReadSecurity="0" WriteSecurity="0">
-        <pnp:ContentTypeBindings>
-            <pnp:ContentTypeBinding ContentTypeID="0x01" Default="true" />
-            <pnp:ContentTypeBinding ContentTypeID="0x0120" />
-        </pnp:ContentTypeBindings>
         <pnp:Views>
             <View DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="Alle elementer" Url="{site}/Lists/InductKonfigurasjon/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x">
                 <Query>
@@ -117,8 +113,8 @@
             </View>
         </pnp:Views>
         <pnp:Fields>
-            <Field Type="Text" DisplayName="KlientID" EnforceUniqueValues="FALSE" Indexed="FALSE" MaxLength="255" ID="{240326c1-5483-4ff3-829a-bb02ee3f99e4}" SourceID="{{listid:InductKonfigurasjon}}" StaticName="KlientID" Name="KlientID" />
-            <Field Type="Boolean" DisplayName="Anonym" EnforceUniqueValues="FALSE" Indexed="FALSE" ID="{3850fe84-ba7d-4af6-9d89-84362145e8bc}" SourceID="{{listid:InductKonfigurasjon}}" StaticName="Anonym" Name="Anonym">
+            <Field Type="Text" DisplayName="KlientID" ID="{240326c1-5483-4ff3-829a-bb02ee3f99e4}" SourceID="{{listid:InductKonfigurasjon}}" StaticName="KlientID" Name="KlientID" />
+            <Field Type="Boolean" DisplayName="Anonym" ID="{3850fe84-ba7d-4af6-9d89-84362145e8bc}" SourceID="{{listid:InductKonfigurasjon}}" StaticName="Anonym" Name="Anonym">
                 <Default>1</Default>
             </Field>
         </pnp:Fields>
@@ -128,6 +124,33 @@
               <pnp:RoleAssignment Principal="Saksbehandlere" RoleDefinition="Rediger" />
             </pnp:BreakRoleInheritance>
           </pnp:Security> -->
+    </pnp:ListInstance>
+    <pnp:ListInstance Title="Konfigurasjon" Description="" DocumentTemplate="" TemplateType="100" Url="Lists/Konfigurasjon" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" EnableFolderCreation="false" ReadSecurity="0" WriteSecurity="0">
+        <pnp:Views>
+            <View DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="Alle elementer" Url="{site}/Lists/Konfigurasjon/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x">
+                <Query>
+                    <OrderBy>
+                        <FieldRef Name="KmiKey" />
+                    </OrderBy>
+                </Query>
+                <ViewFields>
+                    <FieldRef Name="KmiKey" />
+                    <FieldRef Name="KmiValue" />
+                </ViewFields>
+                <RowLimit Paged="TRUE">30</RowLimit>
+                <JSLink>clienttemplates.js</JSLink>
+            </View>
+        </pnp:Views>
+        <pnp:Fields>
+            <Field Type="Text" DisplayName="Nøkkel" Required="TRUE" ID="{83e1c9d5-36d0-4dfa-9d5e-728e9db0bae6}" SourceID="{{listid:Konfigurasjon}}" StaticName="KmiKey" Name="KmiKey" />
+            <Field Type="Text" DisplayName="Verdi" Required="TRUE" ID="{2f68841f-a7e3-48f7-af9e-ea1a87e2fcd4}" SourceID="{{listid:Konfigurasjon}}" StaticName="KmiValue" Name="KmiValue" />
+        </pnp:Fields>
+        <pnp:DataRows UpdateBehavior="Overwrite" KeyColumn="KmiKey">
+            <pnp:DataRow>
+                <pnp:DataValue FieldName="KmiKey">GOOGLE_MAPS_API_KEY</pnp:DataValue>
+                <pnp:DataValue FieldName="KmiValue">AIzaSyBEQC7aWXruMiVIMfR_ev-7AFFqs96xn2c</pnp:DataValue>
+            </pnp:DataRow>
+        </pnp:DataRows>
     </pnp:ListInstance>
     <pnp:ListInstance Title="Kampanje" Description="" DocumentTemplate="" OnQuickLaunch="true" TemplateType="100" Url="Lists/Kampanje" RemoveExistingContentTypes="true" ContentTypesEnabled="true" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" EnableFolderCreation="false" ReadSecurity="0" WriteSecurity="0">
         <pnp:ContentTypeBindings>
@@ -207,11 +230,11 @@
             </View>
         </pnp:Views>
         <pnp:Fields>
-            <Field Type="Text" DisplayName="Sted" EnforceUniqueValues="FALSE" Indexed="FALSE" MaxLength="255" ID="{feb34bfb-24d7-44fa-90d4-5283d6110164}" SourceID="{{listid:Kommunenumre}}" StaticName="Sted" Name="Sted" />
-            <Field Type="Text" DisplayName="Kommunenummer" EnforceUniqueValues="FALSE" Indexed="FALSE" MaxLength="255" ID="{3ae89981-b6a3-4ecf-8438-faccdf67b893}" SourceID="{{listid:Kommunenumre}}" StaticName="Kommunenummer" Name="Kommunenummer" />
-            <Field Type="Text" DisplayName="Postnummer" EnforceUniqueValues="FALSE" Indexed="FALSE" MaxLength="255" ID="{7acd8a46-6bed-45b6-9b67-aa5b532eff4d}" SourceID="{{listid:Kommunenumre}}" StaticName="Postnummer" Name="Postnummer" />
-            <Field Type="Text" DisplayName="Kommune" EnforceUniqueValues="FALSE" Indexed="FALSE" MaxLength="255" ID="{87abf201-dfdb-44cb-9f4b-1b51f25adf85}" SourceID="{{listid:Kommunenumre}}" StaticName="Kommune" Name="Kommune" />
-            <Field Type="Text" DisplayName="Ex" EnforceUniqueValues="FALSE" Indexed="FALSE" MaxLength="255" ID="{ab2502f3-086b-4f86-8633-72d6e7bd5e13}" SourceID="{{listid:Kommunenumre}}" StaticName="Ex" Name="Ex" />
+            <Field Type="Text" DisplayName="Sted" ID="{feb34bfb-24d7-44fa-90d4-5283d6110164}" SourceID="{{listid:Kommunenumre}}" StaticName="Sted" Name="Sted" />
+            <Field Type="Text" DisplayName="Kommunenummer" ID="{3ae89981-b6a3-4ecf-8438-faccdf67b893}" SourceID="{{listid:Kommunenumre}}" StaticName="Kommunenummer" Name="Kommunenummer" />
+            <Field Type="Text" DisplayName="Postnummer" ID="{7acd8a46-6bed-45b6-9b67-aa5b532eff4d}" SourceID="{{listid:Kommunenumre}}" StaticName="Postnummer" Name="Postnummer" />
+            <Field Type="Text" DisplayName="Kommune" ID="{87abf201-dfdb-44cb-9f4b-1b51f25adf85}" SourceID="{{listid:Kommunenumre}}" StaticName="Kommune" Name="Kommune" />
+            <Field Type="Text" DisplayName="Ex" ID="{ab2502f3-086b-4f86-8633-72d6e7bd5e13}" SourceID="{{listid:Kommunenumre}}" StaticName="Ex" Name="Ex" />
         </pnp:Fields>
     </pnp:ListInstance>
     <pnp:ListInstance Title="Likes" Description="" DocumentTemplate="" OnQuickLaunch="true" TemplateType="100" Url="Likes" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" EnableFolderCreation="false" ReadSecurity="0" WriteSecurity="0">
@@ -235,7 +258,7 @@
             </View>
         </pnp:Views>
         <pnp:Fields>
-            <Field Type="Number" DisplayName="Forslag" EnforceUniqueValues="FALSE" Indexed="FALSE" ID="{0b83a3d2-82e2-43af-9acf-898e94fa1fe9}" SourceID="{{listid:Likes}}" StaticName="Forslag" Name="Forslag" />
+            <Field Type="Number" DisplayName="Forslag" ID="{0b83a3d2-82e2-43af-9acf-898e94fa1fe9}" SourceID="{{listid:Likes}}" StaticName="Forslag" Name="Forslag" />
         </pnp:Fields>
     </pnp:ListInstance>
     <pnp:ListInstance Title="Baerekraftsmaal" Description="" DocumentTemplate="" TemplateType="100" Url="Lists/Baerekraftsmaal" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" EnableFolderCreation="false" ReadSecurity="0" WriteSecurity="0">

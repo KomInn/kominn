@@ -42,7 +42,7 @@ export class Suggestion {
     }
 
     public get Url(): string {
-        return _spPageContextInfo.webAbsoluteUrl + "/SitePages/Forslag.aspx?forslag=" + this.Id;
+        return  `${_spPageContextInfo.webAbsoluteUrl}/SitePages/Forslag.aspx?forslag=${this.Id}`;
     }
 
     public get Validates(): boolean {
@@ -71,11 +71,6 @@ export class Suggestion {
         return _spPageContextInfo.webAbsoluteUrl + "/SitePages/NyttForslag.aspx?kopier=" + this.Id;
     }
 
-    public get MapUrl(): string {
-        var mapsApiKey = "AIzaSyBEQC7aWXruMiVIMfR_ev-7AFFqs96xn2c";
-        return "//www.google.com/maps/embed/v1/place?key=" + mapsApiKey + "&q=" + this.Location;
-    }
-
     public get LocationLatLng(): google.maps.LatLng {
         if (this.Location == null)
             return null;
@@ -85,5 +80,9 @@ export class Suggestion {
 
         var s = this.Location.split(',');
         return new google.maps.LatLng(parseFloat(s[0].trim()), parseFloat(s[1].trim()));
+    }
+
+    public GetMapUrl(mapsApiKey: string): string {
+        return `//www.google.com/maps/embed/v1/place?key=${mapsApiKey}&q=${this.Location}`;
     }
 }
