@@ -1,14 +1,18 @@
 import * as React from "react";
-import { Suggestion } from "../Common/Suggestion";
-import { DataAdapter } from "../Common/DataAdapter";
+import "./MySuggestions.module.scss";
+import { Suggestion } from "../../Common/Suggestion";
+import { DataAdapter } from "../../Common/DataAdapter";
 import { DetailsList, IColumn } from "office-ui-fabric-react/lib/DetailsList";
 import { Icon } from "office-ui-fabric-react/lib/Icon";
 import { autobind } from "office-ui-fabric-react/lib/Utilities";
+import { IMySuggestionsState } from "./IMySuggestionsState";
 
-interface MySuggestionsState { suggestions: Array<Suggestion> }
-export class MySuggestions extends React.Component<any, MySuggestionsState>
+export class MySuggestions extends React.Component<any, IMySuggestionsState>
 {
-	state = { suggestions: new Array<Suggestion>() };
+	constructor(props: any) {
+		super(props);
+		this.state = { suggestions: new Array<Suggestion>() };
+	}
 
 	componentWillMount() {
 		var d = new DataAdapter();
@@ -33,7 +37,7 @@ export class MySuggestions extends React.Component<any, MySuggestionsState>
 
 	render() {
 		return (
-			<section className="section-offers hidden-xs">
+			<section className="MySuggestions">
 				<div className="container">
 					<h2>Mine forslag</h2>
 					<DetailsList

@@ -1,9 +1,8 @@
 import * as React from "react";
 import { Row, Col } from "react-bootstrap";
-import { Suggestion } from "../Common/Suggestion";
-import { DataAdapter } from "../Common/DataAdapter";
-import { Status } from "../Common/Status";
-import { DoneThisModal } from "../Common/DoneThisModal";
+import { Suggestion } from "../../Common/Suggestion";
+import { DataAdapter } from "../../Common/DataAdapter";
+import { DoneThisModal } from "../../Common/DoneThisModal";
 
 interface IInnovationOfTheMonthState { suggestions?: Array<Suggestion>, show: boolean, inspiredBy: Suggestion }
 export class InnovationOfTheMonth extends React.Component<any, IInnovationOfTheMonthState>

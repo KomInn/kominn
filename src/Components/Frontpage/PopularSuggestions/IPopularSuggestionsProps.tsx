@@ -1,5 +1,6 @@
+import * as moment from "moment";
 export interface IPopularSuggestionsProps {
-    Title: string;
-    FromDate: string;
-    ToDate: string;
+    title: string;
+    fromDate: moment.Moment;
+    toDate: moment.Moment;
 }

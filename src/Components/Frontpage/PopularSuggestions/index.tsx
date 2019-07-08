@@ -49,8 +49,7 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
                 customSort = "&$orderby=Created desc";
         }
 
-        var customFilter = "&$filter=KmiStatus eq 'Publisert'";
-        customFilter += " and Created gt '" + this.props.FromDate + "' and Created lt '" + this.props.ToDate + "'";
+        var customFilter = `&$filter=KmiStatus eq 'Publisert' and Created gt datetime'${this.props.fromDate.toISOString()}' and Created lt datetime'${this.props.toDate.toISOString()}'`;
         if (this.state.filter != null && this.state.filter.length > 0) {
             for (let f of this.state.filter)
                 customFilter += ` and ${encodeURI(`Kmi${f.Type}`)} eq '${encodeURI(f.Value)}'`;
@@ -182,7 +181,7 @@ export class PopularSuggestions extends React.Component<IPopularSuggestionsProps
         }
         return (
             <section className="PopularSuggestions">
-                <h2>{this.props.Title}</h2>
+                <h2>{this.props.title}</h2>
                 <div className="actions">
                     <DefaultButton onClick={this.showFilter} iconProps={{ iconName: "Filter" }} />
                     <DefaultButton onClick={this.showSorting} iconProps={{ iconName: "Sort" }} />
