@@ -16,7 +16,6 @@ Param(
     [Parameter(Mandatory = $false, HelpMessage = "Installation Environment. If SkipLoadingBundle is set, this will be ignored")]
     [ValidateSet('SharePointPnPPowerShell2013', 'SharePointPnPPowerShell2016', 'SharePointPnPPowerShellOnline')]
     [string]$Environment = "SharePointPnPPowerShellOnline",
-    [Parameter(Mandatory = $false, HelpMessage = "Folder for extensions (.pnp files)")]
     [Parameter(Mandatory = $false)]
     [ValidateSet('None', 'File', 'Host')]
     [string]$Logging = "File",
@@ -83,7 +82,9 @@ Write-Host "Note: The install requires site collection admin" -ForegroundColor Y
 Write-Host "" -ForegroundColor Green
 Write-Host "############################################################################" -ForegroundColor Green
 
-Apply-PnPProvisioningTemplate .\root.pnp -Handlers All
+$SiteConnection = Connect-PnPOnline -Url $Url -Credentials $Credential -ReturnConnection
+
+Apply-PnPProvisioningTemplate .\root.pnp -Handlers All -Connection $SiteConnection
 
 $sw.Stop()
 Write-Host "Installation completed in $($sw.Elapsed)" -ForegroundColor Green

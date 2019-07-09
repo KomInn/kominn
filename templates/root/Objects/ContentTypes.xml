@@ -46,8 +46,8 @@
             <pnp:FieldRef ID="07e827ec-c34f-48d6-b69c-6f0ef48f7c90" Name="KmiInspiredBy" />
             <pnp:FieldRef ID="4574c53c-b0e2-415c-af76-5661de396f06" Name="KmiCountyCode" Hidden="true" />
             <pnp:FieldRef ID="9f0ed997-5cbd-43f7-ac8c-889cae958aea" Name="KmiCompRef" />
-            <pnp:FieldRef ID="9b9500c1-b793-4511-b937-8b9dec9a8bb1" Name="KmiMonthlyEndDate" />
             <pnp:FieldRef ID="f55199fd-8cb6-4583-a98e-a6363524f38f" Name="KmiMonthlyStartDate" />
+            <pnp:FieldRef ID="9b9500c1-b793-4511-b937-8b9dec9a8bb1" Name="KmiMonthlyEndDate" />
             <pnp:FieldRef ID="09010dd5-61fe-43ce-86a6-7e092922c3e2" Name="KmiName" Hidden="true" />
             <pnp:FieldRef ID="710ef48a-adb9-4f55-81bd-8a0f248e29ba" Name="KmiManager" Hidden="true" />
             <pnp:FieldRef ID="4540bb76-e42f-490e-a152-f940ebfb16af" Name="KmiZipcode" Hidden="true" />
