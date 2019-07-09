@@ -54,6 +54,10 @@ elseif ($Credential -eq $null -and -not $UseWebLogin.IsPresent -and -not $Curren
     $Credential = (Get-Credential -Message "Please enter your username and password")
 }
 
+# Starts stop watch
+$sw = [Diagnostics.Stopwatch]::StartNew()
+$ErrorActionPreference = "Stop"
+
 # Sets up PnP trace log
 if ($Logging -eq "File") {
     $execDateTime = Get-Date -Format "yyyyMMdd_HHmmss"
@@ -78,3 +82,8 @@ Write-Host "" -ForegroundColor Green
 Write-Host "Note: The install requires site collection admin" -ForegroundColor Yellow
 Write-Host "" -ForegroundColor Green
 Write-Host "############################################################################" -ForegroundColor Green
+
+Apply-PnPProvisioningTemplate .\root.pnp -Handlers All
+
+$sw.Stop()
+Write-Host "Installation completed in $($sw.Elapsed)" -ForegroundColor Green
