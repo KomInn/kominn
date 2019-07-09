@@ -8,7 +8,7 @@ Write-Host "## Creating release folder ##"
 New-Item -ItemType Directory -Force -Path release
 
 Write-Host "## Building source ##"
-webpack
+webpack --env.production
 
 Write-Host "## Copying install script to install folder ##"
 Copy-Item -Path .\build\Install.ps1 -Destination .\dist\Install

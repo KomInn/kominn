@@ -1,13 +1,12 @@
 let path = require("path");
-let isDevelopment = false;
 
-module.exports = {
+module.exports = env => ({
   entry: "./src/index.tsx",
   output: {
     path: path.resolve(__dirname, 'templates/root/SiteAssets/js'),
     filename: "bundle.js",
   },
-  mode: isDevelopment ? "development" : "production",
+  mode: env.production ? "production" : "development",
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".json", ".scss"]
   },
@@ -34,7 +33,7 @@ module.exports = {
           },
           {
             loader: 'sass-loader',
-            options: { sourceMap: isDevelopment }
+            options: { sourceMap: !env.production }
           }
         ]
       },
@@ -46,10 +45,10 @@ module.exports = {
           'css-loader',
           {
             loader: 'sass-loader',
-            options: { sourceMap: isDevelopment }
+            options: { sourceMap: !env.production }
           }
         ]
       }
     ]
   }
-};
+});
