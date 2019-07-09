@@ -1,6 +1,6 @@
 let path = require("path");
 
-module.exports = env => ({
+module.exports = (env = {}) => ({
   entry: "./src/index.tsx",
   output: {
     path: path.resolve(__dirname, 'templates/root/SiteAssets/js'),
@@ -50,5 +50,6 @@ module.exports = env => ({
         ]
       }
     ]
-  }
+  },
+  performance: { hints: false }
 });
