@@ -131,10 +131,7 @@ export class Vurdering extends React.Component<any, State>
         return <div>
             <h3 style={{ color: "black" }}>Vurdering av mottatte forslag</h3>
             <p>Listen viser snitt av alle mottatte vurderinger per forslag</p>
-            <DetailsList
-                columns={this.columns}
-                items={this.state.snittvurderinger}
-            />
+            <DetailsList columns={this.columns} items={this.state.snittvurderinger} />
 
         </div>
     }

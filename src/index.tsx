@@ -6,46 +6,22 @@ import { initializeIcons } from "@uifabric/icons";
 import { NewSuggestion } from "./NewSuggestion";
 import { Frontpage } from "./Frontpage";
 import { ViewSuggestion } from "./ViewSuggestion";
-import { SendTilKS } from "./SendTilKS/SendTilKS";
-import { Vurdering } from './Components/Vurdering/Vurdering';
+import { SendTilKS } from "./SendTilKS";
+import { Vurdering } from './Components/Vurdering';
 $.ajaxSetup({ headers: { "Accept": "application/json;odata=verbose" } })
 initializeIcons(undefined, { disableWarnings: true });
-
-function renderSuggestionForm(id: string) {
-    ReactDOM.render(
-        <NewSuggestion />,
-        document.getElementById(id)
-    );
-}
-
-function renderShowAllSuggestions(id: string) {
-    ReactDOM.render(
-        <Frontpage />,
-        document.getElementById(id)
-    );
-}
-
-function renderViewSuggestions(id: string) {
-    ReactDOM.render(
-        <ViewSuggestion />,
-        document.getElementById(id)
-    );
-}
-
-
 
 if (document.getElementById("vurdering") != null)
     ReactDOM.render(<Vurdering />, document.getElementById("vurdering"));
 
-
 if (document.getElementById("form") != null)
-    renderSuggestionForm("form");
+    ReactDOM.render(<NewSuggestion />, document.getElementById("form"));
 
 if (document.getElementById("allsuggestions") != null)
-    renderShowAllSuggestions("allsuggestions");
+    ReactDOM.render(<Frontpage />, document.getElementById("allsuggestions"));
 
 if (document.getElementById("forslag") != null)
-    renderViewSuggestions("forslag");
+    ReactDOM.render(<ViewSuggestion />, document.getElementById("forslag"));
 
 if (document.getElementById("inductintegrasjon") != null) {
     ReactDOM.render(<SendTilKS />, document.getElementById("inductintegrasjon"));

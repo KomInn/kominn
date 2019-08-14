@@ -100,12 +100,8 @@ export class NewSuggestion extends React.Component<INewSuggestionProps, INewSugg
                     showSearchBox={false}
                     showSuggestionButtons={false} />
                 <div className="NewSuggestion">
-                    <CommonFields
-                        onSuggestionUpdate={this.updateSuggestion}
-                        validationMode={this.state.formInvalid} />
-                    <Personalia
-                        onDataUpdate={this.updatePerson}
-                        validationMode={this.state.formInvalid} />
+                    <CommonFields onSuggestionUpdate={this.updateSuggestion} validationMode={this.state.formInvalid} />
+                    <Personalia onDataUpdate={this.updatePerson} validationMode={this.state.formInvalid} />
                     <UploadImages onDataUpdate={this.updateImage} />
                     <AddLocation onDataUpdate={this.updateLocation} />
                     <SustainabilityGoals onDataUpdate={this.updateGoals} />

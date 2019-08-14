@@ -207,38 +207,6 @@
             <Field Type="Number" Name="SuggestionId" DisplayName="Forslag" ID="{45635296-fbb3-429b-80e0-049157f8370b}" Group="KomInn" SourceID="{{listid:Kommentarer}}" StaticName="SuggestionId" />
         </pnp:Fields>
     </pnp:ListInstance>
-    <pnp:ListInstance Title="Kommunenumre" Description="" DocumentTemplate="" TemplateType="100" Url="Lists/Kommunenumre" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" EnableFolderCreation="false" ReadSecurity="0" WriteSecurity="0">
-        <pnp:ContentTypeBindings>
-            <pnp:ContentTypeBinding ContentTypeID="0x01" Default="true" />
-            <pnp:ContentTypeBinding ContentTypeID="0x0120" />
-        </pnp:ContentTypeBindings>
-        <pnp:Views>
-            <View DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="Alle elementer" Url="{site}/Lists/Kommunenumre/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x">
-                <Query>
-                    <OrderBy>
-                        <FieldRef Name="ID" />
-                    </OrderBy>
-                </Query>
-                <ViewFields>
-                    <FieldRef Name="LinkTitle" />
-                    <FieldRef Name="Sted" />
-                    <FieldRef Name="Kommunenummer" />
-                    <FieldRef Name="Postnummer" />
-                    <FieldRef Name="Kommune" />
-                    <FieldRef Name="Ex" />
-                </ViewFields>
-                <RowLimit Paged="TRUE">30</RowLimit>
-                <JSLink>clienttemplates.js</JSLink>
-            </View>
-        </pnp:Views>
-        <pnp:Fields>
-            <Field Type="Text" DisplayName="Sted" ID="{feb34bfb-24d7-44fa-90d4-5283d6110164}" SourceID="{{listid:Kommunenumre}}" StaticName="Sted" Name="Sted" />
-            <Field Type="Text" DisplayName="Kommunenummer" ID="{3ae89981-b6a3-4ecf-8438-faccdf67b893}" SourceID="{{listid:Kommunenumre}}" StaticName="Kommunenummer" Name="Kommunenummer" />
-            <Field Type="Text" DisplayName="Postnummer" ID="{7acd8a46-6bed-45b6-9b67-aa5b532eff4d}" SourceID="{{listid:Kommunenumre}}" StaticName="Postnummer" Name="Postnummer" />
-            <Field Type="Text" DisplayName="Kommune" ID="{87abf201-dfdb-44cb-9f4b-1b51f25adf85}" SourceID="{{listid:Kommunenumre}}" StaticName="Kommune" Name="Kommune" />
-            <Field Type="Text" DisplayName="Ex" ID="{ab2502f3-086b-4f86-8633-72d6e7bd5e13}" SourceID="{{listid:Kommunenumre}}" StaticName="Ex" Name="Ex" />
-        </pnp:Fields>
-    </pnp:ListInstance>
     <pnp:ListInstance Title="Likes" Description="" DocumentTemplate="" OnQuickLaunch="true" TemplateType="100" Url="Likes" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" EnableFolderCreation="false" ReadSecurity="0" WriteSecurity="0">
         <pnp:ContentTypeBindings>
             <pnp:ContentTypeBinding ContentTypeID="0x01" Default="true" />
