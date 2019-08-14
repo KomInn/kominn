@@ -1,10 +1,10 @@
 import * as React from "react";
-import { Suggestion } from "../../Common/Suggestion";
-import { Tools } from "../../Common/Tools";
+import { Tools } from "../../../Tools";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
 import { Dropdown } from "office-ui-fabric-react/lib/Dropdown";
 import { ICommonFieldsState } from "./ICommonFieldsState";
 import { ICommonFieldsProps } from "./ICommonFieldsProps";
+import { Suggestion } from "../../../Models";
 
 export class CommonFields extends React.Component<ICommonFieldsProps, ICommonFieldsState>
 {

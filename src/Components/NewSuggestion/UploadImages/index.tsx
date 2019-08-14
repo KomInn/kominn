@@ -1,5 +1,5 @@
 import * as React from "react";
-import { DataAdapter } from "../../Common/DataAdapter";
+import { DataAdapter } from "../../../Data/DataAdapter";
 import { Label } from "office-ui-fabric-react/lib/Label";
 import { DefaultButton } from "office-ui-fabric-react/lib/Button";
 import { autobind } from "office-ui-fabric-react/lib/Utilities";

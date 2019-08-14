@@ -1,4 +1,4 @@
-import { Suggestion } from "../../Common/Suggestion";
+import { Suggestion } from "../../../Models";
 export interface IActionsState {
 	showModal: boolean;
 	numLikes: number;

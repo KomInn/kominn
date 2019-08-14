@@ -1,5 +1,6 @@
-import { Suggestion } from "../../Common/Suggestion";
+import { Suggestion } from "../../../Models";
+
 export interface IPromotedSuggestionsState {
-	suggestions?: Array<Suggestion>;
+	suggestions?: Suggestion[];
 	CurrentImage?: number;
 }

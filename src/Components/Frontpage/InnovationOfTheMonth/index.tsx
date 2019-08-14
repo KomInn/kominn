@@ -1,19 +1,21 @@
 import * as React from "react";
-import { Row, Col } from "react-bootstrap";
-import { Suggestion } from "../../Common/Suggestion";
-import { DataAdapter } from "../../Common/DataAdapter";
+import { DataAdapter } from "../../../Data/DataAdapter";
 import { DoneThisModal } from "../../Common/DoneThisModal";
+import { Suggestion } from "../../../Models";
+import { IInnovationOfTheMonthState } from "./IInnovationOfTheMonthState";
 
-interface IInnovationOfTheMonthState { suggestions?: Array<Suggestion>, show: boolean, inspiredBy: Suggestion }
-export class InnovationOfTheMonth extends React.Component<any, IInnovationOfTheMonthState>
+export class InnovationOfTheMonth extends React.Component<{}, IInnovationOfTheMonthState>
 {
-	state = { suggestions: new Array<Suggestion>(), show: false, inspiredBy: new Suggestion() };
+	constructor(props: any) {
+		super(props);
+		this.state = { suggestions: [], show: false, inspiredBy: new Suggestion() };
+	}
 
 	componentWillMount() {
 		var now = new Date();
 		var query = "&$filter=(MonthlyStartDate le datetime'" + now.toISOString() + "') and (MonthlyEndDate ge datetime'" + now.toISOString() + "')";
 		var d = new DataAdapter();
-		d.getAllSuggestions(null, 1, query).then((results: Array<Suggestion>) => {
+		d.getAllSuggestions(null, 1, query).then((results: Suggestion[]) => {
 			this.setState({ suggestions: results });
 		});
 	}
@@ -27,7 +29,7 @@ export class InnovationOfTheMonth extends React.Component<any, IInnovationOfTheM
 			return (<div></div>);
 
 		return (
-			<Row>
+			<>
 				<DoneThisModal show={this.state.show} inspiredBy={this.state.inspiredBy} onClose={() => { this.setState({ show: false }); }} />
 				<section className="carousel-section">
 					<div className="container">
@@ -56,6 +58,7 @@ export class InnovationOfTheMonth extends React.Component<any, IInnovationOfTheM
 						</div>
 					</div>
 				</section>
-			</Row>)
+			</>
+		)
 	}
 }

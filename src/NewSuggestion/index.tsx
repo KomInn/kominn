@@ -1,12 +1,13 @@
-import * as React from "react";
-import "./NewSuggestion.module.scss";
-import { Searchbar } from "../Components/Frontpage";
-import { InspiredBy, AddLocation, UploadImages, Personalia, CommonFields, SustainabilityGoals } from "../Components/NewSuggestion";
-import { SustainabilityGoal, DataAdapter, Person, Suggestion } from "../Components/Common";
 import { PrimaryButton } from "office-ui-fabric-react/lib/Button";
 import { autobind } from "office-ui-fabric-react/lib/Utilities";
-import { INewSuggestionState } from "./INewSuggestionState";
+import * as React from "react";
+import { Searchbar } from "../Components/Frontpage";
+import { AddLocation, CommonFields, InspiredBy, Personalia, SustainabilityGoals, UploadImages } from "../Components/NewSuggestion";
+import { DataAdapter } from "../Data/DataAdapter";
+import { Person, Suggestion, SustainabilityGoal } from "../Models";
 import { INewSuggestionProps } from "./INewSuggestionProps";
+import { INewSuggestionState } from "./INewSuggestionState";
+import "./NewSuggestion.module.scss";
 
 export class NewSuggestion extends React.Component<INewSuggestionProps, INewSuggestionState>
 {
@@ -54,7 +55,7 @@ export class NewSuggestion extends React.Component<INewSuggestionProps, INewSugg
     }
 
     @autobind
-    updateInspiredBy(inspiredby: Array<Suggestion>) {
+    updateInspiredBy(inspiredby: Suggestion[]) {
         let { suggestion } = { ...this.state } as INewSuggestionState;
         suggestion.InspiredBy = inspiredby;
         this.setState({ suggestion });
@@ -82,6 +83,7 @@ export class NewSuggestion extends React.Component<INewSuggestionProps, INewSugg
             return (
                 <>
                     <Searchbar
+                        placeholderText="Søk etter forslag..."
                         showBackButton={true}
                         showSearchBox={false}
                         showSuggestionButtons={false} />
@@ -96,16 +98,13 @@ export class NewSuggestion extends React.Component<INewSuggestionProps, INewSugg
         return (
             <>
                 <Searchbar
+                    placeholderText="Søk etter forslag..."
                     showBackButton={true}
                     showSearchBox={false}
                     showSuggestionButtons={false} />
                 <div className="NewSuggestion">
-                    <CommonFields
-                        onSuggestionUpdate={this.updateSuggestion}
-                        validationMode={this.state.formInvalid} />
-                    <Personalia
-                        onDataUpdate={this.updatePerson}
-                        validationMode={this.state.formInvalid} />
+                    <CommonFields onSuggestionUpdate={this.updateSuggestion} validationMode={this.state.formInvalid} />
+                    <Personalia onDataUpdate={this.updatePerson} validationMode={this.state.formInvalid} />
                     <UploadImages onDataUpdate={this.updateImage} />
                     <AddLocation onDataUpdate={this.updateLocation} />
                     <SustainabilityGoals onDataUpdate={this.updateGoals} />

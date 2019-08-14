@@ -1,6 +1,5 @@
 import * as React from "react";
-import { Suggestion } from "../../Common/Suggestion";
-import { DataAdapter } from "../../Common/DataAdapter";
+import { DataAdapter } from "../../../Data/DataAdapter";
 import { DetailsList, Selection, SelectionMode } from "office-ui-fabric-react/lib/DetailsList";
 import { MarqueeSelection } from "office-ui-fabric-react/lib/MarqueeSelection";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
@@ -8,6 +7,7 @@ import { DefaultButton } from "office-ui-fabric-react/lib/Button";
 import { autobind } from "office-ui-fabric-react/lib/Utilities";
 import { IInspiredByState } from "./IInspiredByState";
 import { IInspiredByProps } from "./IInspiredByProps";
+import { Suggestion } from "../../../Models";
 
 
 export class InspiredBy extends React.Component<IInspiredByProps, IInspiredByState>

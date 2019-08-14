@@ -1,9 +1,7 @@
 import * as React from "react"
-import { Suggestion } from "../../Common/Suggestion";
-import { DataAdapter } from "../../Common/DataAdapter";
+import { DataAdapter } from "../../../Data/DataAdapter";
 import { DoneThisModal } from "../../Common/DoneThisModal";
-import { Status } from "../../Common/Status";
-import { SuggestionRating } from "../SuggestionRating";
+import { Status, Suggestion } from "../../../Models";
 import { DefaultButton } from "office-ui-fabric-react/lib/Button";
 import { Icon } from "office-ui-fabric-react/lib/Icon";
 import { autobind } from "office-ui-fabric-react/lib/Utilities";
@@ -66,10 +64,8 @@ export class Actions extends React.Component<IActionsProps, IActionsState>
 					{this.props.suggestion.Likes > 0 && <strong className="title-block"><span className="counter">{this.state.numLikes}</span> liker</strong>}
 					<div style={{ marginTop: 15, marginBottom: 15 }}>
 						<DefaultButton text="Like" iconProps={{ iconName: "Like" }} onClick={this.like} style={{ margin: "5px 5px 0 0" }} />
-						<DefaultButton text="Kommenter" iconProps={{ iconName: "Comment" }} onClick={this.scrollToComments} style={{ margin: "5px 5px 0 0" }} />
 						<DefaultButton text="Dette vil vi også gjøre" onClick={this.openModal} style={{ margin: "5px 5px 0 0" }} />
 					</div>
-					<SuggestionRating sugggestion={this.props.suggestion} />
 				</div>
 			</div>
 		)

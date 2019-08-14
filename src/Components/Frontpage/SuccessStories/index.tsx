@@ -1,18 +1,19 @@
 import * as React from "react";
 import "./SuccessStories.module.scss";
-import { Suggestion } from "../../Common/Suggestion";
-import { DataAdapter } from "../../Common/DataAdapter";
-import { Status } from "../../Common/Status";
+import { DataAdapter } from "../../../Data/DataAdapter";
+import { Status, Suggestion } from "../../../Models";
 import { DefaultButton } from "office-ui-fabric-react/lib/Button";
 import { SuccessStoriesState } from "./SuccessStoriesState";
+import { SustainabilityGoals } from "../../Common";
+import { ISuccessStoriesProps } from "./ISuccessStoriesProps";
 
-export class SuccessStories extends React.Component<any, SuccessStoriesState>
+export class SuccessStories extends React.Component<ISuccessStoriesProps, SuccessStoriesState>
 {
 	private dataAdapter = new DataAdapter();
 
 	constructor(props: any) {
 		super(props);
-		this.state = { suggestions: new Array<Suggestion>(), CurrentImage: 0 };
+		this.state = { suggestions: [], CurrentImage: 0 };
 	}
 
 	async componentWillMount() {
@@ -26,17 +27,17 @@ export class SuccessStories extends React.Component<any, SuccessStoriesState>
 		return (
 			<div className="SuccessStories">
 				<section className="ms-Grid">
-					<h2>Suksesshistorier</h2>
+					<h2>{this.props.title}</h2>
 					<div className="ms-Grid-row">
-						{this.state.suggestions.map((item: Suggestion, idx: number) => {
+						{this.state.suggestions.map((suggestion: Suggestion, idx: number) => {
 							return (
 								<article key={idx} className="ms-Grid-col ms-sm5 ms-smPush1 item">
-									{/* <div className="img-block" style={{ backgroundImage: `url('${item.Image}')` }}></div> */}
 									<div className="content-area">
-										<strong className="title">{item.Title}</strong>
-										<p>{item.Summary}</p>
-										<DefaultButton text="Vis" iconProps={{ iconName: "View" }} href={item.Url} style={{ margin: "5px 5px 0 0" }} />
-										<DefaultButton text="Kommenter" iconProps={{ iconName: "Comment" }} href={item.Url + "#kommentar"} style={{ margin: "5px 5px 0 0" }} />
+										<strong className="title">{suggestion.Title}</strong>
+										<p>{suggestion.Summary}</p>
+										<SustainabilityGoals style={{ margin: '10px 0 10px 0' }} goals={suggestion.SustainabilityGoals} />
+										<DefaultButton text="Vis" iconProps={{ iconName: "View" }} href={suggestion.Url} style={{ margin: "5px 5px 0 0" }} />
+										<DefaultButton text="Kommenter" iconProps={{ iconName: "SuggestionComment" }} href={suggestion.Url + "#kommentar"} style={{ margin: "5px 5px 0 0" }} />
 									</div>
 								</article>
 							)

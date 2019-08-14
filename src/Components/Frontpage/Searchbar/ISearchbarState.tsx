@@ -1,4 +1,5 @@
-import { Suggestion } from "../../Common/Suggestion";
+import { Suggestion } from "../../../Models";
+
 export interface ISearchbarState {
     inspiredBy: Suggestion[];
     suggestions: Suggestion[];

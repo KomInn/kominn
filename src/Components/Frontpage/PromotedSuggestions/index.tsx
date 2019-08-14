@@ -1,11 +1,11 @@
 import * as React from "react";
 import Slider from "react-slick";
 import "./PromotedSuggestions.module.scss";
-import { DataAdapter } from "../../Common/DataAdapter";
-import { Status } from "../../Common/Status";
+import { DataAdapter } from "../../../Data/DataAdapter";
+import { Status } from "../../../Models/Status";
 import { IPromotedSuggestionsState } from "./IPromotedSuggestionsState";
-
-interface IPromotedSuggestionsProps { }
+import { IPromotedSuggestionsProps } from "./IPromotedSuggestionsProps";
+import { Tools } from "../../../Tools";
 
 export class PromotedSuggestions extends React.Component<IPromotedSuggestionsProps, IPromotedSuggestionsState>
 {
@@ -22,24 +22,6 @@ export class PromotedSuggestions extends React.Component<IPromotedSuggestionsPro
 		this.setState({ suggestions });
 	}
 
-	monToNorName(date: Date): string {
-		switch (date.getMonth()) {
-			case 0: return "Januar";
-			case 1: return "Februar";
-			case 2: return "Mars";
-			case 3: return "April";
-			case 4: return "Mai";
-			case 5: return "Juni";
-			case 6: return "Juli";
-			case 7: return "August";
-			case 8: return "September";
-			case 9: return "Oktober";
-			case 10: return "November";
-			case 11: return "Desember";
-		}
-	}
-
-
 	render() {
 		if (this.state.suggestions.length <= 0) return null;
 
@@ -51,15 +33,15 @@ export class PromotedSuggestions extends React.Component<IPromotedSuggestionsPro
 						infinite={true}
 						speed={500}
 						slidesToShow={1}>
-						{this.state.suggestions.map((s, idx: number) => (
+						{this.state.suggestions.map((suggestion, idx: number) => (
 							<div key={idx} className="slide">
-								<div className="slide-inner" style={{ backgroundImage: "url('" + s.Image + "')" }}>
+								<div className="slide-inner" style={{ backgroundImage: "url('" + suggestion.Image + "')" }}>
 									<div className="text-block">
-										<p>Månedens innovasjon for {this.monToNorName(s.Created)}</p>
-										<h1><a href={s.Url} style={{ color: "white" }}>{s.Title}</a></h1>
+										<p>Månedens innovasjon for {Tools.getMonthName(suggestion.Created)}</p>
+										<h1><a href={suggestion.Url} style={{ color: "white" }}>{suggestion.Title}</a></h1>
 									</div>
 									<div className="summary-text">
-										<p>{s.Summary}</p>
+										<p>{suggestion.Summary}</p>
 									</div>
 								</div>
 							</div>
