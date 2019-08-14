@@ -1,34 +1,25 @@
 import * as React from "react";
-import { Row, Col } from "react-bootstrap";
-import { Suggestion } from "../../Common/Suggestion";
 import anchorme from "anchorme";
+import { ISummaryProps } from "./ISummaryProps";
 
-
-
-interface SummaryProps { suggestion: Suggestion }
-export class Summary extends React.Component<SummaryProps, any>
+export class Summary extends React.Component<ISummaryProps, {}>
 {
     render() {
-        var summary = (this.props.suggestion.Summary) ? this.props.suggestion.Summary : "";
-        var challenges = (this.props.suggestion.Challenges) ? this.props.suggestion.Challenges : "";
-        var solution = (this.props.suggestion.SuggestedSolution) ? this.props.suggestion.SuggestedSolution : "";
         return (
-            <Row>
-                <Col xs={12}>
-                    <div className="text-area">
-                        <h3>Sammendrag</h3>
-                        <p dangerouslySetInnerHTML={{ __html: anchorme(summary) }}></p>
-                    </div>
-                    <div className="text-area">
-                        <h3>Utfordringer</h3>
-                        <p dangerouslySetInnerHTML={{ __html: anchorme(challenges) }}></p>
-                    </div>
-                    <div className="text-area">
-                        <h3>Løsningsforslag</h3>
-                        <p dangerouslySetInnerHTML={{ __html: anchorme(solution) }}></p>
-                    </div>
-                </Col>
-            </Row>
+            <>
+                <div className="text-area">
+                    <h3>Sammendrag</h3>
+                    <p dangerouslySetInnerHTML={{ __html: anchorme(this.props.suggestion.Summary || "") }}></p>
+                </div>
+                <div className="text-area">
+                    <h3>Utfordringer</h3>
+                    <p dangerouslySetInnerHTML={{ __html: anchorme(this.props.suggestion.Challenges || "") }}></p>
+                </div>
+                <div className="text-area">
+                    <h3>Løsningsforslag</h3>
+                    <p dangerouslySetInnerHTML={{ __html: anchorme(this.props.suggestion.SuggestedSolution || "") }}></p>
+                </div>
+            </>
         )
     }
 }

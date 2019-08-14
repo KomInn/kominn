@@ -1,6 +1,6 @@
-import { Suggestion } from "../../Common/Suggestion";
+import { Suggestion } from "../../../Models";
 export interface IInspiredByState {
-    inspiredBy: Array<Suggestion>;
-    suggestions: Array<Suggestion>;
+    inspiredBy: Suggestion[];
+    suggestions: Suggestion[];
     searchTerm?: string;
 }

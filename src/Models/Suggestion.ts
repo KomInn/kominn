@@ -1,11 +1,5 @@
-/**
- * Data model for Suggestion
- */
-import { Comment } from "./Comment";
-import { Person } from "./Person";
-import { Status } from "./Status";
-import { Tools } from "./Tools";
-import { SustainabilityGoal } from "./SustainabilityGoal";
+import { Person, Status, SustainabilityGoal, SuggestionComment } from ".";
+import { Tools } from "../Tools";
 
 export class Suggestion {
     public Id: number;  // List item ID
@@ -13,7 +7,7 @@ export class Suggestion {
     public Summary: string;
     public Challenges: string;
     public SuggestedSolution: string;
-    public InspiredBy: Array<Suggestion>;
+    public InspiredBy: Suggestion[];
     public Likes: number;
     public Image: string;
     public Location: string;
@@ -21,7 +15,7 @@ export class Suggestion {
     public UsefulnessType: string;
     public Submitter: Person;
     public NumberOfComments: number;
-    public Comments: Array<Comment>;
+    public Comments: Array<SuggestionComment>;
     public Tags: Array<string>;
     public Status: Status;
     public StatusString: string;
@@ -35,7 +29,7 @@ export class Suggestion {
 
     constructor() {
         this.Id = -1;
-        this.Comments = new Array<Comment>();
+        this.Comments = new Array<SuggestionComment>();
         this.Likes = 0;
         this.Submitter = new Person();
         this.SustainabilityGoals = new Array<SustainabilityGoal>();
@@ -75,7 +69,7 @@ export class Suggestion {
         if (this.Location == null)
             return null;
 
-        if (!Tools.IsLatLong(this.Location))
+        if (!Tools.isLatLong(this.Location))
             return null;
 
         var s = this.Location.split(',');

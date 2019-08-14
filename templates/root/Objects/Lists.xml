@@ -1,6 +1,5 @@
 <pnp:Lists xmlns:pnp="http://schemas.dev.office.com/PnP/2019/03/ProvisioningSchema">
-    <pnp:ListInstance Title="Bilder" Description="" DocumentTemplate="" TemplateType="109" Url="Bilder" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" TemplateFeatureID="00bfea71-52d4-45b3-b544-b1c71b620109" EnableAttachments="false" DefaultDisplayFormUrl="{site}/Bilder/Forms/DispForm.aspx" DefaultEditFormUrl="{site}/Bilder/Forms/EditForm.aspx" DefaultNewFormUrl="{site}/Bilder/Forms/Upload.aspx" ImageUrl="/_layouts/15/images/itil.png?rev=47" IrmExpire="false" IrmReject="false" IsApplicationList="false" ValidationFormula="" ValidationMessage="">
-    </pnp:ListInstance>
+    <pnp:ListInstance Title="Bilder" Description="" DocumentTemplate="" TemplateType="109" Url="Bilder" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" TemplateFeatureID="00bfea71-52d4-45b3-b544-b1c71b620109" EnableAttachments="false" DefaultDisplayFormUrl="{site}/Bilder/Forms/DispForm.aspx" DefaultEditFormUrl="{site}/Bilder/Forms/EditForm.aspx" DefaultNewFormUrl="{site}/Bilder/Forms/Upload.aspx" ImageUrl="/_layouts/15/images/itil.png?rev=47" IrmExpire="false" IrmReject="false" IsApplicationList="false" ValidationFormula="" ValidationMessage="" />
     <pnp:ListInstance Title="Forslag" Description="" DocumentTemplate="" OnQuickLaunch="true" TemplateType="100" Url="Forslag" RemoveExistingContentTypes="true" ContentTypesEnabled="true" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" EnableFolderCreation="false" ReadSecurity="0" WriteSecurity="0">
         <pnp:ContentTypeBindings>
             <pnp:ContentTypeBinding ContentTypeID="0x010063D756B686FA90498E2CB193C077DEA0" Default="true" />
@@ -36,6 +35,14 @@
                 <JSLink>clienttemplates.js</JSLink>
             </View>
         </pnp:Views>
+        <pnp:Security>
+            <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="false">
+                <pnp:RoleAssignment Principal="{associatedownergroup}" RoleDefinition="Full kontroll" />
+                <pnp:RoleAssignment Principal="Saksbehandlere" RoleDefinition="Rediger" />
+                <pnp:RoleAssignment Principal="{associatedvisitorgroup}" RoleDefinition="Lese" />
+                <pnp:RoleAssignment Principal="{associatedmembergroup}" RoleDefinition="Lese" />
+            </pnp:BreakRoleInheritance>
+        </pnp:Security>
     </pnp:ListInstance>
     <pnp:ListInstance Title="Forslagsvurdering" Description="" DocumentTemplate="" TemplateType="100" Url="Lists/Forslagsvurdering" RemoveExistingContentTypes="true" ContentTypesEnabled="true" EnableVersioning="true" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" EnableFolderCreation="false" ReadSecurity="0" WriteSecurity="0">
         <pnp:ContentTypeBindings>
@@ -63,6 +70,14 @@
                 <JSLink>clienttemplates.js</JSLink>
             </View>
         </pnp:Views>
+        <pnp:Security>
+            <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="false">
+                <pnp:RoleAssignment Principal="{associatedownergroup}" RoleDefinition="Full kontroll" />
+                <pnp:RoleAssignment Principal="Saksbehandlere" RoleDefinition="Rediger" />
+                <pnp:RoleAssignment Principal="{associatedvisitorgroup}" RoleDefinition="Lese" />
+                <pnp:RoleAssignment Principal="{associatedmembergroup}" RoleDefinition="Lese" />
+            </pnp:BreakRoleInheritance>
+        </pnp:Security>
     </pnp:ListInstance>
     <pnp:ListInstance Title="Ikoner" Description="" DocumentTemplate="{site}/Ikoner/Forms/template.dotx" TemplateType="101" Url="Ikoner" EnableVersioning="true" MinorVersionLimit="0" MaxVersionLimit="10" DraftVersionVisibility="0" TemplateFeatureID="00bfea71-e717-4e80-aa17-d0c71b360101" EnableAttachments="false" ReadSecurity="0" WriteSecurity="0">
         <pnp:Views>
@@ -96,6 +111,14 @@
         <pnp:FieldRefs>
             <pnp:FieldRef ID="ef991a83-108d-4407-8ee5-ccc0c3d836b9" Name="SharedWithUsers" DisplayName="Delt med" />
         </pnp:FieldRefs>
+        <pnp:Security>
+            <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="false">
+                <pnp:RoleAssignment Principal="{associatedownergroup}" RoleDefinition="Full kontroll" />
+                <pnp:RoleAssignment Principal="Saksbehandlere" RoleDefinition="Rediger" />
+                <pnp:RoleAssignment Principal="{associatedvisitorgroup}" RoleDefinition="Lese" />
+                <pnp:RoleAssignment Principal="{associatedmembergroup}" RoleDefinition="Lese" />
+            </pnp:BreakRoleInheritance>
+        </pnp:Security>
     </pnp:ListInstance>
     <pnp:ListInstance Title="InductKonfigurasjon" Description="" DocumentTemplate="" TemplateType="100" Url="Lists/InductKonfigurasjon" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" EnableFolderCreation="false" ReadSecurity="0" WriteSecurity="0">
         <pnp:Views>
@@ -120,12 +143,14 @@
                 <Default>1</Default>
             </Field>
         </pnp:Fields>
-        <!-- <pnp:Security>
+        <pnp:Security>
             <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="false">
-              <pnp:RoleAssignment Principal="{associatedownergroupid}" RoleDefinition="Full kontroll" />
-              <pnp:RoleAssignment Principal="Saksbehandlere" RoleDefinition="Rediger" />
+                <pnp:RoleAssignment Principal="{associatedownergroup}" RoleDefinition="Full kontroll" />
+                <pnp:RoleAssignment Principal="Saksbehandlere" RoleDefinition="Rediger" />
+                <pnp:RoleAssignment Principal="{associatedvisitorgroup}" RoleDefinition="Lese" />
+                <pnp:RoleAssignment Principal="{associatedmembergroup}" RoleDefinition="Lese" />
             </pnp:BreakRoleInheritance>
-          </pnp:Security> -->
+        </pnp:Security>
     </pnp:ListInstance>
     <pnp:ListInstance Title="Konfigurasjon" Description="" DocumentTemplate="" TemplateType="100" Url="Lists/Konfigurasjon" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" EnableFolderCreation="false" ReadSecurity="0" WriteSecurity="0">
         <pnp:Views>
@@ -153,6 +178,14 @@
                 <pnp:DataValue FieldName="KmiValue">AIzaSyBEQC7aWXruMiVIMfR_ev-7AFFqs96xn2c</pnp:DataValue>
             </pnp:DataRow>
         </pnp:DataRows>
+        <pnp:Security>
+            <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="false">
+                <pnp:RoleAssignment Principal="{associatedownergroup}" RoleDefinition="Full kontroll" />
+                <pnp:RoleAssignment Principal="Saksbehandlere" RoleDefinition="Rediger" />
+                <pnp:RoleAssignment Principal="{associatedvisitorgroup}" RoleDefinition="Lese" />
+                <pnp:RoleAssignment Principal="{associatedmembergroup}" RoleDefinition="Lese" />
+            </pnp:BreakRoleInheritance>
+        </pnp:Security>
     </pnp:ListInstance>
     <pnp:ListInstance Title="Kampanje" Description="" DocumentTemplate="" OnQuickLaunch="true" TemplateType="100" Url="Lists/Kampanje" RemoveExistingContentTypes="true" ContentTypesEnabled="true" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" EnableFolderCreation="false" ReadSecurity="0" WriteSecurity="0">
         <pnp:ContentTypeBindings>
@@ -178,6 +211,14 @@
                 <JSLink>clienttemplates.js</JSLink>
             </View>
         </pnp:Views>
+        <pnp:Security>
+            <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="false">
+                <pnp:RoleAssignment Principal="{associatedownergroup}" RoleDefinition="Full kontroll" />
+                <pnp:RoleAssignment Principal="Saksbehandlere" RoleDefinition="Rediger" />
+                <pnp:RoleAssignment Principal="{associatedvisitorgroup}" RoleDefinition="Lese" />
+                <pnp:RoleAssignment Principal="{associatedmembergroup}" RoleDefinition="Lese" />
+            </pnp:BreakRoleInheritance>
+        </pnp:Security>
     </pnp:ListInstance>
     <pnp:ListInstance Title="Kommentarer" Description="" DocumentTemplate="" OnQuickLaunch="true" TemplateType="100" Url="Kommentarer" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" EnableFolderCreation="false" ReadSecurity="0" WriteSecurity="0">
         <pnp:ContentTypeBindings>
@@ -206,6 +247,14 @@
             <Field Type="Text" Name="Image" DisplayName="Bilde" ID="{f3695a73-fb43-44ea-8149-8b058bfce0c1}" Group="KomInn" SourceID="{{listid:Kommentarer}}" StaticName="Image" />
             <Field Type="Number" Name="SuggestionId" DisplayName="Forslag" ID="{45635296-fbb3-429b-80e0-049157f8370b}" Group="KomInn" SourceID="{{listid:Kommentarer}}" StaticName="SuggestionId" />
         </pnp:Fields>
+        <pnp:Security>
+            <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="false">
+                <pnp:RoleAssignment Principal="{associatedownergroup}" RoleDefinition="Full kontroll" />
+                <pnp:RoleAssignment Principal="Saksbehandlere" RoleDefinition="Rediger" />
+                <pnp:RoleAssignment Principal="{associatedvisitorgroup}" RoleDefinition="Lese" />
+                <pnp:RoleAssignment Principal="{associatedmembergroup}" RoleDefinition="Lese" />
+            </pnp:BreakRoleInheritance>
+        </pnp:Security>
     </pnp:ListInstance>
     <pnp:ListInstance Title="Likes" Description="" DocumentTemplate="" OnQuickLaunch="true" TemplateType="100" Url="Likes" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" EnableFolderCreation="false" ReadSecurity="0" WriteSecurity="0">
         <pnp:ContentTypeBindings>
@@ -320,5 +369,13 @@
                 <pnp:DataValue FieldName="Ikon">17</pnp:DataValue>
             </pnp:DataRow>
         </pnp:DataRows>
+        <pnp:Security>
+            <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="false">
+                <pnp:RoleAssignment Principal="{associatedownergroup}" RoleDefinition="Full kontroll" />
+                <pnp:RoleAssignment Principal="Saksbehandlere" RoleDefinition="Rediger" />
+                <pnp:RoleAssignment Principal="{associatedvisitorgroup}" RoleDefinition="Lese" />
+                <pnp:RoleAssignment Principal="{associatedmembergroup}" RoleDefinition="Lese" />
+            </pnp:BreakRoleInheritance>
+        </pnp:Security>
     </pnp:ListInstance>
 </pnp:Lists>

@@ -4,10 +4,11 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { initializeIcons } from "@uifabric/icons";
 import { NewSuggestion } from "./NewSuggestion";
-import { Frontpage } from "./Frontpage";
-import { ViewSuggestion } from "./ViewSuggestion";
-import { SendTilKS } from "./SendTilKS";
+import { Frontpage } from "./Pages/Frontpage";
+import { ViewSuggestion } from "./Pages/ViewSuggestion";
+import { SendTilKS } from "./Pages/SendTilKS";
 import { Vurdering } from './Components/Vurdering';
+
 $.ajaxSetup({ headers: { "Accept": "application/json;odata=verbose" } })
 initializeIcons(undefined, { disableWarnings: true });
 

@@ -1,5 +1,5 @@
-import { Suggestion } from "../../Common/Suggestion";
+import { Suggestion } from "../../../Models";
 export interface SuccessStoriesState {
-	suggestions?: Array<Suggestion>;
+	suggestions?: Suggestion[];
 	CurrentImage?: number;
 }

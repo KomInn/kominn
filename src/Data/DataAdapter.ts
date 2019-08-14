@@ -1,15 +1,10 @@
 /**
- * Generic proxy data-adapter 
- * Calls every function in the specific adapter. All adapters must implement all these functions. 
+ * Generic proxy data-SPDataAdapter 
+ * Calls every function in the specific SPDataAdapter. All SPDataAdapters must implement all these functions. 
  */
-import { Suggestion } from "./Suggestion";
-import { Status } from "./Status";
-import { Person } from "./Person";
 import { SPDataAdapter } from "./SPDataAdapter";
-let adapter = SPDataAdapter;
 import { Promise } from "es6-promise";
-import { SustainabilityGoal } from "./SustainabilityGoal";
-import { Campaign } from "./Campaign";
+import { Status, Suggestion, SustainabilityGoal, Person, Campaign } from "../Models";
 
 export class DataAdapter {
 
@@ -18,15 +13,15 @@ export class DataAdapter {
      * Returns: Uploaded image path
      */
     uploadImage(buffer: any, filename: string): Promise<any> {
-        return adapter.uploadImage(buffer, filename);
+        return SPDataAdapter.uploadImage(buffer, filename);
     }
     /**
      * Get all suggestions
      * Param: (optional) SuggestionType 
      * Returns: Array with all suggestions, sorted by date. 
      */
-    getAllSuggestions(type?: Status, top?: number, customQuery?: string, customSort?: string): Promise<Array<Suggestion>> {
-        return adapter.getAllSuggestions(type, top, customQuery, customSort);
+    getAllSuggestions(type?: Status, top?: number, customQuery?: string, customSort?: string): Promise<Suggestion[]> {
+        return SPDataAdapter.getAllSuggestions(type, top, customQuery, customSort);
     }
 
 
@@ -34,29 +29,29 @@ export class DataAdapter {
      *  Get sustainability-goals 
      */
     getSustainabilityGoals(): Promise<Array<SustainabilityGoal>> {
-        return adapter.getSustainabilityGoals();
+        return SPDataAdapter.getSustainabilityGoals();
     }
 
     /**
      * Get my suggestions
      * Gets all suggestions submitted by user 
      */
-    getMySuggestions(): Promise<Array<Suggestion>> {
-        return adapter.getMySuggestions();
+    getMySuggestions(): Promise<Suggestion[]> {
+        return SPDataAdapter.getMySuggestions();
     }
 
     /**
      * Get suggestion by title (Search for suggestions)
      */
     getSuggestionByTitle(title: string) {
-        return adapter.getSuggestionByTitle(title);
+        return SPDataAdapter.getSuggestionByTitle(title);
     }
 
     /**
      * Get suggestion by id     
      */
     getSuggestionById(id: string) {
-        return adapter.getAllSuggestions(null, 1, "&$filter=Id eq " + id);
+        return SPDataAdapter.getAllSuggestions(null, 1, `&$filter=Id eq ${id}`);
     }
 
     /**
@@ -64,7 +59,7 @@ export class DataAdapter {
      * Retrieves any avilable fields for the Person-object. 
      */
     getMyUserProfile(): Promise<Person> {
-        return adapter.getMyUserProfile();
+        return SPDataAdapter.getMyUserProfile();
     }
 
     /**
@@ -72,7 +67,7 @@ export class DataAdapter {
      * Returns: (Suggestion) The submitted suggestion
      */
     submitSuggestion(suggestion: Suggestion): Promise<Suggestion> {
-        return adapter.submitSuggestion(suggestion);
+        return SPDataAdapter.submitSuggestion(suggestion);
     }
 
     /**
@@ -80,7 +75,7 @@ export class DataAdapter {
      * Returns: The suggestion with comments loaded
      */
     getCommentsForSuggestion(suggestion: Suggestion): Promise<Suggestion> {
-        return adapter.getCommentsForSuggestion(suggestion);
+        return SPDataAdapter.getCommentsForSuggestion(suggestion);
     }
 
     /**
@@ -88,7 +83,7 @@ export class DataAdapter {
      * Returns: The suggestion with the added comment
      */
     submitCommentForSuggestion(text: string, suggestion: Suggestion): Promise<Suggestion> {
-        return adapter.submitCommentForSuggestion(text, suggestion);
+        return SPDataAdapter.submitCommentForSuggestion(text, suggestion);
     }
 
     /**
@@ -96,7 +91,7 @@ export class DataAdapter {
      * Returns: The suggestion with updated like count (Suggestion)
      */
     updateLike(suggestion: Suggestion): Promise<Suggestion> {
-        return adapter.updateLike(suggestion);
+        return SPDataAdapter.updateLike(suggestion);
     }
 
     /**
@@ -104,7 +99,7 @@ export class DataAdapter {
      * @return {Promise<Promise>} A person-object with City and CountyCode filled out
      */
     getCityAndCountryCode(person: Person): Promise<Person> {
-        return adapter.getCityAndCountryCode(person);
+        return SPDataAdapter.getCityAndCountryCode(person);
     }
 
     /**
@@ -112,13 +107,12 @@ export class DataAdapter {
      * @returns ID of item in Induct
      */
     submitToInduct(suggestion: Suggestion): Promise<string> {
-        return adapter.submitToInduct(suggestion);
+        return SPDataAdapter.submitToInduct(suggestion);
     }
 
     getAllCampaigns(): Promise<Array<Campaign>> {
-        return new Promise((resolve, _reject) => {
-
-            $.get(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Kampanje')/Items").then((s: any) => {
+        return new Promise(resolve => {
+            $.get(`${_spPageContextInfo.webAbsoluteUrl}/_api/web/lists/getbytitle('Kampanje')/Items`).then((s: any) => {
                 var campaigns = s.d.results.map((i: any) => {
                     var campaign = new Campaign();
                     campaign.CompRef = i.KmiCampaignRef;
@@ -135,12 +129,14 @@ export class DataAdapter {
         });
     }
 
-    
+    doesUserHavePermission(kind: SP.PermissionKind) {
+        return SPDataAdapter.doesUserHavePermission(kind);
+    }
 
     /**
      * Get config
      */
     getConfig(): Promise<Object> {
-        return adapter.getConfig();
+        return SPDataAdapter.getConfig();
     }
 }

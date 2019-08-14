@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Person } from "../../Common/Person";
-import { DataAdapter } from "../../Common/DataAdapter";
+import { Person } from "../../../Models/Person";
+import { DataAdapter } from "../../../Data/DataAdapter";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
 import { PersonaliaFields } from "./PersonaliaFields";
 import { IPersonaliaState } from "./IPersonaliaState";

@@ -1,14 +1,15 @@
-import * as React from "react";
-import "./Searchbar.module.scss";
 import { DefaultButton } from "office-ui-fabric-react/lib/Button";
-import { SearchBox } from "office-ui-fabric-react/lib/SearchBox";
 import { Callout } from "office-ui-fabric-react/lib/Callout";
+import { SearchBox } from "office-ui-fabric-react/lib/SearchBox";
 import { autobind } from "office-ui-fabric-react/lib/Utilities";
-import { Suggestion } from "../../Common/Suggestion";
-import { DataAdapter } from "../../Common/DataAdapter";
-import { SubmitSuggestionButtons } from "../../Common/SubmitSuggestionButtons"
+import * as React from "react";
+import { DataAdapter } from "../../../Data/DataAdapter";
+import { Suggestion } from "../../../Models";
+import { SubmitSuggestionButtons } from "../../Common/SubmitSuggestionButtons";
 import { ISearchbarProps } from "./ISearchbarProps";
 import { ISearchbarState } from "./ISearchbarState";
+import "./Searchbar.module.scss";
+
 
 export class Searchbar extends React.Component<ISearchbarProps, ISearchbarState>
 {
@@ -49,7 +50,11 @@ export class Searchbar extends React.Component<ISearchbarProps, ISearchbarState>
                 gapSpace={10}
                 onDismiss={_ => this.setState({ showSuggestions: false })}>
                 <div style={{ padding: 25 }}>
-                    {this.state.suggestions.map((item: Suggestion, idx: number) => <div key={idx}><a href={item.Url}>{item.Title}</a></div>)}
+                    {this.state.suggestions.map((item: Suggestion, idx: number) => (
+                        <div key={idx}>
+                            <a href={item.Url}>{item.Title}</a>
+                        </div>
+                    ))}
                 </div>
             </Callout>
         );
@@ -67,7 +72,7 @@ export class Searchbar extends React.Component<ISearchbarProps, ISearchbarState>
                             text="Tilbake" />
                     </div>
                     <div ref="SearchBox" hidden={!this.props.showSearchBox} className="ms-Grid-col ms-sm5">
-                        <SearchBox placeholder="Søk etter forslag..." onChange={this.searchSuggestion} />
+                        <SearchBox placeholder={this.props.placeholderText} onChange={this.searchSuggestion} />
                     </div>
                     <div hidden={!this.props.showSuggestionButtons} className="ms-Grid-col ms-sm5">
                         <SubmitSuggestionButtons />

@@ -1,4 +1,4 @@
-export class Person{
+export class Person {
     public Id:number; 
     public Name:string; 
     public Address:string;

@@ -1,9 +1,9 @@
 import * as React from "react";
 import { DefaultButton } from "office-ui-fabric-react/lib/Button";
-import { Campaign } from "../Common/Campaign";
+import { Campaign } from "../../Models/Campaign";
 import * as moment from "moment"
 import * as _ from "lodash";
-import { DataAdapter } from "./DataAdapter";
+import { DataAdapter } from "../../Data/DataAdapter";
 interface ISubmitsuggestionButtonsState { Campaigns: Array<Campaign> }
 export class SubmitSuggestionButtons extends React.Component<any, ISubmitsuggestionButtonsState>
 {

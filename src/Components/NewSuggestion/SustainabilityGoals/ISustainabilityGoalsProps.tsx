@@ -1,4 +1,5 @@
-import { SustainabilityGoal } from "../../Common/SustainabilityGoal";
+import { SustainabilityGoal } from "../../../Models";
+
 export interface ISustainabilityGoalsProps {
     onDataUpdate?(goals: Array<SustainabilityGoal>): void;
 }

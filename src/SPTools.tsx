@@ -35,7 +35,6 @@ export interface ISPUserProfile {
     UserProfileProperties: UserProfilePropertyArray<IUserProfileProperty>
 }
 
-interface UserImage { ImageUrl: string, Username: string }
 class UserProfilePropertyArray<T> extends Array<any>
 {
     public findByKey(key: string): T {
@@ -261,7 +260,7 @@ export class Like {
             context.load(item);
             context.executeQueryAsync(((result: any) => {
                 this.SuggestionItem.Likes += 1;
-                this.UpdateLikeCountInList().then(() => {
+                this.updateLikeCountInList().then(() => {
                     this.LikeListItemId = item.get_id();
                     this.UserLikesThis = true;
                     this.Processing = false;
@@ -291,7 +290,7 @@ export class Like {
             item.deleteObject();
             context.executeQueryAsync(((r: any) => {
                 this.SuggestionItem.Likes -= 1;
-                this.UpdateLikeCountInList().then(() => {
+                this.updateLikeCountInList().then(() => {
                     this.UserLikesThis = false;
                     this.Processing = false;
                     resolve(this.SuggestionItem.Likes);
@@ -303,7 +302,7 @@ export class Like {
         });
     }
 
-    private UpdateLikeCountInList(): Promise<{}> {
+    private updateLikeCountInList(): Promise<{}> {
         return new Promise((resolve, reject) => {
             var context = SP.ClientContext.get_current();
             var list = context.get_web().get_lists().getByTitle("Forslag");
@@ -324,9 +323,9 @@ export class Like {
     }
 }
 
-export interface Comment { Text?: string, Person?: IUser, Timestamp?: string, Image?: string, Role?: string };
+export interface SuggestionComment { Text?: string, Person?: IUser, Timestamp?: string, Image?: string, Role?: string };
 export class Comments {
-    public static AllComments(suggestion: Suggestion): Promise<Array<Comment>> {
+    public static AllComments(suggestion: Suggestion): Promise<Array<SuggestionComment>> {
         return new Promise((resolve, reject) => {
             ListData.getDataFromList("Kommentarer",
                 "?$select=Kommentar,Forslag/Id,Person/Title,Created,Person/Id,Person/UserName&$expand=Forslag,Person&$filter=Forslag/Id eq " + suggestion.Id + "&$orderby=Created desc")
@@ -334,7 +333,7 @@ export class Comments {
                 .catch(commentsRetrievalFailedHandler);
 
             function commentsRetrievedSuccessfulHandler(d: any) {
-                var comments = new Array<Comment>();
+                var comments = new Array<SuggestionComment>();
                 for (var i = 0; i < d.d.results.length; i++) {
                     let item = d.d.results[i];
                     comments.push({
@@ -381,7 +380,7 @@ export class Comments {
 
     }
 
-    public static NewComment(text: string, suggestionListItemId: number): Promise<Comment> {
+    public static NewComment(text: string, suggestionListItemId: number): Promise<SuggestionComment> {
         return new Promise((resolve, reject) => {
             if (text.length <= 0 || text == undefined) {
                 reject();
@@ -419,7 +418,7 @@ export class Comments {
                                     // Get own properties 
                                     UserProfile.GetIUserById(userId)
                                         .then((user: IUser) => {
-                                            let comment: Comment =
+                                            let comment: SuggestionComment =
                                             {
                                                 Person: user,
                                                 Role: rolle,
@@ -443,7 +442,7 @@ export class Comments {
 
     public static incrementNumCommentsOnSuggestionList(listitem_id: number): Promise<{}> {
         return new Promise((resolve, reject) => {
-            var comments = this.AllComments(new Suggestion(listitem_id)).then((result: Array<Comment>) => {
+            var comments = this.AllComments(new Suggestion(listitem_id)).then((result: Array<SuggestionComment>) => {
                 var context = SP.ClientContext.get_current();
                 var list = context.get_web().get_lists().getByTitle("Forslag");
                 var item = list.getItemById(listitem_id);
@@ -647,13 +646,13 @@ export class Suggestions {
         });
 
     }
-    public static GetAll(): Promise<Array<Suggestion>> {
+    public static GetAll(): Promise<Suggestion[]> {
         return Suggestions.GetByQuery("");
     }
 
-    public static GetByQuery(CAMLQuery: string): Promise<Array<Suggestion>> {
+    public static GetByQuery(CAMLQuery: string): Promise<Suggestion[]> {
         return new Promise((resolve, reject) => {
-            var fArr = new Array<Suggestion>();
+            var fArr = [];
             var query = new SP.CamlQuery();
             query.set_viewXml(CAMLQuery);
 
@@ -759,15 +758,15 @@ export class Suggestions {
 
 
 
-    public static partitionSuggestions(suggestions: Array<Suggestion>, partitionSize: number): Promise<Array<Array<Suggestion>>> {
+    public static partitionSuggestions(suggestions: Suggestion[], partitionSize: number): Promise<Array<Suggestion[]>> {
         return new Promise((resolve, reject) => {
-            var p = Array<Array<Suggestion>>();
-            var partition = new Array<Suggestion>();
+            var p = Array<Suggestion[]>();
+            var partition = [];
             for (var i = 0; i < suggestions.length; i++) {
                 partition.push(suggestions[i]);
                 if (partition.length == partitionSize) {
                     p.push(partition);
-                    partition = new Array<Suggestion>();
+                    partition = [];
                 }
             }
             if (partition.length > 0)

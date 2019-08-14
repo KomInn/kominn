@@ -1,11 +1,11 @@
 import * as React from "react";
 import "./SustainabilityGoals.module.scss";
-import { DataAdapter } from "../../Common/DataAdapter";
-import { SustainabilityGoal } from "../../Common/SustainabilityGoal";
+import { DataAdapter } from "../../../Data/DataAdapter";
 import { Toggle } from "office-ui-fabric-react/lib/Toggle";
 import { Label } from "office-ui-fabric-react/lib/Label";
 import { ISustainabilityGoalsState } from "./ISustainabilityGoalsState";
 import { ISustainabilityGoalsProps } from "./ISustainabilityGoalsProps";
+import { SustainabilityGoal } from "../../../Models";
 
 export class SustainabilityGoals extends React.Component<ISustainabilityGoalsProps, ISustainabilityGoalsState>
 {

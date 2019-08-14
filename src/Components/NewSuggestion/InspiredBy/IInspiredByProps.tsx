@@ -1,4 +1,4 @@
-import { Suggestion } from "../../Common/Suggestion";
+import { Suggestion } from "../../../Models";
 export interface IInspiredByProps {
-    onDataUpdate?(inspiredBy: Array<Suggestion>): void;
+    onDataUpdate?(inspiredBy: Suggestion[]): void;
 }
