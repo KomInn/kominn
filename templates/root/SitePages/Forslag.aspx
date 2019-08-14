@@ -29,6 +29,6 @@
 
 <%-- The markup and script in the following Content element will be placed in the <body> of the page --%>
 <asp:Content ContentPlaceHolderID="PlaceHolderMain" runat="server">
-  <div id="forslag"></div>
+  <div id="viewsuggestion"></div>
   <script type="text/javascript" src="../SiteAssets/js/bundle.js"></script>
 </asp:Content>

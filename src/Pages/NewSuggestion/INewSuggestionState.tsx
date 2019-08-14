@@ -1,4 +1,4 @@
-import { Suggestion } from "../Models";
+import { Suggestion } from "../../Models";
 
 export interface INewSuggestionState {
     suggestion: Suggestion;

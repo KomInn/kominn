@@ -1,10 +1,10 @@
 import { PrimaryButton } from "office-ui-fabric-react/lib/Button";
 import { autobind } from "office-ui-fabric-react/lib/Utilities";
 import * as React from "react";
-import { Searchbar } from "../Components/Frontpage";
-import { AddLocation, CommonFields, InspiredBy, Personalia, SustainabilityGoals, UploadImages } from "../Components/NewSuggestion";
-import { DataAdapter } from "../Data/DataAdapter";
-import { Person, Suggestion, SustainabilityGoal } from "../Models";
+import { Searchbar } from "../../Components/Frontpage";
+import { AddLocation, CommonFields, InspiredBy, Personalia, SustainabilityGoals, UploadImages } from "../../Components/NewSuggestion";
+import { DataAdapter } from "../../Data/DataAdapter";
+import { Person, Suggestion, SustainabilityGoal } from "../../Models";
 import { INewSuggestionProps } from "./INewSuggestionProps";
 import { INewSuggestionState } from "./INewSuggestionState";
 import "./NewSuggestion.module.scss";
