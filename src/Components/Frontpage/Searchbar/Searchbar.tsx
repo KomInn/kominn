@@ -1,23 +1,12 @@
-import * as React from "react";
 import { DefaultButton } from "office-ui-fabric-react/lib/Button";
-import { SearchBox } from "office-ui-fabric-react/lib/SearchBox";
 import { Callout } from "office-ui-fabric-react/lib/Callout";
+import { SearchBox } from "office-ui-fabric-react/lib/SearchBox";
 import { autobind } from "office-ui-fabric-react/lib/Utilities";
+import * as React from "react";
 import { DataAdapter } from "../../../Data/DataAdapter";
-import { SubmitSuggestionButtons } from "../../Common/SubmitSuggestionButtons"
-
-interface ISearchbarState {
-    inspiredBy: Array<Suggestion>;
-    suggestions: Array<Suggestion>;
-    searchTerm?: string;
-    showSuggestions?: boolean;
-}
-interface ISearchbarProps {
-    showBackButton?: boolean;
-    showSearchBox?: boolean;
-    showSuggestionButtons?: boolean;
-}
-
+import { SubmitSuggestionButtons } from "../../Common/SubmitSuggestionButtons";
+import { ISearchbarProps } from "./ISearchbarProps";
+import { ISearchbarState } from "./ISearchbarState";
 
 export class Searchbar extends React.Component<ISearchbarProps, ISearchbarState>
 {
@@ -58,7 +47,7 @@ export class Searchbar extends React.Component<ISearchbarProps, ISearchbarState>
                 gapSpace={10}
                 onDismiss={_ => this.setState({ showSuggestions: false })}>
                 <div style={{ padding: 25 }}>
-                    {this.state.suggestions.map((item: Suggestion, idx: number) => <div key={idx}><a href={item.Url}>{item.Title}</a></div>)}
+                    {this.state.suggestions.map((item, idx: number) => <div key={idx}><a href={item.Url}>{item.Title}</a></div>)}
                 </div>
             </Callout>
         );

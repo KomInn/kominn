@@ -1,5 +1,5 @@
 export interface ISearchbarProps {
-    placeholderText: string;
+    placeholderText?: string;
     showBackButton?: boolean;
     showSearchBox?: boolean;
     showSuggestionButtons?: boolean;
