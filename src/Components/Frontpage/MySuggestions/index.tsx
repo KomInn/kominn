@@ -1,4 +1,4 @@
-import { DetailsList, IColumn, SelectionMode } from "office-ui-fabric-react/lib/DetailsList";
+import { DetailsList, ConstrainMode, DetailsListLayoutMode, IColumn, SelectionMode } from "office-ui-fabric-react/lib/DetailsList";
 import { Icon } from "office-ui-fabric-react/lib/Icon";
 import * as React from "react";
 import { DataAdapter } from "../../../Data/DataAdapter";
@@ -6,12 +6,13 @@ import { Suggestion } from "../../../Models";
 import { IMySuggestionsState } from "./IMySuggestionsState";
 import "./MySuggestions.module.scss";
 import { IMySuggestionsProps } from "./IMySuggestionsProps";
+import { Tools } from "../../../Tools";
 
 export class MySuggestions extends React.Component<IMySuggestionsProps, IMySuggestionsState>
 {
 	private _columns: IColumn[] = [
 		{ key: "Title", name: "Title", fieldName: "Title", minWidth: 0 },
-		{ key: "Created", name: "Created", fieldName: "CreatedString", minWidth: 0 },
+		{ key: "Created", name: "Created", fieldName: "Created", minWidth: 0 },
 		{ key: "Likes", name: "Likes", fieldName: "Likes", minWidth: 0 },
 		{ key: "Status", name: "Status", fieldName: "StatusString", minWidth: 0 },
 	];
@@ -32,6 +33,9 @@ export class MySuggestions extends React.Component<IMySuggestionsProps, IMySugge
 			case "Title": {
 				return <a href={item.Url}>{colValue}</a>;
 			}
+			case "Created": {
+				return <span>{Tools.formatDate(colValue)}</span>;
+			}
 			case "Likes": {
 				return <span><Icon iconName="Like" /> {colValue}</span>;
 			}
@@ -49,6 +53,8 @@ export class MySuggestions extends React.Component<IMySuggestionsProps, IMySugge
 						items={this.state.suggestions}
 						columns={this._columns}
 						onRenderItemColumn={this.onRenderItemColumn.bind(this)}
+						layoutMode={DetailsListLayoutMode.justified}
+						constrainMode={ConstrainMode.horizontalConstrained}
 						selectionMode={SelectionMode.none} />
 				</div>
 			</section>
