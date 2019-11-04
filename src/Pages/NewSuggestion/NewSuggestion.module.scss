@@ -1,0 +1,24 @@
+.NewSuggestion {
+  max-width: 500px;
+  margin: 25px 0 0 50px;
+
+  input {
+    border: none !important;
+  }
+
+  section {
+    margin: 15px 0 15px 0;
+
+    h2 {
+      margin: 0 0 15px 0;
+    }
+
+    .actions {
+      margin: 15px 0 0 0;
+      button,
+      a {
+        margin: 4px 4px 0 0;
+      }
+    }
+  }
+}

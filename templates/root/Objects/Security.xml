@@ -1,0 +1,5 @@
+<pnp:Security xmlns:pnp="http://schemas.dev.office.com/PnP/2019/03/ProvisioningSchema">
+    <pnp:SiteGroups>
+        <pnp:SiteGroup Title="Saksbehandlere" Description="" Owner="{associatedownergroup}" AllowMembersEditMembership="false" AllowRequestToJoinLeave="false" AutoAcceptRequestToJoinLeave="false" OnlyAllowMembersViewMembership="true" />
+    </pnp:SiteGroups>
+</pnp:Security>

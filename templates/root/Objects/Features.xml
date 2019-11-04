@@ -1,0 +1,6 @@
+<pnp:Features xmlns:pnp="http://schemas.dev.office.com/PnP/2019/03/ProvisioningSchema">
+    <pnp:WebFeatures>
+        <pnp:Feature ID="8c6f9096-388d-4eed-96ff-698b3ec46fc4" />
+        <pnp:Feature ID="f151bb39-7c3b-414f-bb36-6bf18872052f" />
+    </pnp:WebFeatures>
+</pnp:Features>

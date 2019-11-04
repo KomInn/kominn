@@ -1,0 +1,12 @@
+.SustainabilityGoals {
+    .ms-Toggle {
+        display: flex;
+        label {
+            width: 300px;
+        }
+        button {
+            min-width: 2em !important;
+            width: 2em !important;
+        }
+    }
+}

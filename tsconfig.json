@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "outDir": "./SiteAssets/js",
+        "sourceMap": false,
+        "noImplicitAny": false,
+        "experimentalDecorators": true,
+        "module": "commonjs",
+        "target": "es5",
+        "jsx": "react",
+        "lib": [
+            "es2017",
+            "es2015.iterable",
+            "dom"
+        ]
+    },
+    "include": [
+        "./src/**/*"
+    ]
+}
