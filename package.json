@@ -19,7 +19,7 @@
     "@types/sharepoint": "^2016.1.0",
     "@uifabric/icons": "^6.5.2",
     "anchorme": "^1.1.2",
-    "bootstrap": "3.3.7",
+    "bootstrap": "3.4.1",
     "core-js": "^2.5.7",
     "css-loader": "^3.0.0",
     "es6-promise": "^4.2.4",
