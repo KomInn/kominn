@@ -1,5 +1,5 @@
 Param(
-    [Parameter(Mandatory = $true, HelpMessage = "Where do you want to install the Project Portal?")]
+    [Parameter(Mandatory = $true, HelpMessage = "Where do you want to install KomInn?")]
     [string]$Url,
     [Parameter(Mandatory = $false, HelpMessage = "Do you want to handle PnP libraries and PnP PowerShell without using bundled files?")]
     [switch]$SkipLoadingBundle,
