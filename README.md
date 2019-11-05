@@ -15,3 +15,5 @@ Løsningen er initielt konstruert for SharePoint, men er designet for også å k
 ## Kom i gang
 
 Last ned siste versjon under releases. Pakk ut filen og installer med Install.ps1-skriptet til en områdesamling du allerede har opprettet.
+
+<a href="https://github.com/KomInn/kominn/wiki">En del veiledninger er tilgjengelig under wiki-seksjonen.</a>
