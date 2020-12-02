@@ -20,4 +20,4 @@ Last ned siste versjon under releases. Pakk ut filen og installer med Install.ps
 
 ## Kontakt
 
-Har du spørsmål til denne løsningen, ta kontakt med tarjeieo@puzzlepart.com
+Har du spørsmål knyttet til å ta i bruk denne løsningen, ta kontakt med tarjeieo@puzzlepart.com
