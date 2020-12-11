@@ -1,6 +1,6 @@
 {
   "name": "kominn",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "",
   "main": "",
   "scripts": {
@@ -43,6 +43,6 @@
     "typescript": "^2.7.2",
     "vis": "^4.21.0",
     "webpack": "^4.35.2",
-    "webpack-cli": "^3.3.5"
+    "webpack-cli": "^3.3.12"
   }
 }

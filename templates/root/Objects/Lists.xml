@@ -43,6 +43,9 @@
                 <pnp:RoleAssignment Principal="{associatedmembergroup}" RoleDefinition="Lese" />
             </pnp:BreakRoleInheritance>
         </pnp:Security>
+        <pnp:Fields>
+            <Field Type="LookupMulti" DisplayName="Bærekraftsmål" EnforceUniqueValues="FALSE" List="{listid:Baerekraftsmaal}" ShowField="Title" Mult="TRUE" Sortable="FALSE" UnlimitedLengthInDocumentLibrary="FALSE" RelationshipDeleteBehavior="None" ID="{bc3203f8-17cb-4d08-a56d-f27163916c16}" StaticName="KmiSustainabilityGoals" Name="KmiSustainabilityGoals" />
+        </pnp:Fields>
     </pnp:ListInstance>
     <pnp:ListInstance Title="Forslagsvurdering" Description="" DocumentTemplate="" TemplateType="100" Url="Lists/Forslagsvurdering" RemoveExistingContentTypes="true" ContentTypesEnabled="true" EnableVersioning="true" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" EnableFolderCreation="false" ReadSecurity="0" WriteSecurity="0">
         <pnp:ContentTypeBindings>

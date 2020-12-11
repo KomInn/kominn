@@ -22,4 +22,5 @@ $PackageInfo = Get-Content .\package.json | ConvertFrom-Json
 
 Write-Host "## Creating release package ##"
 Add-Type -assembly "system.io.compression.filesystem"
-[io.compression.zipfile]::CreateFromDirectory("dist/Install", "release/$($PackageInfo.name).$($PackageInfo.version).$($CommitHash).zip") 
+
+[io.compression.zipfile]::CreateFromDirectory("$PSScriptRoot/../dist/Install", "$PSScriptRoot/../release/$($PackageInfo.name).$($PackageInfo.version).$($CommitHash).zip") 

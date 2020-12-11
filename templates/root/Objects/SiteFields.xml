@@ -115,7 +115,6 @@
         </CHOICES>
     </Field>
     <Field Type="Number" DisplayName="Søker om:" Description="Her skriver du inn hvor mye du ønsker å søke." ID="{abd3c94e-048c-4730-8416-5b9c57b87784}" StaticName="KmiApplyingFor" Name="KmiApplyingFor" Group="KomInn" />
-    <Field Type="LookupMulti" DisplayName="Bærekraftsmål" EnforceUniqueValues="FALSE" List="{listid:Baerekraftsmaal}" ShowField="Title" Mult="TRUE" Sortable="FALSE" UnlimitedLengthInDocumentLibrary="FALSE" RelationshipDeleteBehavior="None" ID="{bc3203f8-17cb-4d08-a56d-f27163916c16}" Group="KomInn" StaticName="KmiSustainabilityGoals" Name="KmiSustainabilityGoals" />
     <Field Type="Calculated" DisplayName="Forslag2018" Format="DateOnly" LCID="1044" ResultType="Text" ReadOnly="TRUE" ID="{06593844-a682-4ed2-b009-a4c1361ac9e6}" Group="KomInn" StaticName="KmiForslag2018" Name="KmiForslag2018">
         <!-- <Formula>=IF([{fieldtitle:CompRef}]="innovasjonsmidler2018",[{fieldtitle:Title}],"")</Formula> -->
         <Formula>=1</Formula>

@@ -39,7 +39,6 @@
             <pnp:FieldRef ID="50d2c862-878a-4606-908a-025a75208200" Name="KmiDepartment" Hidden="true" />
             <pnp:FieldRef ID="8183d7d5-5c96-4b67-947d-137300913bf2" Name="KmiImage" />
             <pnp:FieldRef ID="e605364e-4956-4bad-9de0-5ac72a8f83aa" Name="KmiCity" Hidden="true" />
-            <pnp:FieldRef ID="bc3203f8-17cb-4d08-a56d-f27163916c16" Name="KmiSustainabilityGoals" />
             <pnp:FieldRef ID="1f549d6e-0127-4500-9346-4511762ed34e" Name="KmiMailAddress" Hidden="true" />
             <pnp:FieldRef ID="06593844-a682-4ed2-b009-a4c1361ac9e6" Name="KmiForslag2018" />
             <pnp:FieldRef ID="b199a8ff-b8f7-43f1-8f27-651774305077" Name="KmiIsPast" />

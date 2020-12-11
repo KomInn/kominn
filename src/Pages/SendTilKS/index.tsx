@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Dropdown, IDropdownOption } from "office-ui-fabric-react/lib/DropDown";
+import { Dropdown, IDropdownOption } from "office-ui-fabric-react/lib/Dropdown";
 import { DefaultButton } from "office-ui-fabric-react/lib/Button";
 import { DataAdapter } from "../../Data/DataAdapter";
 import { Suggestion } from "../../Models";
