@@ -4,7 +4,6 @@
             <pnp:FieldRef ID="c042a256-787d-4a6f-8a8a-cf6ab767f12d" Name="ContentType" />
             <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" Required="true" />
             <pnp:FieldRef ID="e803d521-8b55-4e52-a3bb-6fbb6aa53740" Name="KmiMoreActors" />
-            <pnp:FieldRef ID="cab77638-1071-4cfb-8a89-057636f4e9c8" Name="KmiSuggestion" />
             <pnp:FieldRef ID="6bd2842a-a0e1-4642-923d-7ea36c54aba4" Name="KmiShortComment" />
             <pnp:FieldRef ID="2ca4c43c-487c-4acd-bf9a-b5b1c38e50a8" Name="KmiLawRequirements" />
             <pnp:FieldRef ID="793cf1bf-6338-42b6-9e8b-2054a642ff42" Name="KmiScoreUserInvolvement" />
@@ -40,7 +39,6 @@
             <pnp:FieldRef ID="8183d7d5-5c96-4b67-947d-137300913bf2" Name="KmiImage" />
             <pnp:FieldRef ID="e605364e-4956-4bad-9de0-5ac72a8f83aa" Name="KmiCity" Hidden="true" />
             <pnp:FieldRef ID="1f549d6e-0127-4500-9346-4511762ed34e" Name="KmiMailAddress" Hidden="true" />
-            <pnp:FieldRef ID="06593844-a682-4ed2-b009-a4c1361ac9e6" Name="KmiForslag2018" />
             <pnp:FieldRef ID="b199a8ff-b8f7-43f1-8f27-651774305077" Name="KmiIsPast" />
             <pnp:FieldRef ID="07e827ec-c34f-48d6-b69c-6f0ef48f7c90" Name="KmiInspiredBy" />
             <pnp:FieldRef ID="4574c53c-b0e2-415c-af76-5661de396f06" Name="KmiCountyCode" Hidden="true" />

@@ -81,6 +81,9 @@
                 <pnp:RoleAssignment Principal="{associatedmembergroup}" RoleDefinition="Lese" />
             </pnp:BreakRoleInheritance>
         </pnp:Security>
+        <pnp:Fields>
+            <Field Type="Lookup" DisplayName="Forslag" EnforceUniqueValues="FALSE" List="{listid:Forslag}" ShowField="Title" UnlimitedLengthInDocumentLibrary="FALSE" RelationshipDeleteBehavior="None" ID="{cab77638-1071-4cfb-8a89-057636f4e9c8}" StaticName="KmiSuggestion" Name="KmiSuggestion" />
+        </pnp:Fields>
     </pnp:ListInstance>
     <pnp:ListInstance Title="Ikoner" Description="" DocumentTemplate="{site}/Ikoner/Forms/template.dotx" TemplateType="101" Url="Ikoner" EnableVersioning="true" MinorVersionLimit="0" MaxVersionLimit="10" DraftVersionVisibility="0" TemplateFeatureID="00bfea71-e717-4e80-aa17-d0c71b360101" EnableAttachments="false" ReadSecurity="0" WriteSecurity="0">
         <pnp:Views>

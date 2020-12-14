@@ -11,7 +11,6 @@
         <Default>1</Default>
     </Field>
     <Field Type="Note" DisplayName="Kommentar" NumLines="6" RichText="FALSE" RichTextMode="Compatible" IsolateStyles="FALSE" Sortable="FALSE" ID="{6bd2842a-a0e1-4642-923d-7ea36c54aba4}" Group="KomInn" StaticName="KmiShortComment" Name="KmiShortComment" RestrictedMode="TRUE" AppendOnly="FALSE" />
-    <Field Type="Lookup" DisplayName="Forslag" EnforceUniqueValues="FALSE" List="{listid:Forslag}" ShowField="Title" UnlimitedLengthInDocumentLibrary="FALSE" RelationshipDeleteBehavior="None" ID="{cab77638-1071-4cfb-8a89-057636f4e9c8}" Group="KomInn" StaticName="KmiSuggestion" Name="KmiSuggestion" />
     <Field Type="Note" DisplayName="Oppsummering" ID="{9662dfaa-b386-4c92-af70-5a36f6455a1a}" Group="KomInn" StaticName="KmiSummary" Name="KmiSummary" />
     <Field Type="Note" DisplayName="Utfordringer" ID="{92d3013b-ed8b-4e86-9f6b-cacec95aa86b}" Group="KomInn" StaticName="KmiChallenges" Name="KmiChallenges" />
     <Field Type="Note" DisplayName="Forslag til løsning" ID="{54e5c384-0bef-46ec-9762-599ccd72899d}" Group="KomInn" StaticName="KmiSuggestedSolution" Name="KmiSuggestedSolution" />
@@ -70,55 +69,7 @@
     <Field Type="DateTime" Name="KmiMonthlyStartDate" DisplayName="Månedens forslag startdato" ID="{f55199fd-8cb6-4583-a98e-a6363524f38f}" Group="KomInn" StaticName="KmiMonthlyStartDate" />
     <Field Type="DateTime" Name="KmiMonthlyEndDate" DisplayName="Månedens forslag sluttdato" ID="{9b9500c1-b793-4511-b937-8b9dec9a8bb1}" Group="KomInn" StaticName="KmiMonthlyEndDate" />
     <Field Type="Boolean" Name="KmiIsPast" DisplayName="Fortid" ID="{b199a8ff-b8f7-43f1-8f27-651774305077}" Group="KomInn" StaticName="KmiIsPast" />
-    <Field DisplayName="E-post til saksbehandler" Type="WorkflowStatus" ID="{011e220d-3b07-4231-ba73-34ceb71bef42}" Group="KomInn" StaticName="KmiEmailCaseOfficer" Name="KmiEmailCaseOfficer" WorkflowStatusURL="_layouts/15/WrkStat.aspx" ReadOnly="TRUE">
-        <CHOICES>
-            <CHOICE>Starter</CHOICE>
-            <CHOICE>Mislyktes ved start</CHOICE>
-            <CHOICE>Pågår</CHOICE>
-            <CHOICE>Feil oppstod</CHOICE>
-            <CHOICE>Avbrutt</CHOICE>
-            <CHOICE>Fullført</CHOICE>
-            <CHOICE>Mislyktes ved start (prøver på nytt)</CHOICE>
-            <CHOICE>Det oppstod en feil (prøver på nytt)</CHOICE>
-            <CHOICE />
-            <CHOICE />
-            <CHOICE />
-            <CHOICE />
-            <CHOICE />
-            <CHOICE />
-            <CHOICE />
-            <CHOICE>Canceled</CHOICE>
-            <CHOICE>Approved</CHOICE>
-            <CHOICE>Rejected</CHOICE>
-        </CHOICES>
-    </Field>
-    <Field DisplayName="E-post til forslagsstiller" Type="WorkflowStatus" ID="{329d0ddb-55a1-4f49-926b-515b761961c4}" Group="KomInn" StaticName="KmiEmailProposer" Name="KmiEmailProposer" WorkflowStatusURL="_layouts/15/WrkStat.aspx" ReadOnly="TRUE">
-        <CHOICES>
-            <CHOICE>Starter</CHOICE>
-            <CHOICE>Mislyktes ved start</CHOICE>
-            <CHOICE>Pågår</CHOICE>
-            <CHOICE>Feil oppstod</CHOICE>
-            <CHOICE>Avbrutt</CHOICE>
-            <CHOICE>Fullført</CHOICE>
-            <CHOICE>Mislyktes ved start (prøver på nytt)</CHOICE>
-            <CHOICE>Det oppstod en feil (prøver på nytt)</CHOICE>
-            <CHOICE />
-            <CHOICE />
-            <CHOICE />
-            <CHOICE />
-            <CHOICE />
-            <CHOICE />
-            <CHOICE />
-            <CHOICE>Canceled</CHOICE>
-            <CHOICE>Approved</CHOICE>
-            <CHOICE>Rejected</CHOICE>
-        </CHOICES>
-    </Field>
     <Field Type="Number" DisplayName="Søker om:" Description="Her skriver du inn hvor mye du ønsker å søke." ID="{abd3c94e-048c-4730-8416-5b9c57b87784}" StaticName="KmiApplyingFor" Name="KmiApplyingFor" Group="KomInn" />
-    <Field Type="Calculated" DisplayName="Forslag2018" Format="DateOnly" LCID="1044" ResultType="Text" ReadOnly="TRUE" ID="{06593844-a682-4ed2-b009-a4c1361ac9e6}" Group="KomInn" StaticName="KmiForslag2018" Name="KmiForslag2018">
-        <!-- <Formula>=IF([{fieldtitle:CompRef}]="innovasjonsmidler2018",[{fieldtitle:Title}],"")</Formula> -->
-        <Formula>=1</Formula>
-    </Field>
     <Field Type="DateTime" DisplayName="Startdato" ID="{82d13436-de53-4289-ba37-53f1ead68953}" Group="KomInn Kampanje" StaticName="KmiCampaignStartDate" Name="KmiCampaignStartDate" />
     <Field Type="DateTime" DisplayName="Sluttdato" ID="{a725579a-9c11-43d1-acbf-9b1037b06d3c}" Group="KomInn Kampanje" StaticName="KmiCampaignEndDate" Name="KmiCampaignEndDate" />
     <Field Type="Text" DisplayName="Tekst" ID="{369c9b7d-161d-4716-88d0-8f8a8d21268a}" Group="KomInn Kampanje" StaticName="KmiCampaignText" Name="KmiCampaignText" />
