@@ -53,7 +53,6 @@
         </CHOICES>
     </Field>
     <Field Type="Text" DisplayName="Konkurransereferanse" ID="{9f0ed997-5cbd-43f7-ac8c-889cae958aea}" Group="KomInn" StaticName="KmiCompRef" Name="KmiCompRef" />
-    <Field Type="LookupMulti" DisplayName="Inspirert av" EnforceUniqueValues="FALSE" List="{listid:Forslag}" ShowField="Title" Mult="TRUE" Sortable="FALSE" UnlimitedLengthInDocumentLibrary="FALSE" RelationshipDeleteBehavior="None" ID="{07e827ec-c34f-48d6-b69c-6f0ef48f7c90}" Group="KomInn" StaticName="KmiInspiredBy" Name="KmiInspiredBy" />
     <Field Type="Choice" DisplayName="Saksbehandlers status" Format="Dropdown" FillInChoice="FALSE" ID="{d07f2eaf-3a50-4bfb-949c-6eaf61cddce8}" Group="KomInn" StaticName="KmiCaseWorkerStatus" Name="KmiCaseWorkerStatus">
         <Default>Sendt inn</Default>
         <CHOICES>
