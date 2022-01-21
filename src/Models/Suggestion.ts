@@ -1,3 +1,4 @@
+import { isNumber } from "lodash";
 import { Person, Status, SustainabilityGoal, SuggestionComment } from ".";
 import { Tools } from "../Tools";
 
@@ -6,13 +7,14 @@ export class Suggestion {
     public Title: string;
     public Summary: string;
     public Challenges: string;
+    public Amount: string;
     public SuggestedSolution: string;
     public InspiredBy: Suggestion[];
     public Likes: number;
     public Image: string;
     public Location: string;
     public UsefulForOthers: string;
-    public UsefulnessType: string;
+    public UsefulnessType: string[];
     public Submitter: Person;
     public NumberOfComments: number;
     public Comments: Array<SuggestionComment>;
@@ -46,10 +48,10 @@ export class Suggestion {
         if (this.Summary == null || this.Title.length <= 0)
             return false;
 
-        if (this.Challenges == null || this.Challenges.length <= 0)
+        if (this.Amount == null)
             return false;
 
-        if (this.SuggestedSolution == null || this.SuggestedSolution.length <= 0)
+        if (this.Challenges == null || this.Challenges.length <= 0)
             return false;
 
         if (this.Submitter == null)

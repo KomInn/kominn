@@ -30,6 +30,7 @@
             <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" Required="true" />
             <pnp:FieldRef ID="23b1f3d6-df10-45b4-91a0-210b1eca20ac" Name="KmiUsefulnessType" />
             <pnp:FieldRef ID="9662dfaa-b386-4c92-af70-5a36f6455a1a" Name="KmiSummary" />
+            <pnp:FieldRef ID="c75f8f92-13d1-4995-b0dc-f5c8cd36efd0" Name="KmiAmount" />
             <pnp:FieldRef ID="92d3013b-ed8b-4e86-9f6b-cacec95aa86b" Name="KmiChallenges" />
             <pnp:FieldRef ID="54e5c384-0bef-46ec-9762-599ccd72899d" Name="KmiSuggestedSolution" />
             <pnp:FieldRef ID="a07be058-665f-4713-b141-db7d14462125" Name="KmiUsefulForOthers" />

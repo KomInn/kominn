@@ -234,12 +234,16 @@ export class SPDataAdapter {
     static submitSuggestion(suggestion: Suggestion): Promise<Suggestion> {
         return new Promise((resolve, reject) => {
             let s = suggestion;
+
+            console.log(s);
+            
             let context = SP.ClientContext.get_current();
             let list = context.get_web().get_lists().getByTitle("Forslag");
             let itemcreationinfo = new SP.ListItemCreationInformation();
             let item = list.addItem(itemcreationinfo);
             item.set_item("Title", s.Title);
             item.set_item("KmiSummary", s.Summary);
+            item.set_item("KmiAmount", s.Amount);
             item.set_item("KmiChallenges", s.Challenges);
             item.set_item("KmiSuggestedSolution", s.SuggestedSolution);
             item.set_item("KmiLocation", s.Location);

@@ -10,18 +10,10 @@ export class Frontpage extends React.Component<{}, {}>
                 <Searchbar placeholderText="Søk etter forslag..." />
                 <PromotedSuggestions />
                 <PopularSuggestions
-                    title="Innsendte forslag inneværende år"
-                    emptyText='Finner ingen innsendte forslag for inneværende år.'
+                    title="Har søkt internt klimatilskudd 2021"
+                    emptyText='Finner ingen innsendte forslag.'
                     fromDate={moment().startOf('year')}
                     toDate={moment().endOf('year')} />
-                <PopularSuggestions
-                    title="Fikk innovasjonsmidler foregående år"
-                    emptyText={`Finner ingen forslag som fikk innovasjonsmidler i ${moment().subtract(1, 'year').year()}.`}
-                    fromDate={moment().subtract(1, 'year').startOf('year')}
-                    toDate={moment().subtract(1, 'year').endOf('year')} />
-                <SuccessStories title="Suksesshistorier" />
-                <MySuggestions title="Mine forslag" />
-                <a className="accessibility" href="#wrapper">Back to top</a>
             </>
         )
     }

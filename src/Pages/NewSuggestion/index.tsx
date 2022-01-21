@@ -2,7 +2,7 @@ import { PrimaryButton } from "office-ui-fabric-react/lib/Button";
 import { autobind } from "office-ui-fabric-react/lib/Utilities";
 import * as React from "react";
 import { Searchbar } from "../../Components/Frontpage";
-import { AddLocation, CommonFields, InspiredBy, Personalia, SustainabilityGoals, UploadImages } from "../../Components/NewSuggestion";
+import { CommonFields, Personalia, SustainabilityGoals } from "../../Components/NewSuggestion";
 import { DataAdapter } from "../../Data/DataAdapter";
 import { Person, Suggestion, SustainabilityGoal } from "../../Models";
 import { INewSuggestionProps } from "./INewSuggestionProps";
@@ -27,6 +27,7 @@ export class NewSuggestion extends React.Component<INewSuggestionProps, INewSugg
         suggestion.Title = s.Title;
         suggestion.Challenges = s.Challenges;
         suggestion.Summary = s.Summary;
+        suggestion.Amount = s.Amount;
         suggestion.SuggestedSolution = s.SuggestedSolution;
         suggestion.UsefulnessType = s.UsefulnessType;
         suggestion.UsefulForOthers = s.UsefulForOthers;
@@ -105,10 +106,7 @@ export class NewSuggestion extends React.Component<INewSuggestionProps, INewSugg
                 <div className="NewSuggestion">
                     <CommonFields onSuggestionUpdate={this.updateSuggestion} validationMode={this.state.formInvalid} />
                     <Personalia onDataUpdate={this.updatePerson} validationMode={this.state.formInvalid} />
-                    <UploadImages onDataUpdate={this.updateImage} />
-                    <AddLocation onDataUpdate={this.updateLocation} />
                     <SustainabilityGoals onDataUpdate={this.updateGoals} />
-                    <InspiredBy onDataUpdate={this.updateInspiredBy} />
                     <PrimaryButton text="Send inn" onClick={this.submitSuggestion} style={{ marginTop: 15 }} />
                     {this.state.formInvalid && <p style={{ color: "red" }}>Du må fylle ut alle påkrevde felter før du kan sende inn skjemaet.</p>}
                 </div>
