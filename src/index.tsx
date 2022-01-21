@@ -5,6 +5,7 @@ import * as ReactDOM from "react-dom";
 import { initializeIcons } from "@uifabric/icons";
 import { Vurdering } from './Components/Vurdering';
 import { NewSuggestion, Frontpage, ViewSuggestion, SendTilKS } from './Pages';
+import { FrontpageTop } from './Pages/FrontpageTop';
 
 $.ajaxSetup({ headers: { "Accept": "application/json;odata=verbose" } })
 initializeIcons(undefined, { disableWarnings: true });
@@ -17,6 +18,9 @@ if (document.getElementById("newsuggestion") != null)
 
 if (document.getElementById("frontpage") != null)
     ReactDOM.render(<Frontpage />, document.getElementById("frontpage"));
+    
+if (document.getElementById("frontpageTop") != null)
+    ReactDOM.render(<FrontpageTop />, document.getElementById("frontpageTop"));
 
 if (document.getElementById("viewsuggestion") != null)
     ReactDOM.render(<ViewSuggestion />, document.getElementById("viewsuggestion"));
