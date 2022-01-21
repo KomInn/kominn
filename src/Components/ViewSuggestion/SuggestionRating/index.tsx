@@ -89,6 +89,7 @@ export class SuggestionRating extends React.Component<ISuggestionRatingProps, IS
     private deleteExisting() {
         return new Promise((resolve, reject) => {
             if (this.state.existingId === -1) {
+                resolve(null);
                 return;
             }
             var context = SP.ClientContext.get_current();
