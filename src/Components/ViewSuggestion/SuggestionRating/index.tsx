@@ -13,7 +13,7 @@ export class SuggestionRating extends React.Component<ISuggestionRatingProps, IS
         super(props);
         this.state = {
             ScoreFeasability: 5,
-            ScoreUserInvolvement: 5,
+            ScoreUtslippsreduksjon: 5,
             ScoreDistributionPotential: 5,
             ScoreDegreeOfInnovation: 5,
             MoreActors: false,
@@ -26,7 +26,7 @@ export class SuggestionRating extends React.Component<ISuggestionRatingProps, IS
         }
     }
 
-    async componentWillMount() {
+    async componentDidMount() {
         let userHasPermissions = await new DataAdapter().doesUserHavePermission(SP.PermissionKind.manageWeb);
         this.setState({ userHasPermissions });
         if (userHasPermissions) this.getExisting();
@@ -46,11 +46,11 @@ export class SuggestionRating extends React.Component<ISuggestionRatingProps, IS
                     value={this.state.ScoreFeasability}
                     onChange={newValue => this.setState({ ScoreFeasability: newValue })} />
                 <Slider
-                    label="Score bruker/innbyggerinvolvering?"
+                    label="Score potensial for utslippsreduksjon?"
                     max={10}
                     min={0}
-                    value={this.state.ScoreUserInvolvement}
-                    onChange={newValue => this.setState({ ScoreUserInvolvement: newValue })} />
+                    value={this.state.ScoreUtslippsreduksjon}
+                    onChange={newValue => this.setState({ ScoreUtslippsreduksjon: newValue })} />
                 <Slider
                     label="Score spredningspotensial"
                     max={10}
@@ -69,12 +69,6 @@ export class SuggestionRating extends React.Component<ISuggestionRatingProps, IS
                     offText="Nei"
                     checked={this.state.MoreActors}
                     onChanged={newValue => this.setState({ MoreActors: newValue })} />
-                <Toggle
-                    label="Lovkrav?"
-                    onText="Ja"
-                    offText="Nei"
-                    checked={this.state.LawRequirements}
-                    onChanged={newValue => this.setState({ LawRequirements: newValue })} />
                 <TextField
                     label="Kort kommentar"
                     multiline={true}
@@ -95,7 +89,6 @@ export class SuggestionRating extends React.Component<ISuggestionRatingProps, IS
     private deleteExisting() {
         return new Promise((resolve, reject) => {
             if (this.state.existingId === -1) {
-                resolve();
                 return;
             }
             var context = SP.ClientContext.get_current();
@@ -124,7 +117,7 @@ export class SuggestionRating extends React.Component<ISuggestionRatingProps, IS
             var item = list.addItem(itemcreationinfo);
             item.set_item("Title", this.props.sugggestion.Title);
             item.set_item("KmiScoreFeasability", s.ScoreFeasability);
-            item.set_item("KmiScoreUserInvolvement", s.ScoreUserInvolvement);
+            item.set_item("KmiScoreUserInvolvement", s.ScoreUtslippsreduksjon);
             item.set_item("KmiScoreDistributionPotential", s.ScoreDistributionPotential);
             item.set_item("KmiScoreDegreeOfInnovation", s.ScoreDegreeOfInnovation);
             item.set_item("KmiMoreActors", s.MoreActors);
@@ -162,7 +155,7 @@ export class SuggestionRating extends React.Component<ISuggestionRatingProps, IS
     private getExisting() {
         var exId = this.props.sugggestion.Id;
         $.ajax({
-            url: `${_spPageContextInfo.webAbsoluteUrl}_api/web/lists/getbytitle('Forslagsvurdering')/Items?$select=*,KmiSuggestion/Id,Author/Id&$expand=KmiSuggestion,Author&$filter=KmiSuggestion/Id eq ${exId} and Author/Id eq ${_spPageContextInfo.userId}`,
+            url: `${_spPageContextInfo.webAbsoluteUrl}/_api/web/lists/getbytitle('Forslagsvurdering')/Items?$select=*,KmiSuggestion/Id,Author/Id&$expand=KmiSuggestion,Author&$filter=KmiSuggestion/Id eq ${exId} and Author/Id eq ${_spPageContextInfo.userId}`,
             contentType: "application/json;odata=verbose",
             success: (data: any) => {
                 if (data.d.results.length === 0)
@@ -174,7 +167,7 @@ export class SuggestionRating extends React.Component<ISuggestionRatingProps, IS
                     ScoreDegreeOfInnovation: result.KmiScoreDegreeOfInnovation,
                     ScoreDistributionPotential: result.KmiScoreDistributionPotential,
                     ScoreFeasability: result.KmiScoreFeasability,
-                    ScoreUserInvolvement: result.KmiScoreUserInvolvement,
+                    ScoreUtslippsreduksjon: result.KmiScoreUserInvolvement,
                     ShortComment: result.KmiShortComment || '',
                     existingId: result.Id,
                 });

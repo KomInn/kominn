@@ -109,6 +109,7 @@ export class SPDataAdapter {
                         p.Zipcode = result.KmiZipcode;
                         s.Id = result.Id;
                         s.Challenges = result.KmiChallenges;
+                        s.Amount = result.KmiAmount;
                         s.Image = Tools.isNull(result.KmiImage) ? "" : result.KmiImage;
                         s.Likes = Tools.isNull(result.KmiLikes) ? 0 : result.KmiLikes;
                         s.Location = result.KmiLocation;
@@ -123,7 +124,7 @@ export class SPDataAdapter {
                             s.Tags = result.KmiTags.results;
                         s.Title = result.Title;
                         s.UsefulForOthers = result.KmiUsefulForOthers;
-                        s.UsefulnessType = result.KmiUsefulnessType;
+                        s.UsefulnessType = result.KmiUsefulnessType.results;
                         s.Created = new Date(result.Created);
                         s.CreatedString = s.Created.toLocaleDateString();
                         s.SendTilKS = result.KmiSendToKS;
@@ -236,7 +237,7 @@ export class SPDataAdapter {
             let s = suggestion;
 
             console.log(s);
-            
+
             let context = SP.ClientContext.get_current();
             let list = context.get_web().get_lists().getByTitle("Forslag");
             let itemcreationinfo = new SP.ListItemCreationInformation();
