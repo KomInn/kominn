@@ -28,7 +28,6 @@
                     <FieldRef Name="KmiIsPast" />
                     <FieldRef Name="KmiApplyingFor" />
                     <FieldRef Name="KmiSustainabilityGoals" />
-                    <FieldRef Name="KmiForslag2018" />
                 </ViewFields>
                 <RowLimit Paged="TRUE">500</RowLimit>
                 <Aggregations Value="Off" />

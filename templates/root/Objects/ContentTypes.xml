@@ -40,7 +40,6 @@
             <pnp:FieldRef ID="e605364e-4956-4bad-9de0-5ac72a8f83aa" Name="KmiCity" Hidden="true" />
             <pnp:FieldRef ID="1f549d6e-0127-4500-9346-4511762ed34e" Name="KmiMailAddress" Hidden="true" />
             <pnp:FieldRef ID="b199a8ff-b8f7-43f1-8f27-651774305077" Name="KmiIsPast" />
-            <pnp:FieldRef ID="07e827ec-c34f-48d6-b69c-6f0ef48f7c90" Name="KmiInspiredBy" />
             <pnp:FieldRef ID="4574c53c-b0e2-415c-af76-5661de396f06" Name="KmiCountyCode" Hidden="true" />
             <pnp:FieldRef ID="9f0ed997-5cbd-43f7-ac8c-889cae958aea" Name="KmiCompRef" />
             <pnp:FieldRef ID="f55199fd-8cb6-4583-a98e-a6363524f38f" Name="KmiMonthlyStartDate" />
