@@ -12,7 +12,7 @@ export class SubmitSuggestionButtons extends React.Component<any, ISubmitsuggest
         this.state = { Campaigns: new Array<Campaign>() }
     };
 
-    componentWillMount() {
+    componentDidMount() {
         new DataAdapter().getAllCampaigns().then((a: Array<Campaign>) => {
             this.setState({ Campaigns: a });
         });

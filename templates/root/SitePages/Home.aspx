@@ -33,6 +33,10 @@
 
 <%-- The markup and script in the following Content element will be placed in the <body> of the page --%>
 <asp:Content ContentPlaceHolderID="PlaceHolderMain" runat="server">
+  <div id="frontpageTop" style="overflow: hidden;"></div>
+  <div style="width:520px; margin-left: auto; margin-right: auto; margin-top:30px;">
+    <WebPartPages:WebPartZone runat="server" FrameType="TitleBarOnly" Title="Infosone" ID="MainColumn" Orientation="Vertical" />
+  </div>
   <div id="frontpage" style="overflow: hidden;"></div>
   <script type="text/javascript" src="../SiteAssets/js/bundle.js"></script>
 </asp:Content>

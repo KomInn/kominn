@@ -5,7 +5,7 @@ import { DetailsList, IColumn } from "office-ui-fabric-react";
 class FVurdering {
     Title: string;
     Gjennomforbarhet: number;
-    Innbyggerinvolvering: number;
+    Utslippsreduksjon: number;
     Spredningspotensiale: number;
     Innovasjonsgrad: number;
     Kommentar: string;
@@ -43,7 +43,7 @@ export class Vurdering extends React.Component<any, State>
                     k.Innovasjonsgrad = s.ScoreDegreeOfInnovation;
                     k.Spredningspotensiale = s.ScoreDistributionPotential;
                     k.Gjennomforbarhet = s.ScoreFeasability;
-                    k.Innbyggerinvolvering = s.ScoreUserInvolvement;
+                    k.Utslippsreduksjon = s.ScoreUtslippsreduksjon;
                     k.Kommentar = s.ShortComment;
                     k.Id = s.Id;
                     k.Lovkrav = s.LawRequirements;
@@ -60,7 +60,7 @@ export class Vurdering extends React.Component<any, State>
                     var u = new FSnittVurdering();
                     u.ForslagId = k.ForslagId;
                     u.Gjennomforbarhet = 0;
-                    u.Innbyggerinvolvering = 0;
+                    u.Utslippsreduksjon = 0;
                     u.Innovasjonsgrad = 0;
                     u.Spredningspotensiale = 0;
                     u.AntallVurderinger = 0;
@@ -69,14 +69,14 @@ export class Vurdering extends React.Component<any, State>
                     for (let i of result) {
                         if (u.ForslagId === i.ForslagId) {
                             u.Gjennomforbarhet += i.Gjennomforbarhet;
-                            u.Innbyggerinvolvering += i.Innbyggerinvolvering;
+                            u.Utslippsreduksjon += i.Utslippsreduksjon;
                             u.Innovasjonsgrad += i.Innovasjonsgrad;
                             u.Spredningspotensiale += i.Spredningspotensiale;
                             u.AntallVurderinger += 1;
                         }
                     }
                     u.Gjennomforbarhet = u.Gjennomforbarhet / u.AntallVurderinger;
-                    u.Innbyggerinvolvering = u.Innbyggerinvolvering / u.AntallVurderinger;
+                    u.Utslippsreduksjon = u.Utslippsreduksjon / u.AntallVurderinger;
                     u.Spredningspotensiale = u.Spredningspotensiale / u.AntallVurderinger;
                     u.Innovasjonsgrad = u.Innovasjonsgrad / u.AntallVurderinger;
                     var idx = 0;
@@ -111,8 +111,8 @@ export class Vurdering extends React.Component<any, State>
         },
         {
             key: "inb",
-            name: "Bruker / inbyggerinvolvering",
-            fieldName: "Innbyggerinvolvering"
+            name: "Potensial for utslippsreduksjon",
+            fieldName: "Utslippsreduksjon"
         },
         {
             key: "spr",

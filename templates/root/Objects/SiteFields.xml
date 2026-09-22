@@ -1,7 +1,7 @@
 
 <pnp:SiteFields xmlns:pnp="http://schemas.dev.office.com/PnP/2019/03/ProvisioningSchema">
     <Field Type="Number" DisplayName="Score gjennomførbarhet" ID="{1db6fffa-830e-4372-85b3-2918d6a1c411}" Group="KomInn" StaticName="KmiScoreFeasability" Name="KmiScoreFeasability" />
-    <Field Type="Number" DisplayName="Score bruker/innbyggerinvolvering" ID="{793cf1bf-6338-42b6-9e8b-2054a642ff42}" Group="KomInn" StaticName="KmiScoreUserInvolvement" Name="KmiScoreUserInvolvement" />
+    <Field Type="Number" DisplayName="Score potensial for utslippsreduksjon" ID="{793cf1bf-6338-42b6-9e8b-2054a642ff42}" Group="KomInn" StaticName="KmiScoreUserInvolvement" Name="KmiScoreUserInvolvement" />
     <Field Type="Number" DisplayName="Score spredningspotensiale" ID="{63574edf-70bd-4ddb-bd15-2e02659d0d7b}" Group="KomInn" StaticName="KmiScoreDistributionPotential" Name="KmiScoreDistributionPotential" />
     <Field Type="Number" DisplayName="Score innovasjonsgrad" ID="{e877ce76-ad5d-4f46-b1ab-479bd32dde87}" Group="KomInn" StaticName="KmiScoreDegreeOfInnovation" Name="KmiScoreDegreeOfInnovation" />
     <Field Type="Boolean" DisplayName="Flere aktører?" ID="{e803d521-8b55-4e52-a3bb-6fbb6aa53740}" Group="KomInn" StaticName="KmiMoreActors" Name="KmiMoreActors">
@@ -12,19 +12,21 @@
     </Field>
     <Field Type="Note" DisplayName="Kommentar" NumLines="6" RichText="FALSE" RichTextMode="Compatible" IsolateStyles="FALSE" Sortable="FALSE" ID="{6bd2842a-a0e1-4642-923d-7ea36c54aba4}" Group="KomInn" StaticName="KmiShortComment" Name="KmiShortComment" RestrictedMode="TRUE" AppendOnly="FALSE" />
     <Field Type="Note" DisplayName="Oppsummering" ID="{9662dfaa-b386-4c92-af70-5a36f6455a1a}" Group="KomInn" StaticName="KmiSummary" Name="KmiSummary" />
+    <Field Type="Number" DisplayName="Søkt sum" ID="{c75f8f92-13d1-4995-b0dc-f5c8cd36efd0}" Group="KomInn" StaticName="KmiAmount" Name="KmiAmount" />
     <Field Type="Note" DisplayName="Utfordringer" ID="{92d3013b-ed8b-4e86-9f6b-cacec95aa86b}" Group="KomInn" StaticName="KmiChallenges" Name="KmiChallenges" />
     <Field Type="Note" DisplayName="Forslag til løsning" ID="{54e5c384-0bef-46ec-9762-599ccd72899d}" Group="KomInn" StaticName="KmiSuggestedSolution" Name="KmiSuggestedSolution" />
     <Field Type="Number" DisplayName="Likes" ID="{988a9f76-884b-4d5a-906a-55c6f896880d}" Group="KomInn" ShowInNewForm="FALSE" ShowInEditForm="FALSE" StaticName="KmiLikes" Name="KmiLikes" />
     <Field Type="Text" DisplayName="Bilde" ID="{8183d7d5-5c96-4b67-947d-137300913bf2}" Group="KomInn" StaticName="KmiImage" Name="KmiImage" />
     <Field Type="Text" DisplayName="Sted" ID="{973e62b2-79b2-46fd-bd59-21f17699b78e}" Group="KomInn" StaticName="KmiLocation" Name="KmiLocation" />
     <Field Type="Note" DisplayName="Nyttig for andre" ID="{a07be058-665f-4713-b141-db7d14462125}" Group="KomInn" StaticName="KmiUsefulForOthers" Name="KmiUsefulForOthers" />
-    <Field Type="Choice" DisplayName="Type nytte" ID="{23b1f3d6-df10-45b4-91a0-210b1eca20ac}" Group="KomInn" StaticName="KmiUsefulnessType" Name="KmiUsefulnessType" FillInChoice="TRUE" Format="Dropdown">
+    <Field Type="MultiChoice" DisplayName="Innsatsområder" ID="{23b1f3d6-df10-45b4-91a0-210b1eca20ac}" Group="KomInn" StaticName="KmiUsefulnessType" Name="KmiUsefulnessType" FillInChoice="FALSE">
         <CHOICES>
-            <CHOICE>Effektivisering/Tidstyvjakt</CHOICE>
-            <CHOICE>Arbeidsmiljø</CHOICE>
-            <CHOICE>Tjenesteutvikling/Tjenesteinnovasjon</CHOICE>
-            <CHOICE>Samskaping/Gjøre noe med andre enn kommunens egne ansatte.</CHOICE>
-            <CHOICE>Annet (Beskriv i feltet under)</CHOICE>
+            <CHOICE>Endring, ledelse og kommunikasjon</CHOICE>
+            <CHOICE>Klimasmart mat</CHOICE>
+            <CHOICE>Bærekraftig forbruk</CHOICE>
+            <CHOICE>Fremtidsrettede bygg og anlegg</CHOICE>
+            <CHOICE>Grønn mobilitet</CHOICE>
+            <CHOICE>Naturen som karbonlager</CHOICE>
         </CHOICES>
     </Field>
     <Field Type="MultiChoice" DisplayName="Tags" ID="{19028c38-9950-4b22-96fa-c01ae1eae3f4}" Group="KomInn" StaticName="KmiTags" Name="KmiTags">

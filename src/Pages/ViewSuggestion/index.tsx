@@ -16,10 +16,9 @@ export class ViewSuggestion extends React.Component<any, IViewSuggestionState>
         this.state = { suggestion: new Suggestion() };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.dataAdapter.getConfig().then(config => {
             this.config = config;
-            setInterval(this.loadSuggestion, 30000);
             this.loadSuggestion();
         });
     }
@@ -61,13 +60,11 @@ export class ViewSuggestion extends React.Component<any, IViewSuggestionState>
                     <section className="ms-Grid-col ms-sm7 ms-smPush1">
                         <Content suggestion={suggestion} />
                         <Summary suggestion={suggestion} />
-                        <InspiredBy suggestion={suggestion} />
                     </section>
                     <section className="ms-Grid-col ms-sm3 ms-smPush1">
                         <Actions suggestion={suggestion} />
                         <SuggestionRating sugggestion={suggestion} />
                         <Details suggestion={suggestion} />
-                        <MapView apiKey={this.config.GOOGLE_MAPS_API_KEY} suggestion={suggestion} />
                     </section>
                 </div>
                 <div className="ms-Grid-row">

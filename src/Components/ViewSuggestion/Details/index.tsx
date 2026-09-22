@@ -15,8 +15,11 @@ export class Details extends React.Component<IDetailsProps, any>
                     {this.props.suggestion.Submitter.Zipcode} {this.props.suggestion.Submitter.City}
                 </address>
                 <div style={{ margin: '10px 0 10px 0' }}>
-                    <div><strong>Nyttetype</strong></div>
-                    <div>{this.props.suggestion.UsefulnessType}</div>
+                    <div><strong>Innsatsområder</strong></div>
+                    <ul>
+                        {this.props.suggestion.UsefulnessType && this.props.suggestion.UsefulnessType.map((area, idx) => 
+                        (<li key={idx}>{area}</li>))}
+                    </ul>
                 </div>
                 <SustainabilityGoals style={{ margin: '10px 0 10px 0' }} goals={this.props.suggestion.SustainabilityGoals} />
             </>

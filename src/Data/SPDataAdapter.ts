@@ -109,6 +109,7 @@ export class SPDataAdapter {
                         p.Zipcode = result.KmiZipcode;
                         s.Id = result.Id;
                         s.Challenges = result.KmiChallenges;
+                        s.Amount = result.KmiAmount;
                         s.Image = Tools.isNull(result.KmiImage) ? "" : result.KmiImage;
                         s.Likes = Tools.isNull(result.KmiLikes) ? 0 : result.KmiLikes;
                         s.Location = result.KmiLocation;
@@ -123,7 +124,7 @@ export class SPDataAdapter {
                             s.Tags = result.KmiTags.results;
                         s.Title = result.Title;
                         s.UsefulForOthers = result.KmiUsefulForOthers;
-                        s.UsefulnessType = result.KmiUsefulnessType;
+                        s.UsefulnessType = result.KmiUsefulnessType.results;
                         s.Created = new Date(result.Created);
                         s.CreatedString = s.Created.toLocaleDateString();
                         s.SendTilKS = result.KmiSendToKS;
@@ -234,12 +235,16 @@ export class SPDataAdapter {
     static submitSuggestion(suggestion: Suggestion): Promise<Suggestion> {
         return new Promise((resolve, reject) => {
             let s = suggestion;
+
+            console.log(s);
+
             let context = SP.ClientContext.get_current();
             let list = context.get_web().get_lists().getByTitle("Forslag");
             let itemcreationinfo = new SP.ListItemCreationInformation();
             let item = list.addItem(itemcreationinfo);
             item.set_item("Title", s.Title);
             item.set_item("KmiSummary", s.Summary);
+            item.set_item("KmiAmount", s.Amount);
             item.set_item("KmiChallenges", s.Challenges);
             item.set_item("KmiSuggestedSolution", s.SuggestedSolution);
             item.set_item("KmiLocation", s.Location);

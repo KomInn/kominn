@@ -1,6 +1,6 @@
 export interface ISuggestionRatingState {
     ScoreFeasability: number;
-    ScoreUserInvolvement: number;
+    ScoreUtslippsreduksjon: number;
     ScoreDistributionPotential: number;
     ScoreDegreeOfInnovation: number;
     MoreActors: boolean;

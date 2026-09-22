@@ -15,7 +15,7 @@
                     <FieldRef Name="ID" />
                     <FieldRef Name="LinkTitle" />
                     <FieldRef Name="Author" />
-                    <FieldRef Name="KmiImage" />
+                    <FieldRef Name="KmiAmount" />
                     <FieldRef Name="KmiUsefulnessType" />
                     <FieldRef Name="KmiStatus" />
                     <FieldRef Name="KmiCompRef" />

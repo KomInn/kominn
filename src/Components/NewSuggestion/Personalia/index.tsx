@@ -41,15 +41,6 @@ export class Personalia extends React.Component<IPersonaliaProps, IPersonaliaSta
                     defaultValue={this.state.profile.Name}
                     onChange={(_event, newValue) => { this.updateField(newValue, "Name") }} />
                 <TextField
-                    label="Adresse"
-                    multiline={true}
-                    defaultValue={this.state.profile.Address}
-                    onChange={(_event, newValue) => { this.updateField(newValue, "Address") }} />
-                <TextField
-                    label="Postnummer"
-                    defaultValue={this.state.profile.Zipcode}
-                    onChange={(_event, newValue) => { this.updateField(newValue, "Zipcode") }} />
-                <TextField
                     label="E-post"
                     defaultValue={this.state.profile.MailAddress}
                     onChange={(_event, newValue) => { this.updateField(newValue, "MailAddress") }} />
