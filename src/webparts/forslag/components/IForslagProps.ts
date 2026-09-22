@@ -1,6 +1,8 @@
 export interface IForslagProps {
-  description: string;
-  isDarkTheme: boolean;
-  environmentMessage: string;
-  userDisplayName: string;
+  /** Id fra ?forslag=<id>, eller fast id satt i egenskapsruten. */
+  suggestionId?: number;
+  showMap: boolean;
+  showEvaluation: boolean;
+  showComments: boolean;
+  showRelated: boolean;
 }

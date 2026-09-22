@@ -22,7 +22,12 @@
     "description": { "default": "Viser ett forslag med innhold, kart, relaterte forslag, liker og kommentarer." },
     "officeFabricIconFontName": "Lightbulb",
     "properties": {
-      "description": "Forslag"
+      "showMap": true,
+      "showEvaluation": true,
+      "showComments": true,
+      "showRelated": true,
+      "fixedId": "",
+      "siteUrl": ""
     }
   }]
 }

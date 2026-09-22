@@ -26,6 +26,7 @@ import { emptyForm, fillPersonalia, fromSuggestion, toNewSuggestion, validate, t
 import { useConfig, useCurrentUser, useDataService, useFocusAreas, useSustainabilityGoals, useTags } from '../../../shared/hooks';
 import { GoalPicker, ImageUpload, LocationPicker, SuggestionPicker } from '../../../shared/components';
 import type { Suggestion } from '../../../shared/models';
+import { COPY_QUERY_KEY } from '../../../shared/services';
 import { clearDraft, getQueryNumber, loadDraft, parseLatLng, saveDraft } from '../../../shared/utils';
 
 const useStyles = makeStyles({
@@ -37,7 +38,6 @@ const useStyles = makeStyles({
   successIcon: { color: tokens.colorPaletteGreenForeground3 }
 });
 
-const COPY_QUERY = 'kopier';
 
 export const NyttForslag: React.FC<INyttForslagProps> = (props) => {
   const styles = useStyles();
@@ -48,7 +48,7 @@ export const NyttForslag: React.FC<INyttForslagProps> = (props) => {
   const tags = useTags();
   const config = useConfig();
   const draftKey = `kominn-draft-${props.webUrl}`;
-  const copyId = React.useMemo(() => getQueryNumber(COPY_QUERY), []);
+  const copyId = React.useMemo(() => getQueryNumber(COPY_QUERY_KEY), []);
 
   const [form, setForm] = React.useState<FormState>(() => (copyId ? emptyForm : loadDraft<FormState>(draftKey) ?? emptyForm));
   const [imageFile, setImageFile] = React.useState<File>();

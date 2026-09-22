@@ -60,6 +60,11 @@ export class MockDataService implements IDataService {
     return clone(this.suggestions.filter((s) => s.title.toLowerCase().includes(term)).slice(0, top));
   }
 
+  public async getInspiredSuggestions(id: number): Promise<Suggestion[]> {
+    await this.wait();
+    return clone(this.suggestions.filter((s) => s.inspiredBy.some((r) => r.id === id)));
+  }
+
   public async createSuggestion(s: NewSuggestion): Promise<Suggestion> {
     await this.wait();
     const id = Math.max(0, ...this.suggestions.map((x) => x.id)) + 1;

@@ -46,3 +46,11 @@ describe('MockDataService', () => {
     expect(after[after.length - 1].feasibility).toBe(5);
   });
 });
+
+describe('MockDataService – relaterte forslag', () => {
+  it('finner forslag som er inspirert av et annet', async () => {
+    const svc = new MockDataService();
+    const inspired = await svc.getInspiredSuggestions(3);
+    expect(inspired.map((s) => s.id)).toEqual([4]);
+  });
+});

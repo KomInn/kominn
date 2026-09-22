@@ -113,6 +113,14 @@ export class SharePointDataService implements IDataService {
     return items.map((i) => mapSuggestion(i, this.webUrl));
   }
 
+  public async getInspiredSuggestions(id: number): Promise<Suggestion[]> {
+    const items: ListItem[] = await this.list(Lists.suggestions).items
+      .select(...SUGGESTION_SELECT).expand(...SUGGESTION_EXPAND)
+      .filter(`${F.inspiredBy}/Id eq ${id}`)
+      .orderBy('Created', false).top(20)();
+    return items.map((i) => mapSuggestion(i, this.webUrl));
+  }
+
   public async createSuggestion(s: NewSuggestion): Promise<Suggestion> {
     const payload: ListItem = {
       Title: s.title,

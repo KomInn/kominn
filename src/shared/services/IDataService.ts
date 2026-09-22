@@ -39,6 +39,8 @@ export interface IDataService {
   getSuggestions(query?: SuggestionQuery): Promise<Suggestion[]>;
   getSuggestion(id: number): Promise<Suggestion | undefined>;
   searchSuggestions(text: string, top?: number): Promise<Suggestion[]>;
+  /** Forslag som oppgir det gitte forslaget som «inspirert av». */
+  getInspiredSuggestions(id: number): Promise<Suggestion[]>;
   createSuggestion(suggestion: NewSuggestion): Promise<Suggestion>;
   updateSuggestion(id: number, changes: Partial<Pick<Suggestion, 'status' | 'caseWorkerStatus' | 'caseWorker' | 'monthlyStartDate' | 'monthlyEndDate' | 'isPast'>>): Promise<void>;
   uploadImage(file: File): Promise<string>;

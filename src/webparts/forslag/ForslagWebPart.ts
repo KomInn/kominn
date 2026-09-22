@@ -1,91 +1,58 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
-import {
-  type IPropertyPaneConfiguration,
-  PropertyPaneTextField
-} from '@microsoft/sp-property-pane';
+import { type IPropertyPaneConfiguration, PropertyPaneTextField, PropertyPaneToggle } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
-import { IReadonlyTheme } from '@microsoft/sp-component-base';
+import type { IReadonlyTheme } from '@microsoft/sp-component-base';
 
 import * as strings from 'ForslagWebPartStrings';
-import Forslag from './components/Forslag';
-import { IForslagProps } from './components/IForslagProps';
+import { Forslag } from './components/Forslag';
+import type { IForslagProps } from './components/IForslagProps';
+import { createDataService, SUGGESTION_QUERY_KEY, type IDataService } from '../../shared/services';
+import { KomInnProvider } from '../../shared/components';
+import { getQueryNumber } from '../../shared/utils';
 
 export interface IForslagWebPartProps {
-  description: string;
+  showMap: boolean;
+  showEvaluation: boolean;
+  showComments: boolean;
+  showRelated: boolean;
+  /** Fast forslag-id, brukes når siden ikke har ?forslag=<id>. */
+  fixedId: string;
+  siteUrl: string;
 }
 
 export default class ForslagWebPart extends BaseClientSideWebPart<IForslagWebPartProps> {
+  private service!: IDataService;
+  private theme?: IReadonlyTheme;
 
-  private _isDarkTheme: boolean = false;
-  private _environmentMessage: string = '';
+  protected async onInit(): Promise<void> {
+    this.service = createDataService(this.context, { siteUrl: this.properties.siteUrl });
+  }
 
   public render(): void {
-    const element: React.ReactElement<IForslagProps> = React.createElement(
-      Forslag,
-      {
-        description: this.properties.description,
-        isDarkTheme: this._isDarkTheme,
-        environmentMessage: this._environmentMessage,
-        userDisplayName: this.context.pageContext.user.displayName
-      }
+    const p = this.properties;
+    const fixed = parseInt(p.fixedId ?? '', 10);
+    const props: IForslagProps = {
+      suggestionId: getQueryNumber(SUGGESTION_QUERY_KEY) ?? (isNaN(fixed) ? undefined : fixed),
+      showMap: p.showMap !== false,
+      showEvaluation: p.showEvaluation !== false,
+      showComments: p.showComments !== false,
+      showRelated: p.showRelated !== false
+    };
+    ReactDom.render(
+      React.createElement(KomInnProvider, { theme: this.theme, instanceId: this.instanceId, service: this.service }, React.createElement(Forslag, props)),
+      this.domElement
     );
-
-    ReactDom.render(element, this.domElement);
   }
 
-  protected onInit(): Promise<void> {
-    return this._getEnvironmentMessage().then(message => {
-      this._environmentMessage = message;
-    });
-  }
-
-
-
-  private _getEnvironmentMessage(): Promise<string> {
-    if (!!this.context.sdks.microsoftTeams) { // running in Teams, office.com or Outlook
-      return this.context.sdks.microsoftTeams.teamsJs.app.getContext()
-        .then(context => {
-          let environmentMessage: string = '';
-          switch (context.app.host.name) {
-            case 'Office': // running in Office
-              environmentMessage = this.context.isServedFromLocalhost ? strings.AppLocalEnvironmentOffice : strings.AppOfficeEnvironment;
-              break;
-            case 'Outlook': // running in Outlook
-              environmentMessage = this.context.isServedFromLocalhost ? strings.AppLocalEnvironmentOutlook : strings.AppOutlookEnvironment;
-              break;
-            case 'Teams': // running in Teams
-            case 'TeamsModern':
-              environmentMessage = this.context.isServedFromLocalhost ? strings.AppLocalEnvironmentTeams : strings.AppTeamsTabEnvironment;
-              break;
-            default:
-              environmentMessage = strings.UnknownEnvironment;
-          }
-
-          return environmentMessage;
-        });
-    }
-
-    return Promise.resolve(this.context.isServedFromLocalhost ? strings.AppLocalEnvironmentSharePoint : strings.AppSharePointEnvironment);
+  protected onPropertyPaneFieldChanged(propertyPath: string): void {
+    if (propertyPath === 'siteUrl') this.service = createDataService(this.context, { siteUrl: this.properties.siteUrl });
   }
 
   protected onThemeChanged(currentTheme: IReadonlyTheme | undefined): void {
-    if (!currentTheme) {
-      return;
-    }
-
-    this._isDarkTheme = !!currentTheme.isInverted;
-    const {
-      semanticColors
-    } = currentTheme;
-
-    if (semanticColors) {
-      this.domElement.style.setProperty('--bodyText', semanticColors.bodyText || null);
-      this.domElement.style.setProperty('--link', semanticColors.link || null);
-      this.domElement.style.setProperty('--linkHovered', semanticColors.linkHovered || null);
-    }
-
+    this.theme = currentTheme;
+    this.render();
   }
 
   protected onDispose(): void {
@@ -100,16 +67,22 @@ export default class ForslagWebPart extends BaseClientSideWebPart<IForslagWebPar
     return {
       pages: [
         {
-          header: {
-            description: strings.PropertyPaneDescription
-          },
+          header: { description: strings.PropertyPaneDescription },
           groups: [
             {
-              groupName: strings.BasicGroupName,
+              groupName: strings.DisplayGroupName,
               groupFields: [
-                PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel
-                })
+                PropertyPaneToggle('showMap', { label: strings.ShowMapLabel, onText: 'På', offText: 'Av' }),
+                PropertyPaneToggle('showComments', { label: strings.ShowCommentsLabel, onText: 'På', offText: 'Av' }),
+                PropertyPaneToggle('showRelated', { label: strings.ShowRelatedLabel, onText: 'På', offText: 'Av' }),
+                PropertyPaneToggle('showEvaluation', { label: strings.ShowEvaluationLabel, onText: 'På', offText: 'Av' })
+              ]
+            },
+            {
+              groupName: strings.SourceGroupName,
+              groupFields: [
+                PropertyPaneTextField('fixedId', { label: strings.FixedIdLabel, description: strings.FixedIdDescription }),
+                PropertyPaneTextField('siteUrl', { label: strings.SiteUrlFieldLabel, description: strings.SiteUrlFieldDescription })
               ]
             }
           ]
