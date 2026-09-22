@@ -169,7 +169,7 @@ sikret. Testomfanget er satt til prototypenivå.
 | # | Arbeidspakke | Innhold | Timer |
 |---|---|---|---|
 | WP0 | Oppstart | Ett arbeidsmøte med Asker, beslutning på 2.4, enkle skisser, backlog | 15–20 |
-| WP1 | Prosjektoppsett og opprydding | Tagg `v1.1.2` og slett all v1-kode (`src/`, `templates/`, `build/`, `scripts/`, webpack, gamle avhengigheter). Yeoman-scaffold (`--framework react`) på rot, versjon 2.0.0, ESLint/Prettier, Jest, GitHub Actions, README, mock-datalag for lokal utvikling | 30–40 |
+| WP1 | Prosjektoppsett og opprydding | Tagg `v1-final` og slett all v1-kode (`src/`, `templates/`, `build/`, `scripts/`, webpack, gamle avhengigheter). Yeoman-scaffold (`--framework react`) på rot, versjon 2.0.0, ESLint/Prettier, Jest, GitHub Actions, README, mock-datalag for lokal utvikling | 30–40 |
 | WP2 | Datamodell og provisjonering | Ny PnP-mal på siste PnP Provisioning Schema (felt, CT, lister, seed for bærekraftsmål/ikoner, grupper, moderne sider med webdeler, navigasjon), `Install.ps1` for PnP.PowerShell 3.4, testområde | 40–50 |
 | WP3 | Datalag | `DataService` med PnPjs: forslag (CRUD, filter, sortering, paging), vurderinger, kampanjer, bærekraftsmål, kommentarer/likes, bildeopplasting, profil, rettighetssjekk, konfig. Modeller og mapping med tester | 50–60 |
 | WP4 | Webdel Nytt forslag | Skjema, validering, personalia, bærekraftsmål, bilde (drag/drop, komprimering), sted (Leaflet), inspirert av (velger), kopier-modus, utkast | 70–90 |

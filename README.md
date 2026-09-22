@@ -1,23 +1,83 @@
-# KomInn - Forslagsløsning for kommunale tiltak
+# KomInn 2.0
 
-## Kort funksjonell beskrivelse
+KomInn er en løsning for å sende inn, vurdere og synliggjøre forslag til kommunale tiltak,
+opprinnelig utviklet av Asker kommune. Versjon 2.0 er bygget på nytt som en moderne
+SharePoint Framework-løsning (SPFx) for Microsoft 365, og erstatter den klassiske
+løsningen fra 1.x i sin helhet.
 
-KomInn er en løsning for å sende, motta og behandle forslag internt i en organisasjon.
+Løsningen er åpen kildekode og kan tas i bruk av andre kommuner og organisasjoner.
 
-KomInn-løsningen er utviklet av Asker kommune for SharePoint. 
+## Funksjonalitet
 
-## Teknisk beskrivelse
+| Webdel | Beskrivelse |
+|---|---|
+| **Forslagsliste** | Viser forslag som kort eller karusell. Modus velges i egenskapsruten: promoterte, publiserte (med filter og sortering), suksesshistorier, mine forslag eller månedens forslag. |
+| **Søk i forslag** | Søkefelt som finner forslag på tittel og går til forslagssiden. |
+| **Nytt forslag** | Skjema for å sende inn forslag: tittel, beskrivelse, søkt sum, utfordringer, innsatsområder, bærekraftsmål, bilde, sted og «inspirert av». Personalia og nærmeste leder hentes fra brukerprofilen. |
+| **Forslag** | Viser ett forslag med innhold, bærekraftsmål, kart, relaterte forslag, liker og kommentarer. Saksbehandlere ser vurderingspanelet. |
+| **Saksbehandling** | Oversikt for saksbehandlere med status, tildeling og snitt av vurderinger. |
 
-Løsningen er utviklet med view-rammeverket React og skrevet i TypeScript.
+Datamodellen (listene Forslag, Forslagsvurdering, Kampanje, Kommentarer, Likes,
+Bærekraftsmål, Ikoner, Bilder og Konfigurasjon) bygger på 1.x og provisjoneres med
+PnP-malen i `provisioning/`.
 
-Løsningen er initielt konstruert for SharePoint, men er designet for også å kunne kobles på andre datakilder. Løsningen er laget for 'classic' SharePoint-opplevelse for å kunne brukes i Office 365 og on-premises.
+## Teknologi
+
+- SharePoint Framework 1.23 med Heft-toolchain
+- React 17, TypeScript 5, Fluent UI
+- PnPjs for all datatilgang mot SharePoint
+- Leaflet med Kartverkets karttjenester for kart (ingen API-nøkkel)
+- PnP.PowerShell 3.4 for provisjonering
+
+## Struktur
+
+```
+config/          SPFx-konfigurasjon (package-solution.json m.m.)
+docs/            Løsningsforslag og intern byggeplan
+provisioning/    PnP-mal, Install.ps1 og ikoner for bærekraftsmål
+src/shared/      Felles modeller, datalag, hooks og komponenter
+src/webparts/    Én mappe per webdel
+teams/           Ikoner for Teams-manifest
+```
 
 ## Kom i gang
 
-Last ned siste versjon under releases. Pakk ut filen og installer med Install.ps1-skriptet til en områdesamling du allerede har opprettet.
+Krever Node 22 (se `.nvmrc`).
 
-<a href="https://github.com/KomInn/kominn/wiki">En del veiledninger er tilgjengelig under wiki-seksjonen.</a>
+```bash
+npm install
+npm run serve      # lokal workbench mot https://<tenant>.sharepoint.com/_layouts/workbench.aspx
+npm run lint
+npm run test
+npm run package    # produksjonsbygg, gir sharepoint/solution/kominn.sppkg
+```
+
+Sett `initialPage` i `config/serve.json` til workbench på ditt eget testområde før du
+kjører `npm run serve`.
+
+## Installasjon
+
+1. Last opp `kominn.sppkg` til appkatalogen i leietakeren og godkjenn distribusjon.
+2. Opprett et moderne SharePoint-område (kommunikasjons- eller teamområde).
+3. Kjør `provisioning/Install.ps1` mot området med PnP.PowerShell 3.4 eller nyere.
+   Skriptet oppretter felt, innholdstyper, lister, gruppen Saksbehandlere, sider med
+   webdeler og navigasjon.
+4. Legg saksbehandlere i SharePoint-gruppen **Saksbehandlere**.
+
+Versjon 2.0 er en nyinstallasjon. Data fra 1.x flyttes ikke.
+
+## Versjon 1.x
+
+Den klassiske løsningen (React 16, jQuery, klassiske sider og PnP provisioning template)
+finnes i git-historikken under taggen [`v1-final`](https://github.com/KomInn/kominn/tree/v1-final).
+Den vedlikeholdes ikke.
+
+## Bidra
+
+Åpne gjerne issues og pull requests. Kodestandard håndheves med ESLint
+(`npm run lint`), og alle pull requests bygges av GitHub Actions.
 
 ## Kontakt
 
-Har du spørsmål knyttet til å ta i bruk denne løsningen, ta kontakt med tarjeieo@puzzlepart.com
+Løsningen utvikles av SoftwareOne på vegne av Asker kommune. Spørsmål om å ta løsningen i
+bruk kan rettes til Tarjei Ormestøyl, SoftwareOne.

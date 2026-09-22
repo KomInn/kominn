@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "kominn",
+    "id": "6397cf1c-05fc-4281-82c0-384a4f5ac374",
+    "version": "2.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "SoftwareOne",
+      "websiteUrl": "https://github.com/KomInn/kominn",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": ""
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "KomInn – forslag til kommunale tiltak"
+      },
+      "longDescription": {
+        "default": "KomInn lar ansatte sende inn, vurdere og synliggjøre forslag til kommunale tiltak. Webdeler for forside, nytt forslag, visning og saksbehandling."
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "KomInn",
+        "description": "Aktiverer KomInn-webdelene.",
+        "id": "d0bc803a-6813-4aad-8cce-b3ff55579492",
+        "version": "2.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/kominn.sppkg"
+  }
+}

@@ -1,1 +1,0 @@
-export { SustainabilityGoals } from './SustainabilityGoals';
