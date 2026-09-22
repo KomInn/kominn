@@ -24,7 +24,7 @@ PnP-malen i `provisioning/`.
 ## Teknologi
 
 - SharePoint Framework 1.23 med Heft-toolchain
-- React 17, TypeScript 5, Fluent UI
+- React 17, TypeScript 5, Fluent UI v9
 - PnPjs for all datatilgang mot SharePoint
 - Leaflet med Kartverkets karttjenester for kart (ingen API-nøkkel)
 - PnP.PowerShell 3.4 for provisjonering

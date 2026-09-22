@@ -22,6 +22,9 @@
   },
   "dependencies": {
     "@fluentui/react": "^8.106.4",
+    "@fluentui/react-components": "^9.74.8",
+    "@fluentui/react-icons": "^2.0.341",
+    "@fluentui/react-migration-v8-v9": "^9.10.19",
     "@microsoft/sp-component-base": "1.23.2",
     "@microsoft/sp-core-library": "1.23.2",
     "@microsoft/sp-lodash-subset": "1.23.2",
@@ -29,6 +32,7 @@
     "@microsoft/sp-property-pane": "1.23.2",
     "@microsoft/sp-webpart-base": "1.23.2",
     "@pnp/sp": "^4.21.0",
+    "leaflet": "^1.9.4",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "tslib": "2.3.1"
@@ -41,6 +45,7 @@
     "@microsoft/spfx-web-build-rig": "1.23.2",
     "@rushstack/heft": "1.2.17",
     "@types/jest": "30.0.0",
+    "@types/leaflet": "^1.9.22",
     "@types/react": "17.0.45",
     "@types/react-dom": "17.0.17",
     "@types/webpack-env": "~1.15.2",

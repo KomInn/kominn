@@ -22,7 +22,19 @@
     "description": { "default": "Skjema for å sende inn et nytt forslag, med personalia, bærekraftsmål, bilde, sted og inspirasjon." },
     "officeFabricIconFontName": "PageAdd",
     "properties": {
-      "description": "NyttForslag"
+      "introText": "",
+      "successText": "",
+      "competitionRef": "",
+      "showAmount": true,
+      "showChallenges": true,
+      "showSolution": false,
+      "showUsefulForOthers": false,
+      "showTags": true,
+      "showGoals": true,
+      "showImage": true,
+      "showLocation": true,
+      "showInspiredBy": true,
+      "siteUrl": ""
     }
   }]
 }
