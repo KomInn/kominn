@@ -34,7 +34,7 @@ Alle felt ligger i gruppen «KomInn» med prefiks `Kmi`. Innholdstyper: **Forsla
 
 | Liste | URL | Type | Nøkkelfelt |
 |---|---|---|---|
-| Forslag | `/Forslag` | Generisk liste, CT Forslag | Title, KmiSummary, KmiChallenges, KmiSuggestedSolution, KmiAmount, KmiApplyingFor, KmiUsefulnessType (multichoice innsatsområder), KmiTags, KmiUsefulForOthers, KmiImage (url), KmiLocation («lat,lng»), KmiStatus, KmiCaseWorkerStatus, KmiCaseWorker (user), KmiSendToKS, KmiMonthlyStartDate/EndDate, KmiIsPast, KmiCompRef, KmiLikes, KmiNumberOfComments, personalia (KmiName, KmiAddress, KmiZipcode, KmiCity, KmiCountyCode, KmiMailAddress, KmiTelephone, KmiDepartment, KmiManager), lookup-multi KmiSustainabilityGoals → Baerekraftsmaal, lookup-multi «Inspirert av» → Forslag |
+| Forslag | `/Forslag` | Generisk liste, CT Forslag | Title, KmiSummary, KmiChallenges, KmiSuggestedSolution, KmiAmount, KmiApplyingFor, KmiUsefulnessType (multichoice innsatsområder), KmiTags, KmiUsefulForOthers, KmiImage (url), KmiLocation («lat,lng»), KmiStatus, KmiCaseWorkerStatus, KmiCaseWorker (user), KmiMonthlyStartDate/EndDate, KmiIsPast, KmiCompRef, KmiLikes, KmiNumberOfComments, personalia (KmiName, KmiAddress, KmiZipcode, KmiCity, KmiCountyCode, KmiMailAddress, KmiTelephone, KmiDepartment, KmiManager), lookup-multi KmiSustainabilityGoals → Baerekraftsmaal, lookup-multi «Inspirert av» → Forslag |
 | Forslagsvurdering | `/Lists/Forslagsvurdering` | CT Forslagsvurdering, versjonering | Lookup Forslag, KmiScoreFeasability, KmiScoreUserInvolvement (vises som «utslippsreduksjon»), KmiScoreDistributionPotential, KmiScoreDegreeOfInnovation, KmiMoreActors, KmiLawRequirements, KmiShortComment |
 | Kampanje | `/Lists/Kampanje` | CT Kampanje | KmiCampaignType (Standard/Kampanje/Fortid), KmiCampaignText, Start/EndDate, KmiCampaignRef, KmiCampaignPlacement |
 | Kommentarer | `/Kommentarer` | Generisk | Text, Image, SuggestionId (Number, ikke lookup) |
@@ -43,7 +43,6 @@ Alle felt ligger i gruppen «KomInn» med prefiks `Kmi`. Innholdstyper: **Forsla
 | Ikoner | `/Ikoner` | Dokumentbibliotek | 17 PNG (Goal-01..17) |
 | Bilder | `/Bilder` | Bildebibliotek (109) | Opplastede bilder til forslag |
 | Konfigurasjon | `/Lists/Konfigurasjon` | Nøkkel/verdi | KmiKey, KmiValue (i dag: GOOGLE_MAPS_API_KEY) |
-| InductKonfigurasjon | `/Lists/InductKonfigurasjon` | | KlientID, Anonym |
 | Kommunenumre | (ikke i malen!) | | Postnummer → Kommunenummer, Sted. Brukes av `getCityAndCountryCode` |
 
 Statusverdier: `KmiStatus` = Sendt inn / Publisert / Suksess / Promotert.
@@ -80,11 +79,9 @@ oppdateres på Forslag).
 **Vurdering.aspx** – `Vurdering`: DetailsList med snitt per forslag. NB: leser feltnavn
 uten `Kmi`-prefiks (`ScoreFeasability` osv.) – trolig ødelagt etter omdøping av felt.
 
-**SendTilKS.aspx** – dropdown over alle forslag, POST direkte fra nettleser til
-`https://api.induct.no/v1/{KlientID}/initiatives/ideas`, setter `SendToKS` (feil
-internnavn, skal være `KmiSendToKS`).
-
 ### 1.4 Svakheter vi løser i ny versjon
+
+Ny løsning er en nyinstallasjon på nytt område. Ingen data flyttes fra dagens løsning.
 
 1. Google Maps API-nøkkel ligger i klartekst i malen og i repoet. Må roteres/slettes hos
    Asker uansett.
@@ -93,10 +90,9 @@ internnavn, skal være `KmiSendToKS`).
 3. Saksbehandlerfunksjoner beskyttes kun av UI-sjekk (`doesUserHavePermission`).
 4. Likes/Kommentarer bruker Number-felt i stedet for lookup → ingen referanseintegritet,
    dyre spørringer.
-5. Direktekall fra nettleser til Induct API (CORS/sikkerhet, klient-ID i liste).
-6. Hardkodede tekster og år («2022») i kode i stedet for konfigurasjon.
-7. Listen Kommunenumre mangler i malen; funksjonen feiler stille.
-8. Utdaterte avhengigheter med kjente sårbarheter.
+5. Hardkodede tekster og år («2022») i kode i stedet for konfigurasjon.
+6. Listen Kommunenumre mangler i malen; funksjonen feiler stille.
+7. Utdaterte avhengigheter med kjente sårbarheter.
 
 ## 2. Målarkitektur
 
@@ -121,7 +117,7 @@ internnavn, skal være `KmiSendToKS`).
 | **KomInn – Søk** | Søkefelt med forslag-typeahead, navigerer til forslagssiden | Plassholdertekst, målside |
 | **KomInn – Nytt forslag** | Hele skjemaet, støtte for `?kopier=<id>`, utkast lagres i localStorage | Hvilke seksjoner som vises (sted, bilde, bærekraftsmål, inspirert av), hjelpetekster, målside etter innsending |
 | **KomInn – Forslag** | Detaljvisning, id fra `?forslag=<id>`, liker, kommentarer, kart, relaterte forslag, saksbehandlerpanel (kun for gruppen) | Vis kart av/på, vis vurdering av/på |
-| **KomInn – Saksbehandling** | Oversikt over alle forslag med KmiCaseWorkerStatus, tildeling av saksbehandler, endring av status, snitt av vurderinger (erstatter Vurdering.aspx), ev. eksport til KS | Kolonnevalg, standardfilter |
+| **KomInn – Saksbehandling** | Oversikt over alle forslag med KmiCaseWorkerStatus, tildeling av saksbehandler, endring av status, snitt av vurderinger (erstatter Vurdering.aspx) | Kolonnevalg, standardfilter |
 
 Konfigurasjon (tekster, aktiv kampanje, innsatsområder) leses fra listene Kampanje og
 Konfigurasjon, ikke fra kode.
@@ -137,33 +133,25 @@ Konfigurasjon, ikke fra kode.
 
 ### 2.4 Datamodell – justeringer
 
-Beholdes 1:1: Forslag, Forslagsvurdering, Kampanje, Baerekraftsmaal, Ikoner, Bilder,
-Konfigurasjon. Foreslåtte endringer (avklares med Asker i fase 1):
+Videreføres med dagens felt: Forslag, Forslagsvurdering, Kampanje, Baerekraftsmaal,
+Ikoner, Bilder, Konfigurasjon. Foreslåtte endringer (avklares med Asker
+i fase 1):
 
 1. **Likes og Kommentarer**: anbefalt → bruk SharePoints innebygde Likes (Rating
    settings = Likes på Forslag) og innebygde listeelement-kommentarer via PnPjs
    `@pnp/sp/comments`. Fjerner to lister, telleroppdatering og skrivebehov på Forslag.
-   Ulempe: bilder i kommentarer bortfaller, kommentarer kan ikke migreres med opprinnelig
-   forfatter/dato. Fallback: behold listene, men gjør `Forslag`-feltet til Lookup og la
+   Ulempe: ingen bilder i kommentarer. Fallback: behold listene, men gjør `Forslag`-feltet til Lookup og la
    tellere beregnes av en Power Automate-flyt.
 2. **Kommunenumre**: legg listen inn i malen med seed-data (Posten/Kartverket) eller
    slipp kommunenummer helt. Asker er én kommune; feltet er trolig arv fra
    flerkommune-ambisjonen.
 3. **Konfigurasjon**: fjern GOOGLE_MAPS_API_KEY. Bruk til tekster/etiketter.
-4. **InductKonfigurasjon**: fjernes fra området; klient-ID lagres i flyt/Key Vault.
-5. **Status**: fjern `Draft` fra kode eller legg til «Utkast» i listen dersom Asker vil ha
+4. **Status**: fjern `Draft` fra kode eller legg til «Utkast» i listen dersom Asker vil ha
    ekte utkast.
-6. Rettigheter: Forslag = Contribute for alle med `WriteSecurity=2` (kun egne elementer),
+5. Rettigheter: Forslag = Contribute for alle med `WriteSecurity=2` (kun egne elementer),
    Saksbehandlere = Edit. Forslagsvurdering = kun Saksbehandlere. Bilder = Contribute.
 
-### 2.5 Integrasjon «Send til KS»
-
-Avklar først om KS/Induct fortsatt er aktuelt. Om ja: knapp i Saksbehandling-webdelen
-setter et flagg/skriver til en kø-liste; en Power Automate-flyt (HTTP-action er
-premium) eller en liten Azure Function med managed identity gjør POST til Induct og
-skriver tilbake `KmiSendToKS` og Induct-id. Ingen hemmeligheter i klienten.
-
-### 2.6 Personalia og leder
+### 2.5 Personalia og leder
 
 Primært `sp.profiles.myProperties` via PnPjs (samme kilde som i dag, ingen ekstra
 API-tilgang). Sekundært Graph (`/me`, `/me/manager`) dersom Asker vil ha ferskere data;
@@ -176,34 +164,31 @@ sikret; brukes til intern planlegging til fase 1 er gjennomført.
 
 | # | Arbeidspakke | Innhold | Timer |
 |---|---|---|---|
-| WP0 | Avklaring og design | 2–3 arbeidsmøter med Asker, beslutning på 2.4/2.5, skisser i Figma/Fluent, backlog | 30–40 |
+| WP0 | Avklaring og design | 2–3 arbeidsmøter med Asker, beslutning på 2.4, skisser i Figma/Fluent, backlog | 30–40 |
 | WP1 | Prosjektoppsett | Yeoman-scaffold (`--framework react`), ESLint/Prettier, Jest, GitHub Actions, README, kodestandard, mock-datalag for lokal utvikling | 30–40 |
 | WP2 | Datamodell og provisjonering | Modernisert PnP-mal (felt, CT, lister, seed for bærekraftsmål/ikoner, grupper, moderne sider med webdeler, navigasjon), installasjonsskript, testområde | 40–50 |
 | WP3 | Datalag | `DataService` med PnPjs: forslag (CRUD, filter, sortering, paging), vurderinger, kampanjer, bærekraftsmål, kommentarer/likes, bildeopplasting, profil, rettighetssjekk, konfig. Modeller og mapping med tester | 50–60 |
 | WP4 | Webdel Nytt forslag | Skjema, validering, personalia, bærekraftsmål, bilde (drag/drop, komprimering), sted (Leaflet), inspirert av (velger), kopier-modus, utkast | 70–90 |
 | WP5 | Webdel Forslag | Layout, innhold, bærekraftsmål-ikoner, kart, relaterte forslag (kjede), like, kommentarer, «dette vil vi også gjøre», saksbehandlerpanel med vurdering | 70–90 |
 | WP6 | Webdel Forslagsliste + Søk | Kortkomponent, moduser, filterpanel (dynamiske valg fra felt), sortering, paging, karusell, property pane, søk med typeahead | 70–90 |
-| WP7 | Webdel Saksbehandling | Tabell med filter/sortering, statusendring, tildeling, snittvurderinger, ev. KS-knapp | 40–60 |
-| WP8 | Integrasjon KS (opsjon) | Flyt/Function, kø, tilbakeskriving, feilhåndtering | 20–40 |
-| WP9 | Migrering | PnP PowerShell: eksport fra gammelt område, mapping (Number → Lookup, bilder, forfatter/dato med `-Values` og system update), tørrkjøring i test, kjøring i prod | 30–40 |
-| WP10 | Test, UU, dokumentasjon, go-live | Akseptansetest med Asker, WCAG 2.1 AA-gjennomgang (tastatur, skjermleser, kontrast), brukerveiledning, admin-doc, opplæring, produksjonssetting | 50–60 |
-| | **Sum** | | **500–660** |
+| WP7 | Webdel Saksbehandling | Tabell med filter/sortering, statusendring, tildeling, snittvurderinger | 40–60 |
+| WP8 | Test, UU, dokumentasjon, go-live | Akseptansetest med Asker, WCAG 2.1 AA-gjennomgang (tastatur, skjermleser, kontrast), brukerveiledning, admin-doc, opplæring, installasjon i produksjon | 50–60 |
+| | **Sum** | | **450–580** |
 
 Bemanning: 1 senior SPFx-utvikler (hoved), 1 utvikler (deltid), 1 løsningsansvarlig/PL
-(ca. 15 %). Kalendertid 3–4 måneder.
+(ca. 15 %). Kalendertid 3–3,5 måneder.
 
 ## 4. Sprintplan (2-ukers sprinter)
 
 | Sprint | Mål | Demo til Asker |
 |---|---|---|
-| 0 | WP0, WP1 ferdig. Beslutninger på datamodell og KS | Skisser, backlog |
-| 1 | WP2 + WP3. Testområde provisjonert med migrerte testdata | Lister og område |
+| 0 | WP0, WP1 ferdig. Beslutninger på datamodell | Skisser, backlog |
+| 1 | WP2 + WP3. Testområde provisjonert med testdata | Lister og område |
 | 2 | WP4 Nytt forslag (uten kart/bilde) + WP6 grunnliste | Sende inn og se forslag |
 | 3 | WP5 Forslag-visning, like/kommentar, WP4 kart og bilde | Full brukerflyt |
 | 4 | WP6 filter/sortering/karusell/søk, forside komplett | Forside |
-| 5 | WP7 Saksbehandling, WP8 dersom valgt | Saksbehandlerflyt |
-| 6 | WP9 migrering i test, WP10 UU-retting, buffer | Akseptansetest starter |
-| 7 | Feilretting, dokumentasjon, opplæring, prod | Go-live |
+| 5 | WP7 Saksbehandling. Akseptansetest starter | Saksbehandlerflyt |
+| 6 | WP8: UU-retting, feilretting, dokumentasjon, opplæring, installasjon i prod | Go-live |
 
 ## 5. Tekniske retningslinjer for teamet
 
@@ -229,8 +214,6 @@ Bemanning: 1 senior SPFx-utvikler (hoved), 1 utvikler (deltid), 1 løsningsansva
 | Risiko | Konsekvens | Tiltak |
 |---|---|---|
 | Asker vil beholde Google Maps/vis.js-graf | Nøkkelhåndtering, ekstra kompleksitet | Vise Leaflet + kjedevisning i sprint 3; grafbibliotek (react-flow) som opsjon |
-| Induct API endret/utdatert | WP8 usikker | Avklare i WP0, hold som opsjon |
-| Migrering av forfatter/dato på kommentarer og likes | Historikk kan bli ufullstendig | Bruk system update via PnP PowerShell; aksepter tap ved innebygde kommentarer |
 | Fluent v9 i SharePoint-tema/Teams mørk modus | Visuelle avvik | Teste tidlig i sprint 2 |
 | Store lister (>5000 forslag) | Terskelproblemer på filter | Indekser KmiStatus, Created, KmiCaseWorkerStatus; paging via PnPjs `top`/`skip`-token |
 | Legacy PnP-mal ikke kompatibel med PnP.PowerShell 2.x | Provisjonering feiler | Skrive om til `Invoke-PnPSiteTemplate`, teste tidlig |
@@ -238,9 +221,8 @@ Bemanning: 1 senior SPFx-utvikler (hoved), 1 utvikler (deltid), 1 løsningsansva
 ## 7. Åpne spørsmål til fase 1
 
 1. Beholde egne lister for likes/kommentarer eller innebygd funksjon?
-2. Er «Send til KS» fortsatt i bruk? Lisens for Power Automate premium / Azure?
-3. Nytt område eller gjenbruk? Skal gammel løsning stå i parallell, og hvor lenge?
-4. Skal kommunenummer/postnummer-oppslag videreføres?
-5. Anonyme forslag (`Anonym` i InductKonfigurasjon)? Er dette i bruk?
-6. Skal løsningen også eksponeres i Teams (personlig app / tab)?
-7. Hvilke innsatsområder og tags gjelder nå? (Dagens verdier er klimaplan-spesifikke.)
+2. Når skal dagens løsning tas ned? Skal den stå i lesemodus en periode etter lansering?
+3. Skal kommunenummer/postnummer-oppslag videreføres?
+4. Skal anonyme forslag støttes?
+5. Skal løsningen også eksponeres i Teams (personlig app / tab)?
+6. Hvilke innsatsområder og tags gjelder nå? (Dagens verdier er klimaplan-spesifikke.)
