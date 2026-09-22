@@ -1,6 +1,5 @@
 export interface ISokProps {
-  description: string;
-  isDarkTheme: boolean;
-  environmentMessage: string;
-  userDisplayName: string;
+  placeholder: string;
+  /** Maks antall treff i nedtrekkslisten. */
+  maxResults: number;
 }

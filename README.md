@@ -11,8 +11,8 @@ Løsningen er åpen kildekode og kan tas i bruk av andre kommuner og organisasjo
 
 | Webdel | Beskrivelse |
 |---|---|
-| **Forslagsliste** | Viser forslag som kort. Modus velges i egenskapsruten: promoterte, publiserte, suksesshistorier, mine forslag eller månedens forslag. Kan peke på et annet område, slik at intranettet kan liste godkjente forslag fra KomInn-området. |
-| **Søk i forslag** | Søkefelt som finner forslag på tittel og går til forslagssiden. |
+| **Forslagsliste** | Viser forslag som kort, karusell eller kompakt liste. Modus velges i egenskapsruten: promoterte, publiserte, suksesshistorier, mine forslag eller månedens forslag. Periode, sortering, filter på innsatsområder og tags, og «vis flere». Kan peke på et annet område, slik at intranettet kan liste godkjente forslag fra KomInn-området. |
+| **Søk i forslag** | Søkefelt som viser treff mens du skriver og åpner forslagssiden. Kan også peke på et annet område. |
 | **Nytt forslag** | Skjema for å sende inn forslag: tittel, beskrivelse, søkt sum, utfordringer, innsatsområder, bærekraftsmål, bilde, sted og «inspirert av». Personalia og nærmeste leder hentes fra brukerprofilen. |
 | **Forslag** | Viser ett forslag med innhold, bærekraftsmål, kart, relaterte forslag, liker og kommentarer. Saksbehandlere ser vurderingspanelet. |
 | **Saksbehandling** | Oversikt for saksbehandlere med status, tildeling og snitt av vurderinger. |

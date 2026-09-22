@@ -1,16 +1,14 @@
-define([], function() {
+define([], function () {
   return {
-    "PropertyPaneDescription": "Beskrivelse",
-    "BasicGroupName": "Innstillinger",
-    "DescriptionFieldLabel": "Beskrivelse",
-    "AppLocalEnvironmentSharePoint": "Webdelen kjører lokalt som SharePoint-webdel",
-    "AppLocalEnvironmentTeams": "Webdelen kjører lokalt som Microsoft Teams-app",
-    "AppLocalEnvironmentOffice": "Webdelen kjører lokalt i office.com",
-    "AppLocalEnvironmentOutlook": "Webdelen kjører lokalt i Outlook",
-    "AppSharePointEnvironment": "Webdelen kjører på en SharePoint-side",
-    "AppTeamsTabEnvironment": "Webdelen kjører i Microsoft Teams",
-    "AppOfficeEnvironment": "Webdelen kjører i office.com",
-    "AppOutlookEnvironment": "Webdelen kjører i Outlook",
-    "UnknownEnvironment": "Webdelen kjører i et ukjent miljø"
-  }
+    PropertyPaneDescription: 'Søkefelt som finner forslag på tittel.',
+    SettingsGroupName: 'Innstillinger',
+    SourceGroupName: 'Datakilde',
+    PlaceholderLabel: 'Plassholdertekst',
+    MaxResultsLabel: 'Maks antall treff',
+    SiteUrlFieldLabel: 'Adresse til KomInn-området',
+    SiteUrlFieldDescription: 'La stå tom for å søke på området webdelen står på.',
+    DefaultPlaceholder: 'Søk etter forslag …',
+    NoResults: 'Ingen forslag funnet',
+    Searching: 'Søker …'
+  };
 });

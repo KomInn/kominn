@@ -24,6 +24,11 @@
     "properties": {
       "title": "Aktuelle forslag",
       "mode": "published",
+      "layout": "cards",
+      "period": "all",
+      "defaultOrder": "likes",
+      "showFilters": false,
+      "showSorting": false,
       "siteUrl": "",
       "top": 12,
       "emptyText": ""

@@ -1,19 +1,31 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
-import { type IPropertyPaneConfiguration, PropertyPaneChoiceGroup, PropertyPaneSlider, PropertyPaneTextField } from '@microsoft/sp-property-pane';
+import {
+  type IPropertyPaneConfiguration,
+  PropertyPaneChoiceGroup,
+  PropertyPaneDropdown,
+  PropertyPaneSlider,
+  PropertyPaneTextField,
+  PropertyPaneToggle
+} from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import type { IReadonlyTheme } from '@microsoft/sp-component-base';
 
 import * as strings from 'ForslagslisteWebPartStrings';
 import { Forslagsliste } from './components/Forslagsliste';
-import type { IForslagslisteProps, ListMode } from './components/IForslagslisteProps';
-import { createDataService, type IDataService } from '../../shared/services';
-import { DataServiceProvider } from '../../shared/hooks';
+import type { IForslagslisteProps, ListLayout, ListMode, ListPeriod } from './components/IForslagslisteProps';
+import { createDataService, type IDataService, type SuggestionOrder } from '../../shared/services';
+import { KomInnProvider } from '../../shared/components';
 
 export interface IForslagslisteWebPartProps {
   title: string;
   mode: ListMode;
+  layout: ListLayout;
+  period: ListPeriod;
+  defaultOrder: SuggestionOrder;
+  showFilters: boolean;
+  showSorting: boolean;
   /** Absolutt URL til KomInn-området. Tom = området webdelen står på. */
   siteUrl: string;
   top: number;
@@ -22,25 +34,33 @@ export interface IForslagslisteWebPartProps {
 
 export default class ForslagslisteWebPart extends BaseClientSideWebPart<IForslagslisteWebPartProps> {
   private service!: IDataService;
-  private isDarkTheme = false;
+  private theme?: IReadonlyTheme;
 
   protected async onInit(): Promise<void> {
     this.service = createDataService(this.context, { siteUrl: this.properties.siteUrl });
   }
 
   public render(): void {
+    const p = this.properties;
     const props: IForslagslisteProps = {
-      title: this.properties.title,
-      mode: this.properties.mode ?? 'published',
-      top: this.properties.top ?? 12,
-      emptyText: this.properties.emptyText || strings.DefaultEmptyText,
-      isDarkTheme: this.isDarkTheme,
+      title: p.title,
+      mode: p.mode ?? 'published',
+      layout: p.layout ?? 'cards',
+      period: p.period ?? 'all',
+      defaultOrder: p.defaultOrder ?? (p.mode === 'published' || !p.mode ? 'likes' : 'created'),
+      showFilters: p.showFilters === true,
+      showSorting: p.showSorting === true,
+      top: p.top ?? 12,
+      emptyText: p.emptyText || strings.DefaultEmptyText,
       displayMode: this.displayMode,
       onTitleChange: (title) => {
         this.properties.title = title;
       }
     };
-    ReactDom.render(React.createElement(DataServiceProvider, { service: this.service }, React.createElement(Forslagsliste, props)), this.domElement);
+    ReactDom.render(
+      React.createElement(KomInnProvider, { theme: this.theme, instanceId: this.instanceId, service: this.service }, React.createElement(Forslagsliste, props)),
+      this.domElement
+    );
   }
 
   protected onPropertyPaneFieldChanged(propertyPath: string): void {
@@ -48,14 +68,8 @@ export default class ForslagslisteWebPart extends BaseClientSideWebPart<IForslag
   }
 
   protected onThemeChanged(currentTheme: IReadonlyTheme | undefined): void {
-    if (!currentTheme) return;
-    this.isDarkTheme = !!currentTheme.isInverted;
-    const { semanticColors } = currentTheme;
-    if (semanticColors) {
-      this.domElement.style.setProperty('--bodyText', semanticColors.bodyText || null);
-      this.domElement.style.setProperty('--link', semanticColors.link || null);
-      this.domElement.style.setProperty('--linkHovered', semanticColors.linkHovered || null);
-    }
+    this.theme = currentTheme;
+    this.render();
   }
 
   protected onDispose(): void {
@@ -85,8 +99,39 @@ export default class ForslagslisteWebPart extends BaseClientSideWebPart<IForslag
                     { key: 'mine', text: strings.ModeMine }
                   ]
                 }),
+                PropertyPaneDropdown('period', {
+                  label: strings.PeriodFieldLabel,
+                  options: [
+                    { key: 'all', text: strings.PeriodAll },
+                    { key: 'thisYear', text: strings.PeriodThisYear },
+                    { key: 'last12Months', text: strings.PeriodLast12Months }
+                  ]
+                }),
+                PropertyPaneDropdown('defaultOrder', {
+                  label: strings.SortLabel,
+                  options: [
+                    { key: 'likes', text: strings.SortLikes },
+                    { key: 'comments', text: strings.SortComments },
+                    { key: 'created', text: strings.SortCreated }
+                  ]
+                }),
                 PropertyPaneSlider('top', { label: strings.TopFieldLabel, min: 1, max: 50, step: 1 }),
                 PropertyPaneTextField('emptyText', { label: strings.EmptyTextFieldLabel })
+              ]
+            },
+            {
+              groupName: strings.LayoutGroupName,
+              groupFields: [
+                PropertyPaneChoiceGroup('layout', {
+                  label: strings.LayoutFieldLabel,
+                  options: [
+                    { key: 'cards', text: strings.LayoutCards },
+                    { key: 'carousel', text: strings.LayoutCarousel },
+                    { key: 'compact', text: strings.LayoutCompact }
+                  ]
+                }),
+                PropertyPaneToggle('showFilters', { label: strings.ShowFiltersLabel, onText: 'På', offText: 'Av' }),
+                PropertyPaneToggle('showSorting', { label: strings.ShowSortingLabel, onText: 'På', offText: 'Av' })
               ]
             },
             {

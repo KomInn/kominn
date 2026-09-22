@@ -1,16 +1,14 @@
 declare interface ISokWebPartStrings {
   PropertyPaneDescription: string;
-  BasicGroupName: string;
-  DescriptionFieldLabel: string;
-  AppLocalEnvironmentSharePoint: string;
-  AppLocalEnvironmentTeams: string;
-  AppLocalEnvironmentOffice: string;
-  AppLocalEnvironmentOutlook: string;
-  AppSharePointEnvironment: string;
-  AppTeamsTabEnvironment: string;
-  AppOfficeEnvironment: string;
-  AppOutlookEnvironment: string;
-  UnknownEnvironment: string;
+  SettingsGroupName: string;
+  SourceGroupName: string;
+  PlaceholderLabel: string;
+  MaxResultsLabel: string;
+  SiteUrlFieldLabel: string;
+  SiteUrlFieldDescription: string;
+  DefaultPlaceholder: string;
+  NoResults: string;
+  Searching: string;
 }
 
 declare module 'SokWebPartStrings' {

@@ -22,7 +22,9 @@
     "description": { "default": "Søkefelt som finner forslag på tittel og går til forslagssiden." },
     "officeFabricIconFontName": "Search",
     "properties": {
-      "description": "Sok"
+      "placeholder": "Søk etter forslag …",
+      "maxResults": 8,
+      "siteUrl": ""
     }
   }]
 }

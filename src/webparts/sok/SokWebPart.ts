@@ -1,91 +1,47 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
-import {
-  type IPropertyPaneConfiguration,
-  PropertyPaneTextField
-} from '@microsoft/sp-property-pane';
+import { type IPropertyPaneConfiguration, PropertyPaneSlider, PropertyPaneTextField } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
-import { IReadonlyTheme } from '@microsoft/sp-component-base';
+import type { IReadonlyTheme } from '@microsoft/sp-component-base';
 
 import * as strings from 'SokWebPartStrings';
-import Sok from './components/Sok';
-import { ISokProps } from './components/ISokProps';
+import { Sok } from './components/Sok';
+import { createDataService, type IDataService } from '../../shared/services';
+import { KomInnProvider } from '../../shared/components';
 
 export interface ISokWebPartProps {
-  description: string;
+  placeholder: string;
+  maxResults: number;
+  siteUrl: string;
 }
 
 export default class SokWebPart extends BaseClientSideWebPart<ISokWebPartProps> {
+  private service!: IDataService;
+  private theme?: IReadonlyTheme;
 
-  private _isDarkTheme: boolean = false;
-  private _environmentMessage: string = '';
+  protected async onInit(): Promise<void> {
+    this.service = createDataService(this.context, { siteUrl: this.properties.siteUrl });
+  }
 
   public render(): void {
-    const element: React.ReactElement<ISokProps> = React.createElement(
-      Sok,
-      {
-        description: this.properties.description,
-        isDarkTheme: this._isDarkTheme,
-        environmentMessage: this._environmentMessage,
-        userDisplayName: this.context.pageContext.user.displayName
-      }
+    ReactDom.render(
+      React.createElement(
+        KomInnProvider,
+        { theme: this.theme, instanceId: this.instanceId, service: this.service },
+        React.createElement(Sok, { placeholder: this.properties.placeholder ?? '', maxResults: this.properties.maxResults ?? 8 })
+      ),
+      this.domElement
     );
-
-    ReactDom.render(element, this.domElement);
   }
 
-  protected onInit(): Promise<void> {
-    return this._getEnvironmentMessage().then(message => {
-      this._environmentMessage = message;
-    });
-  }
-
-
-
-  private _getEnvironmentMessage(): Promise<string> {
-    if (!!this.context.sdks.microsoftTeams) { // running in Teams, office.com or Outlook
-      return this.context.sdks.microsoftTeams.teamsJs.app.getContext()
-        .then(context => {
-          let environmentMessage: string = '';
-          switch (context.app.host.name) {
-            case 'Office': // running in Office
-              environmentMessage = this.context.isServedFromLocalhost ? strings.AppLocalEnvironmentOffice : strings.AppOfficeEnvironment;
-              break;
-            case 'Outlook': // running in Outlook
-              environmentMessage = this.context.isServedFromLocalhost ? strings.AppLocalEnvironmentOutlook : strings.AppOutlookEnvironment;
-              break;
-            case 'Teams': // running in Teams
-            case 'TeamsModern':
-              environmentMessage = this.context.isServedFromLocalhost ? strings.AppLocalEnvironmentTeams : strings.AppTeamsTabEnvironment;
-              break;
-            default:
-              environmentMessage = strings.UnknownEnvironment;
-          }
-
-          return environmentMessage;
-        });
-    }
-
-    return Promise.resolve(this.context.isServedFromLocalhost ? strings.AppLocalEnvironmentSharePoint : strings.AppSharePointEnvironment);
+  protected onPropertyPaneFieldChanged(propertyPath: string): void {
+    if (propertyPath === 'siteUrl') this.service = createDataService(this.context, { siteUrl: this.properties.siteUrl });
   }
 
   protected onThemeChanged(currentTheme: IReadonlyTheme | undefined): void {
-    if (!currentTheme) {
-      return;
-    }
-
-    this._isDarkTheme = !!currentTheme.isInverted;
-    const {
-      semanticColors
-    } = currentTheme;
-
-    if (semanticColors) {
-      this.domElement.style.setProperty('--bodyText', semanticColors.bodyText || null);
-      this.domElement.style.setProperty('--link', semanticColors.link || null);
-      this.domElement.style.setProperty('--linkHovered', semanticColors.linkHovered || null);
-    }
-
+    this.theme = currentTheme;
+    this.render();
   }
 
   protected onDispose(): void {
@@ -100,17 +56,18 @@ export default class SokWebPart extends BaseClientSideWebPart<ISokWebPartProps> 
     return {
       pages: [
         {
-          header: {
-            description: strings.PropertyPaneDescription
-          },
+          header: { description: strings.PropertyPaneDescription },
           groups: [
             {
-              groupName: strings.BasicGroupName,
+              groupName: strings.SettingsGroupName,
               groupFields: [
-                PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel
-                })
+                PropertyPaneTextField('placeholder', { label: strings.PlaceholderLabel }),
+                PropertyPaneSlider('maxResults', { label: strings.MaxResultsLabel, min: 3, max: 20, step: 1 })
               ]
+            },
+            {
+              groupName: strings.SourceGroupName,
+              groupFields: [PropertyPaneTextField('siteUrl', { label: strings.SiteUrlFieldLabel, description: strings.SiteUrlFieldDescription })]
             }
           ]
         }
