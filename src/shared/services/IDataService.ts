@@ -61,4 +61,6 @@ export interface IDataService {
 
   getCurrentUser(): Promise<Person>;
   isCaseWorker(): Promise<boolean>;
+  /** Medlemmene i gruppen Saksbehandlere, for tildeling. */
+  getCaseWorkers(): Promise<Person[]>;
 }

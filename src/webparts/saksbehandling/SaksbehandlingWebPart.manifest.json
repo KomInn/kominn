@@ -22,7 +22,13 @@
     "description": { "default": "Oversikt for saksbehandlere: status, tildeling og vurdering av forslag." },
     "officeFabricIconFontName": "ClipboardList",
     "properties": {
-      "description": "Saksbehandling"
+      "showSubmitted": true,
+      "showRaised": true,
+      "showEvaluating": true,
+      "showAccepted": false,
+      "showRejected": false,
+      "maxItems": 500,
+      "siteUrl": ""
     }
   }]
 }

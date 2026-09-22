@@ -1,91 +1,63 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
-import {
-  type IPropertyPaneConfiguration,
-  PropertyPaneTextField
-} from '@microsoft/sp-property-pane';
+import { type IPropertyPaneConfiguration, PropertyPaneCheckbox, PropertyPaneSlider, PropertyPaneTextField } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
-import { IReadonlyTheme } from '@microsoft/sp-component-base';
+import type { IReadonlyTheme } from '@microsoft/sp-component-base';
 
 import * as strings from 'SaksbehandlingWebPartStrings';
-import Saksbehandling from './components/Saksbehandling';
-import { ISaksbehandlingProps } from './components/ISaksbehandlingProps';
+import { Saksbehandling } from './components/Saksbehandling';
+import { createDataService, type IDataService } from '../../shared/services';
+import { KomInnProvider } from '../../shared/components';
+import type { CaseWorkerStatus } from '../../shared/models';
 
 export interface ISaksbehandlingWebPartProps {
-  description: string;
+  showSubmitted: boolean;
+  showRaised: boolean;
+  showEvaluating: boolean;
+  showAccepted: boolean;
+  showRejected: boolean;
+  maxItems: number;
+  siteUrl: string;
 }
 
 export default class SaksbehandlingWebPart extends BaseClientSideWebPart<ISaksbehandlingWebPartProps> {
+  private service!: IDataService;
+  private theme?: IReadonlyTheme;
 
-  private _isDarkTheme: boolean = false;
-  private _environmentMessage: string = '';
+  protected async onInit(): Promise<void> {
+    this.service = createDataService(this.context, { siteUrl: this.properties.siteUrl });
+  }
+
+  private defaultStatuses(): CaseWorkerStatus[] {
+    const p = this.properties;
+    const list: CaseWorkerStatus[] = [];
+    if (p.showSubmitted !== false) list.push('Sendt inn');
+    if (p.showRaised !== false) list.push('Løftes til linja');
+    if (p.showEvaluating !== false) list.push('Vurderes');
+    if (p.showAccepted === true) list.push('Godtatt');
+    if (p.showRejected === true) list.push('Avslått');
+    return list;
+  }
 
   public render(): void {
-    const element: React.ReactElement<ISaksbehandlingProps> = React.createElement(
-      Saksbehandling,
-      {
-        description: this.properties.description,
-        isDarkTheme: this._isDarkTheme,
-        environmentMessage: this._environmentMessage,
-        userDisplayName: this.context.pageContext.user.displayName
-      }
+    ReactDom.render(
+      React.createElement(
+        KomInnProvider,
+        { theme: this.theme, instanceId: this.instanceId, service: this.service },
+        React.createElement(Saksbehandling, { defaultStatuses: this.defaultStatuses(), maxItems: this.properties.maxItems ?? 500 })
+      ),
+      this.domElement
     );
-
-    ReactDom.render(element, this.domElement);
   }
 
-  protected onInit(): Promise<void> {
-    return this._getEnvironmentMessage().then(message => {
-      this._environmentMessage = message;
-    });
-  }
-
-
-
-  private _getEnvironmentMessage(): Promise<string> {
-    if (!!this.context.sdks.microsoftTeams) { // running in Teams, office.com or Outlook
-      return this.context.sdks.microsoftTeams.teamsJs.app.getContext()
-        .then(context => {
-          let environmentMessage: string = '';
-          switch (context.app.host.name) {
-            case 'Office': // running in Office
-              environmentMessage = this.context.isServedFromLocalhost ? strings.AppLocalEnvironmentOffice : strings.AppOfficeEnvironment;
-              break;
-            case 'Outlook': // running in Outlook
-              environmentMessage = this.context.isServedFromLocalhost ? strings.AppLocalEnvironmentOutlook : strings.AppOutlookEnvironment;
-              break;
-            case 'Teams': // running in Teams
-            case 'TeamsModern':
-              environmentMessage = this.context.isServedFromLocalhost ? strings.AppLocalEnvironmentTeams : strings.AppTeamsTabEnvironment;
-              break;
-            default:
-              environmentMessage = strings.UnknownEnvironment;
-          }
-
-          return environmentMessage;
-        });
-    }
-
-    return Promise.resolve(this.context.isServedFromLocalhost ? strings.AppLocalEnvironmentSharePoint : strings.AppSharePointEnvironment);
+  protected onPropertyPaneFieldChanged(propertyPath: string): void {
+    if (propertyPath === 'siteUrl') this.service = createDataService(this.context, { siteUrl: this.properties.siteUrl });
   }
 
   protected onThemeChanged(currentTheme: IReadonlyTheme | undefined): void {
-    if (!currentTheme) {
-      return;
-    }
-
-    this._isDarkTheme = !!currentTheme.isInverted;
-    const {
-      semanticColors
-    } = currentTheme;
-
-    if (semanticColors) {
-      this.domElement.style.setProperty('--bodyText', semanticColors.bodyText || null);
-      this.domElement.style.setProperty('--link', semanticColors.link || null);
-      this.domElement.style.setProperty('--linkHovered', semanticColors.linkHovered || null);
-    }
-
+    this.theme = currentTheme;
+    this.render();
   }
 
   protected onDispose(): void {
@@ -100,17 +72,22 @@ export default class SaksbehandlingWebPart extends BaseClientSideWebPart<ISaksbe
     return {
       pages: [
         {
-          header: {
-            description: strings.PropertyPaneDescription
-          },
+          header: { description: strings.PropertyPaneDescription },
           groups: [
             {
-              groupName: strings.BasicGroupName,
+              groupName: strings.DefaultFilterGroupName,
               groupFields: [
-                PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel
-                })
+                PropertyPaneCheckbox('showSubmitted', { text: 'Sendt inn' }),
+                PropertyPaneCheckbox('showRaised', { text: 'Løftes til linja' }),
+                PropertyPaneCheckbox('showEvaluating', { text: 'Vurderes' }),
+                PropertyPaneCheckbox('showAccepted', { text: 'Godtatt' }),
+                PropertyPaneCheckbox('showRejected', { text: 'Avslått' }),
+                PropertyPaneSlider('maxItems', { label: strings.MaxItemsLabel, min: 50, max: 2000, step: 50 })
               ]
+            },
+            {
+              groupName: strings.SourceGroupName,
+              groupFields: [PropertyPaneTextField('siteUrl', { label: strings.SiteUrlFieldLabel, description: strings.SiteUrlFieldDescription })]
             }
           ]
         }

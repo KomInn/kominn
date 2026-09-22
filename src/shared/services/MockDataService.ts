@@ -181,6 +181,11 @@ export class MockDataService implements IDataService {
     return clone(this.user);
   }
 
+  public async getCaseWorkers(): Promise<Person[]> {
+    await this.wait();
+    return clone([this.user, { id: 20, name: 'Saks Behandler', email: 'saks.behandler@asker.kommune.no' }, { id: 21, name: 'Vurd Erer', email: 'vurd.erer@asker.kommune.no' }]);
+  }
+
   public async isCaseWorker(): Promise<boolean> {
     await this.wait();
     return this.caseWorker;

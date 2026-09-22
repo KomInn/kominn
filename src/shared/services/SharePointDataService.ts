@@ -317,6 +317,16 @@ export class SharePointDataService implements IDataService {
     return person;
   }
 
+  public async getCaseWorkers(): Promise<Person[]> {
+    try {
+      const users: { Id: number; Title: string; Email: string; LoginName: string; PrincipalType: number }[] =
+        await this.sp.web.siteGroups.getByName(CASE_WORKER_GROUP).users.select('Id', 'Title', 'Email', 'LoginName', 'PrincipalType')();
+      return users.filter((u) => u.PrincipalType === 1).map((u) => ({ id: u.Id, name: u.Title, email: u.Email, loginName: u.LoginName }));
+    } catch {
+      return [];
+    }
+  }
+
   public async isCaseWorker(): Promise<boolean> {
     try {
       const groups: { Title: string }[] = await this.sp.web.currentUser.groups.select('Title')();
