@@ -1,4 +1,4 @@
-# KomInn – ny løsning på SharePoint Framework (SPFx)
+# KomInn 2.0 – ny løsning på SharePoint Framework (SPFx)
 
 **Løsningsforslag til Asker kommune**
 Utarbeidet av SoftwareOne · September 2026 · Versjon 0.9 (utkast til diskusjon)
@@ -14,9 +14,12 @@ rammeverk som ikke lenger vedlikeholdes (React 16, jQuery, Bootstrap 3, Office U
 Fabric 6, klassiske sidemaler).
 
 Vi foreslår å bygge KomInn på nytt som en moderne SPFx-løsning i Asker kommunes
-Microsoft 365-leietaker. Datamodellen (listene) bygger på dagens modell. Løsningen
-settes opp som en nyinstallasjon på et nytt, moderne område. Eksisterende data flyttes
-ikke, og all eksisterende kode erstattes.
+Microsoft 365-leietaker, som versjon 2.0. Datamodellen (listene) bygger på dagens
+modell. Løsningen settes opp som en nyinstallasjon på et nytt, moderne område.
+Eksisterende data flyttes ikke, og all eksisterende kode erstattes.
+
+Versjon 2.0 leveres i ett løp og har prototypekarakter: Asker tar den raskt i bruk, og
+mindre feil rettes etter lansering.
 
 **Mål**
 
@@ -52,14 +55,14 @@ ikke, og all eksisterende kode erstattes.
 - **Rettigheter:** saksbehandlerfunksjoner styres av SharePoint-gruppen
   «Saksbehandlere» og listerettigheter. Vanlige brukere kan opprette og redigere egne
   forslag, like og kommentere.
-- **Provisjonering:** PnP PowerShell-mal oppretter felt, lister, sider, navigasjon og
-  grupper. App-pakken (.sppkg) legges i Askers appkatalog.
+- **Provisjonering:** PnP.PowerShell 3.4 med mal på siste PnP-skjema oppretter felt,
+  lister, sider, navigasjon og grupper. App-pakken (.sppkg) legges i Askers appkatalog.
 - **Nyinstallasjon:** løsningen installeres på et nytt område og starter uten innhold.
   Dagens løsning berøres ikke og kan tas ned når Asker ønsker.
 
 ## 4. Leveranser
 
-1. Løsningsdesign og skisser (godkjennes av Asker før bygging).
+1. Kort løsningsdesign med skisser ved oppstart.
 2. SPFx-pakke med webdelene Forside (fire varianter), Nytt forslag, Forslag og
    Saksbehandling.
 3. Provisjoneringsmal og installasjonsveiledning.
@@ -68,20 +71,24 @@ ikke, og all eksisterende kode erstattes.
 
 ## 5. Gjennomføring
 
-| Fase | Innhold | Varighet (anslag) |
-|---|---|---|
-| 1. Avklaring og design | Arbeidsmøter, prioritering, skisser, beslutninger om datamodell | 2–3 uker |
-| 2. Grunnmur | Prosjektoppsett, datamodell, provisjonering, datalag | 2–3 uker |
-| 3. Bygging | Skjema, visning, forside, saksbehandling; demo hver andre uke | 6–8 uker |
-| 4. Test | Akseptansetest med Asker og UU-test i testmiljø | 2 uker |
-| 5. Produksjonssetting | Installasjon i produksjon, opplæring, lansering | 1 uke |
+Løsningen bygges og leveres i ett løp, uten delleveranser eller mellomliggende
+godkjenningspunkter:
 
-Samlet kalendertid ca. 3–3,5 måneder med ett utviklingsteam (1–2 utviklere og en
-løsningsansvarlig fra SoftwareOne). Detaljert estimat og pris gis etter fase 1.
+1. **Oppstart** (1 uke): ett arbeidsmøte med Asker, beslutning om datamodell, skisser.
+2. **Bygging** (8–10 uker): prosjektoppsett, provisjonering, datalag og alle webdeler.
+   Asker kan følge med på testområdet underveis.
+3. **Lansering** (1 uke): røyktest og enkel UU-sjekk, installasjon i produksjon, kort
+   opplæring av saksbehandlere.
+
+Samlet kalendertid ca. 2,5–3 måneder med ett utviklingsteam (1–2 utviklere og en
+løsningsansvarlig fra SoftwareOne). Estimat og pris gis samlet før oppstart.
 
 ## 6. Forutsetninger og avklaringer
 
-- Asker stiller med produkteier og 2–3 saksbehandlere til arbeidsmøter og test.
+- Asker stiller med én produkteier som kan svare på spørsmål underveis og prøve
+  løsningen før lansering.
+- Løsningen er en første versjon 2.0. Asker aksepterer at enkelte barnesykdommer rettes
+  etter lansering.
 - SoftwareOne får tilgang til test- og produksjonsleietaker (appkatalog, SharePoint-
   administrator ved installasjon).
 - Når dagens løsning skal tas ned, og om den skal være tilgjengelig i lesemodus en

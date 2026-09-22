@@ -1,4 +1,4 @@
-# KomInn på SPFx – intern byggeplan
+# KomInn 2.0 på SPFx – intern byggeplan
 
 **Intern arbeidsdokumentasjon for SoftwareOne. Deles ikke med kunde uten bearbeiding.**
 Versjon 0.9 · September 2026
@@ -6,6 +6,10 @@ Versjon 0.9 · September 2026
 Grunnlag: gjennomgang av dagens kildekode (`src/`), PnP-malen (`templates/root`) og
 installasjonsskriptet i KomInn-repoet, versjon 1.1.2 (siste commit «Tweaks after
 meeting», klimatilskudd-grenen).
+
+Rammer fra produktledelse: alt leveres i ett løp som versjon 2.0. Asker vet at dette er
+en prototype og aksepterer barnesykdommer. All v1-kode ryddes ut av repoet. PnP-skript
+og maler skal bruke PnP.PowerShell 3.4 og siste PnP Provisioning Schema.
 
 ---
 
@@ -106,7 +110,7 @@ Ny løsning er en nyinstallasjon på nytt område. Ingen data flyttes fra dagens
 | Tilstand | React hooks + en lett store (Zustand eller React Context) | Unngå Redux-tyngde |
 | Kart | Leaflet + `react-leaflet`, Kartverkets WMTS/cache (`cache.kartverket.no`) | Ingen nøkkel. Alternativ: Azure Maps (krever nøkkel og abonnement) |
 | Bygg/CI | GitHub Actions: lint, test, `heft build --production`, `heft package-solution --production`, opplasting av .sppkg som release-artefakt | Ev. auto-deploy til test-appkatalog med CLI for Microsoft 365 |
-| Provisjonering | PnP.PowerShell 2.x, `Invoke-PnPSiteTemplate`, mal i XML (ikke .pnp-binær i repo) | Modernisert versjon av dagens `templates/root` |
+| Provisjonering | PnP.PowerShell 3.4, `Invoke-PnPSiteTemplate`, mal i XML på siste PnP Provisioning Schema (ikke .pnp-binær i repo) | Skrives på nytt. Dagens `templates/root` brukes kun som fasit for felt og lister |
 | Test | Jest + React Testing Library for komponenter og `DataService`-mapping; Playwright for røyktest mot testområde | |
 
 ### 2.2 Webdeler
@@ -135,7 +139,7 @@ Konfigurasjon, ikke fra kode.
 
 Videreføres med dagens felt: Forslag, Forslagsvurdering, Kampanje, Baerekraftsmaal,
 Ikoner, Bilder, Konfigurasjon. Foreslåtte endringer (avklares med Asker
-i fase 1):
+i oppstartsmøtet):
 
 1. **Likes og Kommentarer**: anbefalt → bruk SharePoints innebygde Likes (Rating
    settings = Likes på Forslag) og innebygde listeelement-kommentarer via PnPjs
@@ -160,35 +164,36 @@ krever godkjenning av `User.Read`/`User.ReadBasic.All` i API-tilgang.
 ## 3. Arbeidspakker og grovestimat
 
 Timer er grovestimat for gjennomføring, inkl. enhetstest og kodegjennomgang. Ikke QA-
-sikret; brukes til intern planlegging til fase 1 er gjennomført.
+sikret. Testomfanget er satt til prototypenivå.
 
 | # | Arbeidspakke | Innhold | Timer |
 |---|---|---|---|
-| WP0 | Avklaring og design | 2–3 arbeidsmøter med Asker, beslutning på 2.4, skisser i Figma/Fluent, backlog | 30–40 |
-| WP1 | Prosjektoppsett | Yeoman-scaffold (`--framework react`), ESLint/Prettier, Jest, GitHub Actions, README, kodestandard, mock-datalag for lokal utvikling | 30–40 |
-| WP2 | Datamodell og provisjonering | Modernisert PnP-mal (felt, CT, lister, seed for bærekraftsmål/ikoner, grupper, moderne sider med webdeler, navigasjon), installasjonsskript, testområde | 40–50 |
+| WP0 | Oppstart | Ett arbeidsmøte med Asker, beslutning på 2.4, enkle skisser, backlog | 15–20 |
+| WP1 | Prosjektoppsett og opprydding | Tagg `v1.1.2` og slett all v1-kode (`src/`, `templates/`, `build/`, `scripts/`, webpack, gamle avhengigheter). Yeoman-scaffold (`--framework react`) på rot, versjon 2.0.0, ESLint/Prettier, Jest, GitHub Actions, README, mock-datalag for lokal utvikling | 30–40 |
+| WP2 | Datamodell og provisjonering | Ny PnP-mal på siste PnP Provisioning Schema (felt, CT, lister, seed for bærekraftsmål/ikoner, grupper, moderne sider med webdeler, navigasjon), `Install.ps1` for PnP.PowerShell 3.4, testområde | 40–50 |
 | WP3 | Datalag | `DataService` med PnPjs: forslag (CRUD, filter, sortering, paging), vurderinger, kampanjer, bærekraftsmål, kommentarer/likes, bildeopplasting, profil, rettighetssjekk, konfig. Modeller og mapping med tester | 50–60 |
 | WP4 | Webdel Nytt forslag | Skjema, validering, personalia, bærekraftsmål, bilde (drag/drop, komprimering), sted (Leaflet), inspirert av (velger), kopier-modus, utkast | 70–90 |
 | WP5 | Webdel Forslag | Layout, innhold, bærekraftsmål-ikoner, kart, relaterte forslag (kjede), like, kommentarer, «dette vil vi også gjøre», saksbehandlerpanel med vurdering | 70–90 |
 | WP6 | Webdel Forslagsliste + Søk | Kortkomponent, moduser, filterpanel (dynamiske valg fra felt), sortering, paging, karusell, property pane, søk med typeahead | 70–90 |
 | WP7 | Webdel Saksbehandling | Tabell med filter/sortering, statusendring, tildeling, snittvurderinger | 40–60 |
-| WP8 | Test, UU, dokumentasjon, go-live | Akseptansetest med Asker, WCAG 2.1 AA-gjennomgang (tastatur, skjermleser, kontrast), brukerveiledning, admin-doc, opplæring, installasjon i produksjon | 50–60 |
-| | **Sum** | | **450–580** |
+| WP8 | Lansering | Røyktest av hovedflytene, enkel UU-sjekk (tastatur, kontrast), kort brukerveiledning og admin-doc, installasjon i produksjon, opplæring | 20–30 |
+| | **Sum** | | **405–530** |
 
 Bemanning: 1 senior SPFx-utvikler (hoved), 1 utvikler (deltid), 1 løsningsansvarlig/PL
-(ca. 15 %). Kalendertid 3–3,5 måneder.
+(ca. 10 %). Kalendertid 2,5–3 måneder.
 
-## 4. Sprintplan (2-ukers sprinter)
+## 4. Gjennomføring i ett løp
 
-| Sprint | Mål | Demo til Asker |
-|---|---|---|
-| 0 | WP0, WP1 ferdig. Beslutninger på datamodell | Skisser, backlog |
-| 1 | WP2 + WP3. Testområde provisjonert med testdata | Lister og område |
-| 2 | WP4 Nytt forslag (uten kart/bilde) + WP6 grunnliste | Sende inn og se forslag |
-| 3 | WP5 Forslag-visning, like/kommentar, WP4 kart og bilde | Full brukerflyt |
-| 4 | WP6 filter/sortering/karusell/søk, forside komplett | Forside |
-| 5 | WP7 Saksbehandling. Akseptansetest starter | Saksbehandlerflyt |
-| 6 | WP8: UU-retting, feilretting, dokumentasjon, opplæring, installasjon i prod | Go-live |
+Ingen sprinter, demoer eller godkjenningspunkter underveis. Rekkefølgen er styrt av
+avhengigheter:
+
+1. WP0 og WP1 første uke. Beslutning om likes/kommentarer tas i oppstartsmøtet.
+2. WP2 og WP3 parallelt: provisjonering og datalag mot samme testområde.
+3. WP4 og WP6 parallelt (skjema og liste), deretter WP5 og WP7.
+4. WP8 siste uke. Asker har lesetilgang til testområdet hele veien og kan prøve
+   fortløpende, uten at det utløser formelle tilbakemeldingsrunder.
+
+Feil som oppdages etter lansering håndteres som vedlikehold på versjon 2.x.
 
 ## 5. Tekniske retningslinjer for teamet
 
@@ -209,16 +214,7 @@ Bemanning: 1 senior SPFx-utvikler (hoved), 1 utvikler (deltid), 1 løsningsansva
 - Mock-`DataService` (in-memory JSON) slik at webdeler kan kjøres i workbench uten
   SharePoint-lister.
 
-## 6. Risiko
-
-| Risiko | Konsekvens | Tiltak |
-|---|---|---|
-| Asker vil beholde Google Maps/vis.js-graf | Nøkkelhåndtering, ekstra kompleksitet | Vise Leaflet + kjedevisning i sprint 3; grafbibliotek (react-flow) som opsjon |
-| Fluent v9 i SharePoint-tema/Teams mørk modus | Visuelle avvik | Teste tidlig i sprint 2 |
-| Store lister (>5000 forslag) | Terskelproblemer på filter | Indekser KmiStatus, Created, KmiCaseWorkerStatus; paging via PnPjs `top`/`skip`-token |
-| Legacy PnP-mal ikke kompatibel med PnP.PowerShell 2.x | Provisjonering feiler | Skrive om til `Invoke-PnPSiteTemplate`, teste tidlig |
-
-## 7. Åpne spørsmål til fase 1
+## 6. Åpne spørsmål til oppstartsmøtet
 
 1. Beholde egne lister for likes/kommentarer eller innebygd funksjon?
 2. Når skal dagens løsning tas ned? Skal den stå i lesemodus en periode etter lansering?
