@@ -1,16 +1,23 @@
-define([], function() {
+define([], function () {
   return {
-    "PropertyPaneDescription": "Beskrivelse",
-    "BasicGroupName": "Innstillinger",
-    "DescriptionFieldLabel": "Beskrivelse",
-    "AppLocalEnvironmentSharePoint": "Webdelen kjører lokalt som SharePoint-webdel",
-    "AppLocalEnvironmentTeams": "Webdelen kjører lokalt som Microsoft Teams-app",
-    "AppLocalEnvironmentOffice": "Webdelen kjører lokalt i office.com",
-    "AppLocalEnvironmentOutlook": "Webdelen kjører lokalt i Outlook",
-    "AppSharePointEnvironment": "Webdelen kjører på en SharePoint-side",
-    "AppTeamsTabEnvironment": "Webdelen kjører i Microsoft Teams",
-    "AppOfficeEnvironment": "Webdelen kjører i office.com",
-    "AppOutlookEnvironment": "Webdelen kjører i Outlook",
-    "UnknownEnvironment": "Webdelen kjører i et ukjent miljø"
-  }
+    PropertyPaneDescription: 'Velg hvilke forslag listen skal vise, og hvor de hentes fra.',
+    ContentGroupName: 'Innhold',
+    SourceGroupName: 'Datakilde',
+    ModeFieldLabel: 'Vis',
+    ModePublished: 'Publiserte forslag (mest likt først)',
+    ModePromoted: 'Promoterte forslag',
+    ModeSuccess: 'Suksesshistorier',
+    ModeMonthly: 'Månedens forslag',
+    ModeMine: 'Mine forslag',
+    TopFieldLabel: 'Antall forslag',
+    EmptyTextFieldLabel: 'Tekst når listen er tom',
+    SiteUrlFieldLabel: 'Adresse til KomInn-området',
+    SiteUrlFieldDescription: 'La stå tom for å bruke området webdelen står på. Fyll ut for å vise forslag fra et annet område, f.eks. på intranettet.',
+    TitlePlaceholder: 'Skriv en tittel',
+    DefaultEmptyText: 'Finner ingen forslag.',
+    Loading: 'Laster forslag …',
+    LoadError: 'Kunne ikke hente forslag.',
+    Likes: 'liker',
+    Comments: 'kommentarer'
+  };
 });

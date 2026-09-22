@@ -1,16 +1,23 @@
-define([], function() {
+define([], function () {
   return {
-    "PropertyPaneDescription": "Description",
-    "BasicGroupName": "Group Name",
-    "DescriptionFieldLabel": "Description Field",
-    "AppLocalEnvironmentSharePoint": "The app is running on your local environment as SharePoint web part",
-    "AppLocalEnvironmentTeams": "The app is running on your local environment as Microsoft Teams app",
-    "AppLocalEnvironmentOffice": "The app is running on your local environment in office.com",
-    "AppLocalEnvironmentOutlook": "The app is running on your local environment in Outlook",
-    "AppSharePointEnvironment": "The app is running on SharePoint page",
-    "AppTeamsTabEnvironment": "The app is running in Microsoft Teams",
-    "AppOfficeEnvironment": "The app is running in office.com",
-    "AppOutlookEnvironment": "The app is running in Outlook",
-    "UnknownEnvironment": "The app is running in an unknown environment"
-  }
+    PropertyPaneDescription: 'Choose which suggestions to show and where to load them from.',
+    ContentGroupName: 'Content',
+    SourceGroupName: 'Data source',
+    ModeFieldLabel: 'Show',
+    ModePublished: 'Published suggestions (most liked first)',
+    ModePromoted: 'Promoted suggestions',
+    ModeSuccess: 'Success stories',
+    ModeMonthly: 'Suggestion of the month',
+    ModeMine: 'My suggestions',
+    TopFieldLabel: 'Number of suggestions',
+    EmptyTextFieldLabel: 'Text when the list is empty',
+    SiteUrlFieldLabel: 'KomInn site address',
+    SiteUrlFieldDescription: 'Leave empty to use the current site. Fill in to show suggestions from another site, for example on the intranet.',
+    TitlePlaceholder: 'Enter a title',
+    DefaultEmptyText: 'No suggestions found.',
+    Loading: 'Loading suggestions …',
+    LoadError: 'Could not load suggestions.',
+    Likes: 'likes',
+    Comments: 'comments'
+  };
 });

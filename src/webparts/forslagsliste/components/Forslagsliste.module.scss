@@ -1,29 +1,108 @@
+@import '~@fluentui/react/dist/sass/References.scss';
+
 .forslagsliste {
-  overflow: hidden;
-  padding: 1em;
-  color: "[theme:bodyText, default: #323130]";
+  color: var(--bodyText, "[theme:bodyText, default: #323130]");
   color: var(--bodyText);
 }
 
-.welcome {
-  text-align: center;
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 12px;
 }
 
-.welcomeImage {
+.titleInput {
+  font: inherit;
+  font-size: 20px;
+  font-weight: 600;
   width: 100%;
-  max-width: 420px;
+  border: 1px dashed "[theme:neutralTertiary, default: #a19f9d]";
+  background: transparent;
+  color: inherit;
+  padding: 4px 8px;
+  margin: 0 0 12px;
 }
 
-.links {
-  a {
-    text-decoration: none;
-    color: "[theme:link, default:#03787c]";
-    color: var(--link); // note: CSS Custom Properties support is limited to modern browsers only
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
 
-    &:hover {
-      text-decoration: underline;
-      color: "[theme:linkHovered, default: #014446]";
-      color: var(--linkHovered); // note: CSS Custom Properties support is limited to modern browsers only
-    }
+.card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid "[theme:neutralLight, default: #edebe9]";
+  border-radius: 4px;
+  background: "[theme:white, default: #ffffff]";
+  overflow: hidden;
+}
+
+.dark .card {
+  background: "[theme:neutralLighter, default: #f3f2f1]";
+}
+
+.image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.body {
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cardTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--link, "[theme:link, default: #03787c]");
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    color: var(--linkHovered, "[theme:linkHovered, default: #014446]");
+    text-decoration: underline;
   }
+}
+
+.summary {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  font-size: 12px;
+  color: "[theme:neutralSecondary, default: #605e5c]";
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: "[theme:themeLighterAlt, default: #eff6fc]";
+  color: "[theme:themeDarkAlt, default: #106ebe]";
+}
+
+.error {
+  color: "[theme:errorText, default: #a4262c]";
 }

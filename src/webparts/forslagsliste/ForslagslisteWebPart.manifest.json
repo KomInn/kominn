@@ -22,7 +22,11 @@
     "description": { "default": "Viser forslag som kort eller karusell: promoterte, publiserte, suksesshistorier, mine forslag eller månedens forslag." },
     "officeFabricIconFontName": "BulletedList",
     "properties": {
-      "description": "Forslagsliste"
+      "title": "Aktuelle forslag",
+      "mode": "published",
+      "siteUrl": "",
+      "top": 12,
+      "emptyText": ""
     }
   }]
 }

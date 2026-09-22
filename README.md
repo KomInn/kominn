@@ -11,7 +11,7 @@ Løsningen er åpen kildekode og kan tas i bruk av andre kommuner og organisasjo
 
 | Webdel | Beskrivelse |
 |---|---|
-| **Forslagsliste** | Viser forslag som kort eller karusell. Modus velges i egenskapsruten: promoterte, publiserte (med filter og sortering), suksesshistorier, mine forslag eller månedens forslag. |
+| **Forslagsliste** | Viser forslag som kort. Modus velges i egenskapsruten: promoterte, publiserte, suksesshistorier, mine forslag eller månedens forslag. Kan peke på et annet område, slik at intranettet kan liste godkjente forslag fra KomInn-området. |
 | **Søk i forslag** | Søkefelt som finner forslag på tittel og går til forslagssiden. |
 | **Nytt forslag** | Skjema for å sende inn forslag: tittel, beskrivelse, søkt sum, utfordringer, innsatsområder, bærekraftsmål, bilde, sted og «inspirert av». Personalia og nærmeste leder hentes fra brukerprofilen. |
 | **Forslag** | Viser ett forslag med innhold, bærekraftsmål, kart, relaterte forslag, liker og kommentarer. Saksbehandlere ser vurderingspanelet. |
@@ -53,15 +53,16 @@ npm run package    # produksjonsbygg, gir sharepoint/solution/kominn.sppkg
 ```
 
 Sett `initialPage` i `config/serve.json` til workbench på ditt eget testområde før du
-kjører `npm run serve`.
+kjører `npm run serve`. Legg til `?kominnMock=1` i adressen for å kjøre webdelene mot
+testdata i minnet, uten lister på området.
 
 ## Installasjon
 
 1. Last opp `kominn.sppkg` til appkatalogen i leietakeren og godkjenn distribusjon.
 2. Opprett et moderne SharePoint-område (kommunikasjons- eller teamområde).
 3. Kjør `provisioning/Install.ps1` mot området med PnP.PowerShell 3.4 eller nyere.
-   Skriptet oppretter felt, innholdstyper, lister, gruppen Saksbehandlere, sider med
-   webdeler og navigasjon.
+   Skriptet kjører `provisioning/template.xml`, som oppretter felt, innholdstyper, lister,
+   gruppen Saksbehandlere, sider med webdeler og navigasjon. Se `provisioning/README.md`.
 4. Legg saksbehandlere i SharePoint-gruppen **Saksbehandlere**.
 
 Versjon 2.0 er en nyinstallasjon. Data fra 1.x flyttes ikke.

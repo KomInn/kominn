@@ -1,16 +1,23 @@
 declare interface IForslagslisteWebPartStrings {
   PropertyPaneDescription: string;
-  BasicGroupName: string;
-  DescriptionFieldLabel: string;
-  AppLocalEnvironmentSharePoint: string;
-  AppLocalEnvironmentTeams: string;
-  AppLocalEnvironmentOffice: string;
-  AppLocalEnvironmentOutlook: string;
-  AppSharePointEnvironment: string;
-  AppTeamsTabEnvironment: string;
-  AppOfficeEnvironment: string;
-  AppOutlookEnvironment: string;
-  UnknownEnvironment: string;
+  ContentGroupName: string;
+  SourceGroupName: string;
+  ModeFieldLabel: string;
+  ModePublished: string;
+  ModePromoted: string;
+  ModeSuccess: string;
+  ModeMonthly: string;
+  ModeMine: string;
+  TopFieldLabel: string;
+  EmptyTextFieldLabel: string;
+  SiteUrlFieldLabel: string;
+  SiteUrlFieldDescription: string;
+  TitlePlaceholder: string;
+  DefaultEmptyText: string;
+  Loading: string;
+  LoadError: string;
+  Likes: string;
+  Comments: string;
 }
 
 declare module 'ForslagslisteWebPartStrings' {

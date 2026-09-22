@@ -1,6 +1,14 @@
+import type { DisplayMode } from '@microsoft/sp-core-library';
+
+/** Hvilke forslag listen viser. Styres fra egenskapsruten. */
+export type ListMode = 'published' | 'promoted' | 'success' | 'monthly' | 'mine';
+
 export interface IForslagslisteProps {
-  description: string;
+  title: string;
+  mode: ListMode;
+  top: number;
+  emptyText: string;
   isDarkTheme: boolean;
-  environmentMessage: string;
-  userDisplayName: string;
+  displayMode: DisplayMode;
+  onTitleChange: (title: string) => void;
 }

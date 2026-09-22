@@ -117,7 +117,7 @@ Ny løsning er en nyinstallasjon på nytt område. Ingen data flyttes fra dagens
 
 | Webdel | Innhold | Egenskaper (property pane) |
 |---|---|---|
-| **KomInn – Forslagsliste** | Én fleksibel listewebdel som erstatter Promoted, Popular, Success, MySuggestions og Månedens forslag | Modus (Promoterte / Publiserte / Suksess / Mine / Månedens), tittel, tom-tekst, antall, filterpanel av/på, sortering, datoperiode (fra/til, eller «inneværende år»), layout (kort/karusell/kompakt) |
+| **KomInn – Forslagsliste** | Én fleksibel listewebdel som erstatter Promoted, Popular, Success, MySuggestions og Månedens forslag | Modus (Promoterte / Publiserte / Suksess / Mine / Månedens), tittel, tom-tekst, antall, filterpanel av/på, sortering, datoperiode, layout (kort/karusell/kompakt), **områdeadresse** (tom = dette området; lar intranettet liste godkjente forslag fra KomInn-området) |
 | **KomInn – Søk** | Søkefelt med forslag-typeahead, navigerer til forslagssiden | Plassholdertekst, målside |
 | **KomInn – Nytt forslag** | Hele skjemaet, støtte for `?kopier=<id>`, utkast lagres i localStorage | Hvilke seksjoner som vises (sted, bilde, bærekraftsmål, inspirert av), hjelpetekster, målside etter innsending |
 | **KomInn – Forslag** | Detaljvisning, id fra `?forslag=<id>`, liker, kommentarer, kart, relaterte forslag, saksbehandlerpanel (kun for gruppen) | Vis kart av/på, vis vurdering av/på |
