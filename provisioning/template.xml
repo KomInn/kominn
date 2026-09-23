@@ -16,15 +16,15 @@
         <pnp:SiteGroups>
           <pnp:SiteGroup Title="Saksbehandlere" Description="Kan vurdere forslag, endre status og se saksbehandlingssiden." Owner="{associatedownergroup}" AllowMembersEditMembership="false" AllowRequestToJoinLeave="false" AutoAcceptRequestToJoinLeave="false" OnlyAllowMembersViewMembership="false" />
         </pnp:SiteGroups>
-        <pnp:SiteSecurityPermissions>
+        <pnp:Permissions>
           <pnp:RoleAssignments>
             <pnp:RoleAssignment Principal="Saksbehandlere" RoleDefinition="{roledefinition:Editor}" />
           </pnp:RoleAssignments>
-        </pnp:SiteSecurityPermissions>
+        </pnp:Permissions>
       </pnp:Security>
 
       <pnp:Navigation AddNewPagesToNavigation="false" CreateFriendlyUrlsForNewPages="false">
-        <pnp:CurrentNavigation NavigationType="Structural" RemoveExistingNodes="true">
+        <pnp:CurrentNavigation NavigationType="Structural">
           <pnp:StructuralNavigation RemoveExistingNodes="true">
             <pnp:NavigationNode Title="Hjem" Url="{site}/SitePages/Hjem.aspx" />
             <pnp:NavigationNode Title="Nytt forslag" Url="{site}/SitePages/NyttForslag.aspx" />
@@ -189,7 +189,7 @@
 
         <pnp:ListInstance Title="Baerekraftsmaal" Description="FNs 17 bærekraftsmål" TemplateType="100" Url="Lists/Baerekraftsmaal" OnQuickLaunch="false" EnableAttachments="false" EnableFolderCreation="false">
           <pnp:FieldRefs>
-            <pnp:FieldRef ID="5fdcec32-1b93-40f5-bb75-5323e24dc32d" Name="KmiIconFileName" />
+            <pnp:FieldRef ID="5fdcec32-1b93-40f5-bb75-5323e24dc32d" Name="KmiIconFileName" DisplayName="Ikonfil" />
           </pnp:FieldRefs>
           <pnp:Views RemoveExistingViews="true">
             <View DisplayName="Alle elementer" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" Url="{site}/Lists/Baerekraftsmaal/AllItems.aspx">
@@ -330,8 +330,8 @@
 
         <pnp:ListInstance Title="Kommentarer" Description="Kommentarer til forslag" TemplateType="100" Url="Lists/Kommentarer" OnQuickLaunch="false" EnableAttachments="false" EnableFolderCreation="false" WriteSecurity="2">
           <pnp:FieldRefs>
-            <pnp:FieldRef ID="babcbe8d-0ea8-4c87-b324-44557ce9d09c" Name="KmiText" />
-            <pnp:FieldRef ID="8183d7d5-5c96-4b67-947d-137300913bf2" Name="KmiImage" />
+            <pnp:FieldRef ID="babcbe8d-0ea8-4c87-b324-44557ce9d09c" Name="KmiText" DisplayName="Tekst" />
+            <pnp:FieldRef ID="8183d7d5-5c96-4b67-947d-137300913bf2" Name="KmiImage" DisplayName="Bilde" />
           </pnp:FieldRefs>
           <pnp:Fields>
             <Field Type="Lookup" DisplayName="Forslag" List="{listid:Forslag}" ShowField="Title" Required="TRUE" Indexed="TRUE" RelationshipDeleteBehavior="Cascade" ID="{5e0c2e8f-e422-4401-9c43-c12faec2f553}" Group="KomInn" StaticName="KmiSuggestion" Name="KmiSuggestion" />
@@ -381,8 +381,8 @@
 
         <pnp:ListInstance Title="Konfigurasjon" Description="Nøkkel/verdi-innstillinger for KomInn" TemplateType="100" Url="Lists/Konfigurasjon" OnQuickLaunch="false" EnableAttachments="false" EnableFolderCreation="false">
           <pnp:FieldRefs>
-            <pnp:FieldRef ID="83e1c9d5-36d0-4dfa-9d5e-728e9db0bae6" Name="KmiKey" />
-            <pnp:FieldRef ID="2f68841f-a7e3-48f7-af9e-ea1a87e2fcd4" Name="KmiValue" />
+            <pnp:FieldRef ID="83e1c9d5-36d0-4dfa-9d5e-728e9db0bae6" Name="KmiKey" DisplayName="Nøkkel" />
+            <pnp:FieldRef ID="2f68841f-a7e3-48f7-af9e-ea1a87e2fcd4" Name="KmiValue" DisplayName="Verdi" />
           </pnp:FieldRefs>
           <pnp:Views RemoveExistingViews="true">
             <View DisplayName="Alle innstillinger" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" Url="{site}/Lists/Konfigurasjon/AllItems.aspx">
