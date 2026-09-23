@@ -1,0 +1,54 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "forslagsliste-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/forslagsliste/ForslagslisteWebPart.js",
+          "manifest": "./src/webparts/forslagsliste/ForslagslisteWebPart.manifest.json"
+        }
+      ]
+    },
+    "sok-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/sok/SokWebPart.js",
+          "manifest": "./src/webparts/sok/SokWebPart.manifest.json"
+        }
+      ]
+    },
+    "nytt-forslag-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/nyttForslag/NyttForslagWebPart.js",
+          "manifest": "./src/webparts/nyttForslag/NyttForslagWebPart.manifest.json"
+        }
+      ]
+    },
+    "forslag-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/forslag/ForslagWebPart.js",
+          "manifest": "./src/webparts/forslag/ForslagWebPart.manifest.json"
+        }
+      ]
+    },
+    "saksbehandling-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/saksbehandling/SaksbehandlingWebPart.js",
+          "manifest": "./src/webparts/saksbehandling/SaksbehandlingWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "ForslagslisteWebPartStrings": "lib/webparts/forslagsliste/loc/{locale}.js",
+    "SokWebPartStrings": "lib/webparts/sok/loc/{locale}.js",
+    "NyttForslagWebPartStrings": "lib/webparts/nyttForslag/loc/{locale}.js",
+    "ForslagWebPartStrings": "lib/webparts/forslag/loc/{locale}.js",
+    "SaksbehandlingWebPartStrings": "lib/webparts/saksbehandling/loc/{locale}.js"
+  }
+}

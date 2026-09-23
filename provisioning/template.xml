@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  KomInn 2.0 – PnP Provisioning-mal (skjema 2022/09).
+  Kjøres med provisioning/Install.ps1 og PnP.PowerShell 3.4 eller nyere.
+  App-pakken kominn.sppkg må være distribuert i appkatalogen før malen kjøres,
+  ellers kan ikke sidene få KomInn-webdelene.
+-->
+<pnp:Provisioning xmlns:pnp="http://schemas.dev.office.com/PnP/2022/09/ProvisioningSchema">
+  <pnp:Preferences Generator="KomInn 2.0" />
+  <pnp:Templates ID="KOMINN-TEMPLATES">
+    <pnp:ProvisioningTemplate ID="KOMINN-2-0" Version="2.0" DisplayName="KomInn 2.0" Description="Forslagsløsning for kommunale tiltak" Scope="Web">
+
+      <pnp:WebSettings Title="KomInn" WelcomePage="SitePages/Hjem.aspx" NoCrawl="false" />
+
+      <pnp:Security>
+        <pnp:SiteGroups>
+          <pnp:SiteGroup Title="Saksbehandlere" Description="Kan vurdere forslag, endre status og se saksbehandlingssiden." Owner="{associatedownergroup}" AllowMembersEditMembership="false" AllowRequestToJoinLeave="false" AutoAcceptRequestToJoinLeave="false" OnlyAllowMembersViewMembership="false" />
+        </pnp:SiteGroups>
+        <pnp:SiteSecurityPermissions>
+          <pnp:RoleAssignments>
+            <pnp:RoleAssignment Principal="Saksbehandlere" RoleDefinition="{roledefinition:Editor}" />
+          </pnp:RoleAssignments>
+        </pnp:SiteSecurityPermissions>
+      </pnp:Security>
+
+      <pnp:Navigation AddNewPagesToNavigation="false" CreateFriendlyUrlsForNewPages="false">
+        <pnp:CurrentNavigation NavigationType="Structural" RemoveExistingNodes="true">
+          <pnp:StructuralNavigation RemoveExistingNodes="true">
+            <pnp:NavigationNode Title="Hjem" Url="{site}/SitePages/Hjem.aspx" />
+            <pnp:NavigationNode Title="Nytt forslag" Url="{site}/SitePages/NyttForslag.aspx" />
+            <pnp:NavigationNode Title="Saksbehandling" Url="{site}/SitePages/Saksbehandling.aspx" />
+            <pnp:NavigationNode Title="Alle forslag" Url="{site}/Lists/Forslag/AllItems.aspx" />
+          </pnp:StructuralNavigation>
+        </pnp:CurrentNavigation>
+      </pnp:Navigation>
+
+      <pnp:SiteFields>
+        <!-- Forslag -->
+        <Field Type="Note" DisplayName="Oppsummering" NumLines="6" RichText="FALSE" ID="{9662dfaa-b386-4c92-af70-5a36f6455a1a}" Group="KomInn" StaticName="KmiSummary" Name="KmiSummary" Required="TRUE" />
+        <Field Type="Note" DisplayName="Utfordringer" NumLines="6" RichText="FALSE" ID="{92d3013b-ed8b-4e86-9f6b-cacec95aa86b}" Group="KomInn" StaticName="KmiChallenges" Name="KmiChallenges" />
+        <Field Type="Note" DisplayName="Forslag til løsning" NumLines="6" RichText="FALSE" ID="{54e5c384-0bef-46ec-9762-599ccd72899d}" Group="KomInn" StaticName="KmiSuggestedSolution" Name="KmiSuggestedSolution" />
+        <Field Type="Note" DisplayName="Nyttig for andre" NumLines="4" RichText="FALSE" ID="{a07be058-665f-4713-b141-db7d14462125}" Group="KomInn" StaticName="KmiUsefulForOthers" Name="KmiUsefulForOthers" />
+        <Field Type="Number" DisplayName="Søkt sum" Decimals="0" Min="0" ID="{c75f8f92-13d1-4995-b0dc-f5c8cd36efd0}" Group="KomInn" StaticName="KmiAmount" Name="KmiAmount" />
+        <Field Type="MultiChoice" DisplayName="Innsatsområder" ID="{23b1f3d6-df10-45b4-91a0-210b1eca20ac}" Group="KomInn" StaticName="KmiUsefulnessType" Name="KmiUsefulnessType" FillInChoice="FALSE">
+          <CHOICES>
+            <CHOICE>Endring, ledelse og kommunikasjon</CHOICE>
+            <CHOICE>Klimasmart mat</CHOICE>
+            <CHOICE>Bærekraftig forbruk</CHOICE>
+            <CHOICE>Fremtidsrettede bygg og anlegg</CHOICE>
+            <CHOICE>Grønn mobilitet</CHOICE>
+            <CHOICE>Naturen som karbonlager</CHOICE>
+          </CHOICES>
+        </Field>
+        <Field Type="MultiChoice" DisplayName="Tags" ID="{19028c38-9950-4b22-96fa-c01ae1eae3f4}" Group="KomInn" StaticName="KmiTags" Name="KmiTags" FillInChoice="FALSE">
+          <CHOICES>
+            <CHOICE>Kommunalt</CHOICE>
+            <CHOICE>Skole</CHOICE>
+            <CHOICE>Barnehage</CHOICE>
+          </CHOICES>
+        </Field>
+        <Field Type="Text" DisplayName="Bilde" MaxLength="255" ID="{8183d7d5-5c96-4b67-947d-137300913bf2}" Group="KomInn" StaticName="KmiImage" Name="KmiImage" />
+        <Field Type="Text" DisplayName="Sted" Description="Breddegrad,lengdegrad" MaxLength="64" ID="{973e62b2-79b2-46fd-bd59-21f17699b78e}" Group="KomInn" StaticName="KmiLocation" Name="KmiLocation" />
+        <Field Type="Choice" DisplayName="Status" Format="Dropdown" FillInChoice="FALSE" ID="{ea84b6b5-fc0b-4f82-bc93-45941b8387e2}" Group="KomInn" StaticName="KmiStatus" Name="KmiStatus">
+          <Default>Sendt inn</Default>
+          <CHOICES>
+            <CHOICE>Sendt inn</CHOICE>
+            <CHOICE>Publisert</CHOICE>
+            <CHOICE>Suksess</CHOICE>
+            <CHOICE>Promotert</CHOICE>
+          </CHOICES>
+        </Field>
+        <Field Type="Choice" DisplayName="Saksbehandlers status" Format="Dropdown" FillInChoice="FALSE" ID="{d07f2eaf-3a50-4bfb-949c-6eaf61cddce8}" Group="KomInn" StaticName="KmiCaseWorkerStatus" Name="KmiCaseWorkerStatus">
+          <Default>Sendt inn</Default>
+          <CHOICES>
+            <CHOICE>Sendt inn</CHOICE>
+            <CHOICE>Løftes til linja</CHOICE>
+            <CHOICE>Vurderes</CHOICE>
+            <CHOICE>Godtatt</CHOICE>
+            <CHOICE>Avslått</CHOICE>
+          </CHOICES>
+        </Field>
+        <Field Type="User" DisplayName="Saksbehandler" UserSelectionMode="PeopleOnly" ID="{29f6dc98-20a7-4ddc-ad37-5805b6a28d95}" Group="KomInn" StaticName="KmiCaseWorker" Name="KmiCaseWorker" />
+        <Field Type="Text" DisplayName="Navn" MaxLength="255" ID="{09010dd5-61fe-43ce-86a6-7e092922c3e2}" Group="KomInn" StaticName="KmiName" Name="KmiName" />
+        <Field Type="Text" DisplayName="E-postadresse" MaxLength="255" ID="{1f549d6e-0127-4500-9346-4511762ed34e}" Group="KomInn" StaticName="KmiMailAddress" Name="KmiMailAddress" />
+        <Field Type="Text" DisplayName="Avdeling" MaxLength="255" ID="{50d2c862-878a-4606-908a-025a75208200}" Group="KomInn" StaticName="KmiDepartment" Name="KmiDepartment" />
+        <Field Type="Text" DisplayName="Telefon" MaxLength="64" ID="{c591f503-6d83-49b0-a09e-580585b154ea}" Group="KomInn" StaticName="KmiTelephone" Name="KmiTelephone" />
+        <Field Type="Text" DisplayName="Adresse" MaxLength="255" ID="{085a2f1b-67e4-433a-9b90-1f010bcb5f88}" Group="KomInn" StaticName="KmiAddress" Name="KmiAddress" />
+        <Field Type="Text" DisplayName="Postnummer" MaxLength="16" ID="{4540bb76-e42f-490e-a152-f940ebfb16af}" Group="KomInn" StaticName="KmiZipcode" Name="KmiZipcode" />
+        <Field Type="Text" DisplayName="Poststed" MaxLength="255" ID="{e605364e-4956-4bad-9de0-5ac72a8f83aa}" Group="KomInn" StaticName="KmiCity" Name="KmiCity" />
+        <Field Type="Text" DisplayName="Kommunenummer" MaxLength="16" ID="{4574c53c-b0e2-415c-af76-5661de396f06}" Group="KomInn" StaticName="KmiCountyCode" Name="KmiCountyCode" />
+        <Field Type="User" DisplayName="Nærmeste leder" UserSelectionMode="PeopleOnly" ID="{710ef48a-adb9-4f55-81bd-8a0f248e29ba}" Group="KomInn" StaticName="KmiManager" Name="KmiManager" />
+        <Field Type="Number" DisplayName="Likes" Decimals="0" ShowInNewForm="FALSE" ShowInEditForm="FALSE" ID="{988a9f76-884b-4d5a-906a-55c6f896880d}" Group="KomInn" StaticName="KmiLikes" Name="KmiLikes"><Default>0</Default></Field>
+        <Field Type="Number" DisplayName="Antall kommentarer" Decimals="0" ShowInNewForm="FALSE" ShowInEditForm="FALSE" ID="{00aa7464-6dd6-4483-87bc-d80fd098badd}" Group="KomInn" StaticName="KmiNumberOfComments" Name="KmiNumberOfComments"><Default>0</Default></Field>
+        <Field Type="DateTime" DisplayName="Månedens forslag fra" Format="DateOnly" ID="{f55199fd-8cb6-4583-a98e-a6363524f38f}" Group="KomInn" StaticName="KmiMonthlyStartDate" Name="KmiMonthlyStartDate" />
+        <Field Type="DateTime" DisplayName="Månedens forslag til" Format="DateOnly" ID="{9b9500c1-b793-4511-b937-8b9dec9a8bb1}" Group="KomInn" StaticName="KmiMonthlyEndDate" Name="KmiMonthlyEndDate" />
+        <Field Type="Boolean" DisplayName="Gjort tidligere" ID="{b199a8ff-b8f7-43f1-8f27-651774305077}" Group="KomInn" StaticName="KmiIsPast" Name="KmiIsPast"><Default>0</Default></Field>
+        <Field Type="Text" DisplayName="Konkurransereferanse" MaxLength="64" ID="{9f0ed997-5cbd-43f7-ac8c-889cae958aea}" Group="KomInn" StaticName="KmiCompRef" Name="KmiCompRef" />
+        <!-- Forslagsvurdering -->
+        <Field Type="Number" DisplayName="Score gjennomførbarhet" Decimals="0" Min="1" Max="5" ID="{1db6fffa-830e-4372-85b3-2918d6a1c411}" Group="KomInn" StaticName="KmiScoreFeasability" Name="KmiScoreFeasability" />
+        <Field Type="Number" DisplayName="Score potensial for utslippsreduksjon" Decimals="0" Min="1" Max="5" ID="{793cf1bf-6338-42b6-9e8b-2054a642ff42}" Group="KomInn" StaticName="KmiScoreUserInvolvement" Name="KmiScoreUserInvolvement" />
+        <Field Type="Number" DisplayName="Score spredningspotensial" Decimals="0" Min="1" Max="5" ID="{63574edf-70bd-4ddb-bd15-2e02659d0d7b}" Group="KomInn" StaticName="KmiScoreDistributionPotential" Name="KmiScoreDistributionPotential" />
+        <Field Type="Number" DisplayName="Score innovasjonsgrad" Decimals="0" Min="1" Max="5" ID="{e877ce76-ad5d-4f46-b1ab-479bd32dde87}" Group="KomInn" StaticName="KmiScoreDegreeOfInnovation" Name="KmiScoreDegreeOfInnovation" />
+        <Field Type="Boolean" DisplayName="Flere aktører" ID="{e803d521-8b55-4e52-a3bb-6fbb6aa53740}" Group="KomInn" StaticName="KmiMoreActors" Name="KmiMoreActors"><Default>0</Default></Field>
+        <Field Type="Boolean" DisplayName="Lovkrav" ID="{2ca4c43c-487c-4acd-bf9a-b5b1c38e50a8}" Group="KomInn" StaticName="KmiLawRequirements" Name="KmiLawRequirements"><Default>0</Default></Field>
+        <Field Type="Note" DisplayName="Kort kommentar" NumLines="4" RichText="FALSE" ID="{6bd2842a-a0e1-4642-923d-7ea36c54aba4}" Group="KomInn" StaticName="KmiShortComment" Name="KmiShortComment" />
+        <!-- Kampanje -->
+        <Field Type="Choice" DisplayName="Type" Format="Dropdown" FillInChoice="FALSE" ID="{f5956bed-fc9f-4fb8-b5d8-d9bcbdfea6a6}" Group="KomInn" StaticName="KmiCampaignType" Name="KmiCampaignType">
+          <Default>Standard</Default>
+          <CHOICES>
+            <CHOICE>Standard</CHOICE>
+            <CHOICE>Kampanje</CHOICE>
+            <CHOICE>Fortid</CHOICE>
+          </CHOICES>
+        </Field>
+        <Field Type="Note" DisplayName="Tekst" NumLines="4" RichText="FALSE" ID="{369c9b7d-161d-4716-88d0-8f8a8d21268a}" Group="KomInn" StaticName="KmiCampaignText" Name="KmiCampaignText" />
+        <Field Type="DateTime" DisplayName="Startdato" Format="DateOnly" ID="{82d13436-de53-4289-ba37-53f1ead68953}" Group="KomInn" StaticName="KmiCampaignStartDate" Name="KmiCampaignStartDate" />
+        <Field Type="DateTime" DisplayName="Sluttdato" Format="DateOnly" ID="{a725579a-9c11-43d1-acbf-9b1037b06d3c}" Group="KomInn" StaticName="KmiCampaignEndDate" Name="KmiCampaignEndDate" />
+        <Field Type="Text" DisplayName="Kampanjereferanse" MaxLength="64" ID="{7bb945ec-c3f6-41a2-8484-354bc6691541}" Group="KomInn" StaticName="KmiCampaignRef" Name="KmiCampaignRef" />
+        <Field Type="Number" DisplayName="Plassering" Decimals="0" ID="{2c6a7efc-97b5-4c88-bdb9-53b0632e803c}" Group="KomInn" StaticName="KmiCampaignPlacement" Name="KmiCampaignPlacement" />
+        <!-- Kommentarer, Bærekraftsmål, Konfigurasjon -->
+        <Field Type="Note" DisplayName="Tekst" NumLines="6" RichText="FALSE" ID="{babcbe8d-0ea8-4c87-b324-44557ce9d09c}" Group="KomInn" StaticName="KmiText" Name="KmiText" Required="TRUE" />
+        <Field Type="Text" DisplayName="Ikonfil" Description="Filnavn i biblioteket Ikoner" MaxLength="255" ID="{5fdcec32-1b93-40f5-bb75-5323e24dc32d}" Group="KomInn" StaticName="KmiIconFileName" Name="KmiIconFileName" />
+        <Field Type="Text" DisplayName="Nøkkel" MaxLength="255" Required="TRUE" EnforceUniqueValues="TRUE" Indexed="TRUE" ID="{83e1c9d5-36d0-4dfa-9d5e-728e9db0bae6}" Group="KomInn" StaticName="KmiKey" Name="KmiKey" />
+        <Field Type="Note" DisplayName="Verdi" NumLines="3" RichText="FALSE" ID="{2f68841f-a7e3-48f7-af9e-ea1a87e2fcd4}" Group="KomInn" StaticName="KmiValue" Name="KmiValue" />
+      </pnp:SiteFields>
+
+      <pnp:ContentTypes>
+        <pnp:ContentType ID="0x010063D756B686FA90498E2CB193C077DEA0" Name="Forslag" Description="Et forslag til kommunalt tiltak" Group="KomInn">
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" Required="true" />
+            <pnp:FieldRef ID="9662dfaa-b386-4c92-af70-5a36f6455a1a" Name="KmiSummary" Required="true" />
+            <pnp:FieldRef ID="92d3013b-ed8b-4e86-9f6b-cacec95aa86b" Name="KmiChallenges" />
+            <pnp:FieldRef ID="54e5c384-0bef-46ec-9762-599ccd72899d" Name="KmiSuggestedSolution" />
+            <pnp:FieldRef ID="a07be058-665f-4713-b141-db7d14462125" Name="KmiUsefulForOthers" />
+            <pnp:FieldRef ID="c75f8f92-13d1-4995-b0dc-f5c8cd36efd0" Name="KmiAmount" />
+            <pnp:FieldRef ID="23b1f3d6-df10-45b4-91a0-210b1eca20ac" Name="KmiUsefulnessType" />
+            <pnp:FieldRef ID="19028c38-9950-4b22-96fa-c01ae1eae3f4" Name="KmiTags" />
+            <pnp:FieldRef ID="8183d7d5-5c96-4b67-947d-137300913bf2" Name="KmiImage" />
+            <pnp:FieldRef ID="973e62b2-79b2-46fd-bd59-21f17699b78e" Name="KmiLocation" />
+            <pnp:FieldRef ID="ea84b6b5-fc0b-4f82-bc93-45941b8387e2" Name="KmiStatus" />
+            <pnp:FieldRef ID="d07f2eaf-3a50-4bfb-949c-6eaf61cddce8" Name="KmiCaseWorkerStatus" />
+            <pnp:FieldRef ID="29f6dc98-20a7-4ddc-ad37-5805b6a28d95" Name="KmiCaseWorker" />
+            <pnp:FieldRef ID="09010dd5-61fe-43ce-86a6-7e092922c3e2" Name="KmiName" />
+            <pnp:FieldRef ID="1f549d6e-0127-4500-9346-4511762ed34e" Name="KmiMailAddress" />
+            <pnp:FieldRef ID="50d2c862-878a-4606-908a-025a75208200" Name="KmiDepartment" />
+            <pnp:FieldRef ID="c591f503-6d83-49b0-a09e-580585b154ea" Name="KmiTelephone" />
+            <pnp:FieldRef ID="085a2f1b-67e4-433a-9b90-1f010bcb5f88" Name="KmiAddress" />
+            <pnp:FieldRef ID="4540bb76-e42f-490e-a152-f940ebfb16af" Name="KmiZipcode" />
+            <pnp:FieldRef ID="e605364e-4956-4bad-9de0-5ac72a8f83aa" Name="KmiCity" />
+            <pnp:FieldRef ID="4574c53c-b0e2-415c-af76-5661de396f06" Name="KmiCountyCode" />
+            <pnp:FieldRef ID="710ef48a-adb9-4f55-81bd-8a0f248e29ba" Name="KmiManager" />
+            <pnp:FieldRef ID="988a9f76-884b-4d5a-906a-55c6f896880d" Name="KmiLikes" />
+            <pnp:FieldRef ID="00aa7464-6dd6-4483-87bc-d80fd098badd" Name="KmiNumberOfComments" />
+            <pnp:FieldRef ID="f55199fd-8cb6-4583-a98e-a6363524f38f" Name="KmiMonthlyStartDate" />
+            <pnp:FieldRef ID="9b9500c1-b793-4511-b937-8b9dec9a8bb1" Name="KmiMonthlyEndDate" />
+            <pnp:FieldRef ID="b199a8ff-b8f7-43f1-8f27-651774305077" Name="KmiIsPast" />
+            <pnp:FieldRef ID="9f0ed997-5cbd-43f7-ac8c-889cae958aea" Name="KmiCompRef" />
+          </pnp:FieldRefs>
+        </pnp:ContentType>
+        <pnp:ContentType ID="0x010065441382533B4E4D9229492B2B4B4CDA" Name="Forslagsvurdering" Description="Én saksbehandlers vurdering av et forslag" Group="KomInn">
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" Required="true" />
+            <pnp:FieldRef ID="1db6fffa-830e-4372-85b3-2918d6a1c411" Name="KmiScoreFeasability" />
+            <pnp:FieldRef ID="793cf1bf-6338-42b6-9e8b-2054a642ff42" Name="KmiScoreUserInvolvement" />
+            <pnp:FieldRef ID="63574edf-70bd-4ddb-bd15-2e02659d0d7b" Name="KmiScoreDistributionPotential" />
+            <pnp:FieldRef ID="e877ce76-ad5d-4f46-b1ab-479bd32dde87" Name="KmiScoreDegreeOfInnovation" />
+            <pnp:FieldRef ID="e803d521-8b55-4e52-a3bb-6fbb6aa53740" Name="KmiMoreActors" />
+            <pnp:FieldRef ID="2ca4c43c-487c-4acd-bf9a-b5b1c38e50a8" Name="KmiLawRequirements" />
+            <pnp:FieldRef ID="6bd2842a-a0e1-4642-923d-7ea36c54aba4" Name="KmiShortComment" />
+          </pnp:FieldRefs>
+        </pnp:ContentType>
+        <pnp:ContentType ID="0x01005A1A91375DC52640B84730B7EAB11919" Name="Kampanje" Description="Kampanjetekst og periode" Group="KomInn">
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" Required="true" />
+            <pnp:FieldRef ID="f5956bed-fc9f-4fb8-b5d8-d9bcbdfea6a6" Name="KmiCampaignType" />
+            <pnp:FieldRef ID="369c9b7d-161d-4716-88d0-8f8a8d21268a" Name="KmiCampaignText" />
+            <pnp:FieldRef ID="82d13436-de53-4289-ba37-53f1ead68953" Name="KmiCampaignStartDate" />
+            <pnp:FieldRef ID="a725579a-9c11-43d1-acbf-9b1037b06d3c" Name="KmiCampaignEndDate" />
+            <pnp:FieldRef ID="7bb945ec-c3f6-41a2-8484-354bc6691541" Name="KmiCampaignRef" />
+            <pnp:FieldRef ID="2c6a7efc-97b5-4c88-bdb9-53b0632e803c" Name="KmiCampaignPlacement" />
+          </pnp:FieldRefs>
+        </pnp:ContentType>
+      </pnp:ContentTypes>
+
+      <pnp:Lists>
+        <pnp:ListInstance Title="Ikoner" Description="Ikoner for FNs bærekraftsmål" TemplateType="101" Url="Ikoner" EnableVersioning="false" EnableAttachments="false" OnQuickLaunch="false" />
+
+        <pnp:ListInstance Title="Bilder" Description="Bilder lastet opp til forslag" TemplateType="109" TemplateFeatureID="00bfea71-52d4-45b3-b544-b1c71b620109" Url="Bilder" EnableVersioning="false" EnableAttachments="false" OnQuickLaunch="false" />
+
+        <pnp:ListInstance Title="Baerekraftsmaal" Description="FNs 17 bærekraftsmål" TemplateType="100" Url="Lists/Baerekraftsmaal" OnQuickLaunch="false" EnableAttachments="false" EnableFolderCreation="false">
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="5fdcec32-1b93-40f5-bb75-5323e24dc32d" Name="KmiIconFileName" />
+          </pnp:FieldRefs>
+          <pnp:Views RemoveExistingViews="true">
+            <View DisplayName="Alle elementer" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" Url="{site}/Lists/Baerekraftsmaal/AllItems.aspx">
+              <Query><OrderBy><FieldRef Name="ID" /></OrderBy></Query>
+              <ViewFields><FieldRef Name="LinkTitle" /><FieldRef Name="KmiIconFileName" /></ViewFields>
+              <RowLimit Paged="TRUE">30</RowLimit>
+            </View>
+          </pnp:Views>
+          <pnp:DataRows KeyColumn="Title" UpdateBehavior="Skip">
+          <pnp:DataRow>
+            <pnp:DataValue FieldName="Title">Mål 1 - Utrydde fattigdom</pnp:DataValue>
+            <pnp:DataValue FieldName="KmiIconFileName">Goal-01.png</pnp:DataValue>
+          </pnp:DataRow>
+          <pnp:DataRow>
+            <pnp:DataValue FieldName="Title">Mål 2 - Utrydde sult</pnp:DataValue>
+            <pnp:DataValue FieldName="KmiIconFileName">Goal-02.png</pnp:DataValue>
+          </pnp:DataRow>
+          <pnp:DataRow>
+            <pnp:DataValue FieldName="Title">Mål 3 - God helse</pnp:DataValue>
+            <pnp:DataValue FieldName="KmiIconFileName">Goal-03.png</pnp:DataValue>
+          </pnp:DataRow>
+          <pnp:DataRow>
+            <pnp:DataValue FieldName="Title">Mål 4 - God utdanning</pnp:DataValue>
+            <pnp:DataValue FieldName="KmiIconFileName">Goal-04.png</pnp:DataValue>
+          </pnp:DataRow>
+          <pnp:DataRow>
+            <pnp:DataValue FieldName="Title">Mål 5 - Likestilling mellom kjønnene</pnp:DataValue>
+            <pnp:DataValue FieldName="KmiIconFileName">Goal-05.png</pnp:DataValue>
+          </pnp:DataRow>
+          <pnp:DataRow>
+            <pnp:DataValue FieldName="Title">Mål 6 - Rent vann og gode sanitærforhold</pnp:DataValue>
+            <pnp:DataValue FieldName="KmiIconFileName">Goal-06.png</pnp:DataValue>
+          </pnp:DataRow>
+          <pnp:DataRow>
+            <pnp:DataValue FieldName="Title">Mål 7 - Ren energi for alle</pnp:DataValue>
+            <pnp:DataValue FieldName="KmiIconFileName">Goal-07.png</pnp:DataValue>
+          </pnp:DataRow>
+          <pnp:DataRow>
+            <pnp:DataValue FieldName="Title">Mål 8 - Anstendig arbeid og økonomisk vekst</pnp:DataValue>
+            <pnp:DataValue FieldName="KmiIconFileName">Goal-08.png</pnp:DataValue>
+          </pnp:DataRow>
+          <pnp:DataRow>
+            <pnp:DataValue FieldName="Title">Mål 9 - Innovasjon og infrastruktur</pnp:DataValue>
+            <pnp:DataValue FieldName="KmiIconFileName">Goal-09.png</pnp:DataValue>
+          </pnp:DataRow>
+          <pnp:DataRow>
+            <pnp:DataValue FieldName="Title">Mål 10 - Mindre ulikhet</pnp:DataValue>
+            <pnp:DataValue FieldName="KmiIconFileName">Goal-10.png</pnp:DataValue>
+          </pnp:DataRow>
+          <pnp:DataRow>
+            <pnp:DataValue FieldName="Title">Mål 11 - Bærekraftige byer og samfunn</pnp:DataValue>
+            <pnp:DataValue FieldName="KmiIconFileName">Goal-11.png</pnp:DataValue>
+          </pnp:DataRow>
+          <pnp:DataRow>
+            <pnp:DataValue FieldName="Title">Mål 12 - Ansvarlig forbruk og produksjon</pnp:DataValue>
+            <pnp:DataValue FieldName="KmiIconFileName">Goal-12.png</pnp:DataValue>
+          </pnp:DataRow>
+          <pnp:DataRow>
+            <pnp:DataValue FieldName="Title">Mål 13 - Stoppe klimaendringene</pnp:DataValue>
+            <pnp:DataValue FieldName="KmiIconFileName">Goal-13.png</pnp:DataValue>
+          </pnp:DataRow>
+          <pnp:DataRow>
+            <pnp:DataValue FieldName="Title">Mål 14 - Liv under vann</pnp:DataValue>
+            <pnp:DataValue FieldName="KmiIconFileName">Goal-14.png</pnp:DataValue>
+          </pnp:DataRow>
+          <pnp:DataRow>
+            <pnp:DataValue FieldName="Title">Mål 15 - Liv på land</pnp:DataValue>
+            <pnp:DataValue FieldName="KmiIconFileName">Goal-15.png</pnp:DataValue>
+          </pnp:DataRow>
+          <pnp:DataRow>
+            <pnp:DataValue FieldName="Title">Mål 16 - Fred og rettferdighet</pnp:DataValue>
+            <pnp:DataValue FieldName="KmiIconFileName">Goal-16.png</pnp:DataValue>
+          </pnp:DataRow>
+          <pnp:DataRow>
+            <pnp:DataValue FieldName="Title">Mål 17 - Samarbeid for å nå målene</pnp:DataValue>
+            <pnp:DataValue FieldName="KmiIconFileName">Goal-17.png</pnp:DataValue>
+          </pnp:DataRow>
+          </pnp:DataRows>
+        </pnp:ListInstance>
+
+        <pnp:ListInstance Title="Forslag" Description="Innsendte forslag" TemplateType="100" Url="Lists/Forslag" OnQuickLaunch="false" ContentTypesEnabled="true" RemoveExistingContentTypes="true" EnableVersioning="true" MaxVersionLimit="50" EnableAttachments="false" EnableFolderCreation="false">
+          <pnp:ContentTypeBindings>
+            <pnp:ContentTypeBinding ContentTypeID="0x010063D756B686FA90498E2CB193C077DEA0" Default="true" />
+          </pnp:ContentTypeBindings>
+          <pnp:Fields>
+            <Field Type="LookupMulti" DisplayName="Bærekraftsmål" List="{listid:Baerekraftsmaal}" ShowField="Title" Mult="TRUE" Sortable="FALSE" ID="{bc3203f8-17cb-4d08-a56d-f27163916c16}" Group="KomInn" StaticName="KmiSustainabilityGoals" Name="KmiSustainabilityGoals" />
+            <Field Type="LookupMulti" DisplayName="Inspirert av" List="{listid:Forslag}" ShowField="Title" Mult="TRUE" Sortable="FALSE" ID="{07e827ec-c34f-48d6-b69c-6f0ef48f7c90}" Group="KomInn" StaticName="KmiInspiredBy" Name="KmiInspiredBy" />
+          </pnp:Fields>
+          <pnp:Views RemoveExistingViews="true">
+            <View DisplayName="Alle forslag" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" Url="{site}/Lists/Forslag/AllItems.aspx">
+              <Query><OrderBy><FieldRef Name="Created" Ascending="FALSE" /></OrderBy></Query>
+              <ViewFields>
+                <FieldRef Name="LinkTitle" /><FieldRef Name="KmiStatus" /><FieldRef Name="KmiCaseWorkerStatus" /><FieldRef Name="KmiCaseWorker" />
+                <FieldRef Name="KmiUsefulnessType" /><FieldRef Name="KmiAmount" /><FieldRef Name="KmiLikes" /><FieldRef Name="KmiNumberOfComments" />
+                <FieldRef Name="Author" /><FieldRef Name="Created" />
+              </ViewFields>
+              <RowLimit Paged="TRUE">30</RowLimit>
+            </View>
+            <View DisplayName="Til behandling" MobileView="FALSE" Type="HTML" Url="{site}/Lists/Forslag/TilBehandling.aspx">
+              <Query>
+                <Where><Or><Eq><FieldRef Name="KmiCaseWorkerStatus" /><Value Type="Choice">Sendt inn</Value></Eq><Eq><FieldRef Name="KmiCaseWorkerStatus" /><Value Type="Choice">Vurderes</Value></Eq></Or></Where>
+                <OrderBy><FieldRef Name="Created" Ascending="TRUE" /></OrderBy>
+              </Query>
+              <ViewFields><FieldRef Name="LinkTitle" /><FieldRef Name="KmiCaseWorkerStatus" /><FieldRef Name="KmiCaseWorker" /><FieldRef Name="Author" /><FieldRef Name="Created" /></ViewFields>
+              <RowLimit Paged="TRUE">30</RowLimit>
+            </View>
+          </pnp:Views>
+          <pnp:FieldDefaults>
+            <pnp:FieldDefault FieldName="KmiStatus">Sendt inn</pnp:FieldDefault>
+            <pnp:FieldDefault FieldName="KmiCaseWorkerStatus">Sendt inn</pnp:FieldDefault>
+          </pnp:FieldDefaults>
+        </pnp:ListInstance>
+
+        <pnp:ListInstance Title="Forslagsvurdering" Description="Saksbehandlernes vurderinger. Kun synlig for gruppen Saksbehandlere." TemplateType="100" Url="Lists/Forslagsvurdering" OnQuickLaunch="false" ContentTypesEnabled="true" RemoveExistingContentTypes="true" EnableVersioning="true" EnableAttachments="false" EnableFolderCreation="false">
+          <pnp:ContentTypeBindings>
+            <pnp:ContentTypeBinding ContentTypeID="0x010065441382533B4E4D9229492B2B4B4CDA" Default="true" />
+          </pnp:ContentTypeBindings>
+          <pnp:Fields>
+            <Field Type="Lookup" DisplayName="Forslag" List="{listid:Forslag}" ShowField="Title" Required="TRUE" Indexed="TRUE" RelationshipDeleteBehavior="Cascade" ID="{cab77638-1071-4cfb-8a89-057636f4e9c8}" Group="KomInn" StaticName="KmiSuggestion" Name="KmiSuggestion" />
+          </pnp:Fields>
+          <pnp:Views RemoveExistingViews="true">
+            <View DisplayName="Alle vurderinger" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" Url="{site}/Lists/Forslagsvurdering/AllItems.aspx">
+              <Query><OrderBy><FieldRef Name="Created" Ascending="FALSE" /></OrderBy></Query>
+              <ViewFields>
+                <FieldRef Name="KmiSuggestion" /><FieldRef Name="KmiScoreFeasability" /><FieldRef Name="KmiScoreUserInvolvement" /><FieldRef Name="KmiScoreDistributionPotential" />
+                <FieldRef Name="KmiScoreDegreeOfInnovation" /><FieldRef Name="KmiMoreActors" /><FieldRef Name="KmiLawRequirements" /><FieldRef Name="Author" /><FieldRef Name="Created" />
+              </ViewFields>
+              <RowLimit Paged="TRUE">30</RowLimit>
+            </View>
+          </pnp:Views>
+          <pnp:Security>
+            <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="true">
+              <pnp:RoleAssignment Principal="{associatedownergroup}" RoleDefinition="{roledefinition:Administrator}" />
+              <pnp:RoleAssignment Principal="Saksbehandlere" RoleDefinition="{roledefinition:Contributor}" />
+            </pnp:BreakRoleInheritance>
+          </pnp:Security>
+        </pnp:ListInstance>
+
+        <pnp:ListInstance Title="Kommentarer" Description="Kommentarer til forslag" TemplateType="100" Url="Lists/Kommentarer" OnQuickLaunch="false" EnableAttachments="false" EnableFolderCreation="false" WriteSecurity="2">
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="babcbe8d-0ea8-4c87-b324-44557ce9d09c" Name="KmiText" />
+            <pnp:FieldRef ID="8183d7d5-5c96-4b67-947d-137300913bf2" Name="KmiImage" />
+          </pnp:FieldRefs>
+          <pnp:Fields>
+            <Field Type="Lookup" DisplayName="Forslag" List="{listid:Forslag}" ShowField="Title" Required="TRUE" Indexed="TRUE" RelationshipDeleteBehavior="Cascade" ID="{5e0c2e8f-e422-4401-9c43-c12faec2f553}" Group="KomInn" StaticName="KmiSuggestion" Name="KmiSuggestion" />
+          </pnp:Fields>
+          <pnp:Views RemoveExistingViews="true">
+            <View DisplayName="Alle kommentarer" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" Url="{site}/Lists/Kommentarer/AllItems.aspx">
+              <Query><OrderBy><FieldRef Name="Created" Ascending="FALSE" /></OrderBy></Query>
+              <ViewFields><FieldRef Name="KmiSuggestion" /><FieldRef Name="KmiText" /><FieldRef Name="Author" /><FieldRef Name="Created" /></ViewFields>
+              <RowLimit Paged="TRUE">30</RowLimit>
+            </View>
+          </pnp:Views>
+        </pnp:ListInstance>
+
+        <pnp:ListInstance Title="Likes" Description="Én rad per bruker per forslag" TemplateType="100" Url="Lists/Likes" OnQuickLaunch="false" EnableAttachments="false" EnableFolderCreation="false" WriteSecurity="2">
+          <pnp:Fields>
+            <Field Type="Lookup" DisplayName="Forslag" List="{listid:Forslag}" ShowField="Title" Required="TRUE" Indexed="TRUE" RelationshipDeleteBehavior="Cascade" ID="{882fb20c-89e0-445f-a99e-4caf4964a6c4}" Group="KomInn" StaticName="KmiSuggestion" Name="KmiSuggestion" />
+          </pnp:Fields>
+          <pnp:Views RemoveExistingViews="true">
+            <View DisplayName="Alle likes" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" Url="{site}/Lists/Likes/AllItems.aspx">
+              <Query><OrderBy><FieldRef Name="Created" Ascending="FALSE" /></OrderBy></Query>
+              <ViewFields><FieldRef Name="KmiSuggestion" /><FieldRef Name="Author" /><FieldRef Name="Created" /></ViewFields>
+              <RowLimit Paged="TRUE">30</RowLimit>
+            </View>
+          </pnp:Views>
+        </pnp:ListInstance>
+
+        <pnp:ListInstance Title="Kampanje" Description="Kampanjetekster og perioder som vises på forsiden" TemplateType="100" Url="Lists/Kampanje" OnQuickLaunch="false" ContentTypesEnabled="true" RemoveExistingContentTypes="true" EnableAttachments="false" EnableFolderCreation="false">
+          <pnp:ContentTypeBindings>
+            <pnp:ContentTypeBinding ContentTypeID="0x01005A1A91375DC52640B84730B7EAB11919" Default="true" />
+          </pnp:ContentTypeBindings>
+          <pnp:Views RemoveExistingViews="true">
+            <View DisplayName="Alle kampanjer" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" Url="{site}/Lists/Kampanje/AllItems.aspx">
+              <Query><OrderBy><FieldRef Name="KmiCampaignPlacement" /></OrderBy></Query>
+              <ViewFields><FieldRef Name="LinkTitle" /><FieldRef Name="KmiCampaignType" /><FieldRef Name="KmiCampaignStartDate" /><FieldRef Name="KmiCampaignEndDate" /><FieldRef Name="KmiCampaignPlacement" /></ViewFields>
+              <RowLimit Paged="TRUE">30</RowLimit>
+            </View>
+          </pnp:Views>
+          <pnp:DataRows KeyColumn="Title" UpdateBehavior="Skip">
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Standardtekst</pnp:DataValue>
+              <pnp:DataValue FieldName="KmiCampaignType">Standard</pnp:DataValue>
+              <pnp:DataValue FieldName="KmiCampaignText">Har du en idé som gjør kommunen bedre? Send inn et forslag.</pnp:DataValue>
+              <pnp:DataValue FieldName="KmiCampaignPlacement">1</pnp:DataValue>
+            </pnp:DataRow>
+          </pnp:DataRows>
+        </pnp:ListInstance>
+
+        <pnp:ListInstance Title="Konfigurasjon" Description="Nøkkel/verdi-innstillinger for KomInn" TemplateType="100" Url="Lists/Konfigurasjon" OnQuickLaunch="false" EnableAttachments="false" EnableFolderCreation="false">
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="83e1c9d5-36d0-4dfa-9d5e-728e9db0bae6" Name="KmiKey" />
+            <pnp:FieldRef ID="2f68841f-a7e3-48f7-af9e-ea1a87e2fcd4" Name="KmiValue" />
+          </pnp:FieldRefs>
+          <pnp:Views RemoveExistingViews="true">
+            <View DisplayName="Alle innstillinger" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" Url="{site}/Lists/Konfigurasjon/AllItems.aspx">
+              <Query><OrderBy><FieldRef Name="KmiKey" /></OrderBy></Query>
+              <ViewFields><FieldRef Name="KmiKey" /><FieldRef Name="KmiValue" /></ViewFields>
+              <RowLimit Paged="TRUE">50</RowLimit>
+            </View>
+          </pnp:Views>
+          <pnp:DataRows KeyColumn="KmiKey" UpdateBehavior="Skip">
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Kartsenter</pnp:DataValue>
+              <pnp:DataValue FieldName="KmiKey">KART_SENTER</pnp:DataValue>
+              <pnp:DataValue FieldName="KmiValue">59.8331,10.4392</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Kartzoom</pnp:DataValue>
+              <pnp:DataValue FieldName="KmiKey">KART_ZOOM</pnp:DataValue>
+              <pnp:DataValue FieldName="KmiValue">11</pnp:DataValue>
+            </pnp:DataRow>
+          </pnp:DataRows>
+        </pnp:ListInstance>
+      </pnp:Lists>
+
+      <pnp:Files>
+        <pnp:Directory Src="assets/icons" Folder="Ikoner" Overwrite="true" IncludedExtensions="*.png" />
+      </pnp:Files>
+
+      <pnp:ClientSidePages>
+        <pnp:ClientSidePage PageName="Hjem.aspx" Title="KomInn" Layout="Home" PromoteAsNewsArticle="false" Overwrite="true" Publish="true" EnableComments="false">
+          <pnp:Header Type="None" />
+          <pnp:Sections>
+            <pnp:Section Order="1" Type="OneColumn">
+              <pnp:Controls>
+            <pnp:CanvasControl WebPartType="Custom" CustomWebPartName="c8de45fe-b3bf-4c22-84ae-a6f5d341440b" ControlId="bf2e5783-9876-49de-b0ba-a5c4dd89eeeb" Order="1" Column="1" JsonControlData="{&quot;properties&quot;: {&quot;placeholder&quot;: &quot;Søk etter forslag …&quot;, &quot;maxResults&quot;: 8, &quot;siteUrl&quot;: &quot;&quot;}}" />
+              </pnp:Controls>
+            </pnp:Section>
+            <pnp:Section Order="2" Type="TwoColumnLeft">
+              <pnp:Controls>
+            <pnp:CanvasControl WebPartType="Custom" CustomWebPartName="ebda813d-1b9d-47ab-ab85-460d5b38f562" ControlId="c8aa46ce-e04a-47a3-8cea-a442a8e01318" Order="1" Column="1" JsonControlData="{&quot;properties&quot;: {&quot;title&quot;: &quot;Månedens forslag&quot;, &quot;mode&quot;: &quot;monthly&quot;, &quot;siteUrl&quot;: &quot;&quot;, &quot;top&quot;: 1, &quot;emptyText&quot;: &quot;&quot;, &quot;layout&quot;: &quot;cards&quot;, &quot;period&quot;: &quot;all&quot;, &quot;defaultOrder&quot;: &quot;created&quot;, &quot;showFilters&quot;: false, &quot;showSorting&quot;: false}}" />
+            <pnp:CanvasControl WebPartType="Custom" CustomWebPartName="ebda813d-1b9d-47ab-ab85-460d5b38f562" ControlId="39528207-87b1-4373-95d4-81b638b4a899" Order="2" Column="1" JsonControlData="{&quot;properties&quot;: {&quot;title&quot;: &quot;Populære forslag&quot;, &quot;mode&quot;: &quot;published&quot;, &quot;siteUrl&quot;: &quot;&quot;, &quot;top&quot;: 9, &quot;emptyText&quot;: &quot;&quot;, &quot;layout&quot;: &quot;cards&quot;, &quot;period&quot;: &quot;all&quot;, &quot;defaultOrder&quot;: &quot;likes&quot;, &quot;showFilters&quot;: true, &quot;showSorting&quot;: true}}" />
+            <pnp:CanvasControl WebPartType="Custom" CustomWebPartName="ebda813d-1b9d-47ab-ab85-460d5b38f562" ControlId="9dab8a0e-253e-4774-b42c-a8d270d670f4" Order="1" Column="2" JsonControlData="{&quot;properties&quot;: {&quot;title&quot;: &quot;Suksesshistorier&quot;, &quot;mode&quot;: &quot;success&quot;, &quot;siteUrl&quot;: &quot;&quot;, &quot;top&quot;: 4, &quot;emptyText&quot;: &quot;&quot;, &quot;layout&quot;: &quot;compact&quot;, &quot;period&quot;: &quot;all&quot;, &quot;defaultOrder&quot;: &quot;created&quot;, &quot;showFilters&quot;: false, &quot;showSorting&quot;: false}}" />
+            <pnp:CanvasControl WebPartType="Custom" CustomWebPartName="ebda813d-1b9d-47ab-ab85-460d5b38f562" ControlId="eafe7631-db30-48b8-bd41-eb655e1be9fd" Order="2" Column="2" JsonControlData="{&quot;properties&quot;: {&quot;title&quot;: &quot;Mine forslag&quot;, &quot;mode&quot;: &quot;mine&quot;, &quot;siteUrl&quot;: &quot;&quot;, &quot;top&quot;: 5, &quot;emptyText&quot;: &quot;&quot;, &quot;layout&quot;: &quot;compact&quot;, &quot;period&quot;: &quot;all&quot;, &quot;defaultOrder&quot;: &quot;created&quot;, &quot;showFilters&quot;: false, &quot;showSorting&quot;: false}}" />
+              </pnp:Controls>
+            </pnp:Section>
+          </pnp:Sections>
+        </pnp:ClientSidePage>
+
+        <pnp:ClientSidePage PageName="NyttForslag.aspx" Title="Nytt forslag" Layout="Article" PromoteAsNewsArticle="false" Overwrite="true" Publish="true" EnableComments="false">
+          <pnp:Header Type="None" />
+          <pnp:Sections>
+            <pnp:Section Order="1" Type="OneColumn">
+              <pnp:Controls>
+            <pnp:CanvasControl WebPartType="Custom" CustomWebPartName="a6e7a98f-e276-4c21-8cc5-859632249640" ControlId="b82a5c29-b380-4c44-bce0-4adfdf012277" Order="1" Column="1" JsonControlData="{&quot;properties&quot;: {}}" />
+              </pnp:Controls>
+            </pnp:Section>
+          </pnp:Sections>
+        </pnp:ClientSidePage>
+
+        <pnp:ClientSidePage PageName="Forslag.aspx" Title="Forslag" Layout="Article" PromoteAsNewsArticle="false" Overwrite="true" Publish="true" EnableComments="false">
+          <pnp:Header Type="None" />
+          <pnp:Sections>
+            <pnp:Section Order="1" Type="OneColumn">
+              <pnp:Controls>
+            <pnp:CanvasControl WebPartType="Custom" CustomWebPartName="c2b087a6-fcc7-46b9-aea2-87590119d3f7" ControlId="bf586f83-0cbe-4638-b2c6-43e86b82a490" Order="1" Column="1" JsonControlData="{&quot;properties&quot;: {}}" />
+              </pnp:Controls>
+            </pnp:Section>
+          </pnp:Sections>
+        </pnp:ClientSidePage>
+
+        <pnp:ClientSidePage PageName="Saksbehandling.aspx" Title="Saksbehandling" Layout="Article" PromoteAsNewsArticle="false" Overwrite="true" Publish="true" EnableComments="false">
+          <pnp:Header Type="None" />
+          <pnp:Sections>
+            <pnp:Section Order="1" Type="OneColumn">
+              <pnp:Controls>
+            <pnp:CanvasControl WebPartType="Custom" CustomWebPartName="0b3055e1-d8eb-4ab2-b9d3-b0972a574a06" ControlId="f357ade2-ed38-4225-9f24-0bfa30bc0d1d" Order="1" Column="1" JsonControlData="{&quot;properties&quot;: {}}" />
+              </pnp:Controls>
+            </pnp:Section>
+          </pnp:Sections>
+        </pnp:ClientSidePage>
+      </pnp:ClientSidePages>
+
+    </pnp:ProvisioningTemplate>
+  </pnp:Templates>
+</pnp:Provisioning>

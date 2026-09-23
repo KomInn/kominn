@@ -1,48 +1,63 @@
 {
   "name": "kominn",
-  "version": "1.1.2",
-  "description": "",
-  "main": "",
-  "scripts": {
-    "build-install": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command ./scripts/Build-Install.ps1",
-    "webpack-build": "webpack --progress",
-    "webpack-watch": "webpack -w --progress"
+  "version": "2.0.0",
+  "description": "KomInn 2.0 – forslagsløsning for kommunale tiltak, bygget på SharePoint Framework",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KomInn/kominn.git"
   },
-  "author": "",
-  "license": "ISC",
+  "engines": {
+    "node": ">=22.14.0 < 23.0.0"
+  },
+  "scripts": {
+    "build": "heft build --clean --production",
+    "test": "heft test --clean",
+    "lint": "eslint src --ext .ts,.tsx",
+    "package": "heft build --clean --production && heft package-solution --production",
+    "clean": "heft clean",
+    "serve": "heft start --clean",
+    "start": "heft start --clean",
+    "eject-webpack": "heft eject-webpack"
+  },
+  "dependencies": {
+    "@fluentui/react": "^8.106.4",
+    "@fluentui/react-components": "^9.74.8",
+    "@fluentui/react-icons": "^2.0.341",
+    "@fluentui/react-migration-v8-v9": "^9.10.19",
+    "@microsoft/sp-component-base": "1.23.2",
+    "@microsoft/sp-core-library": "1.23.2",
+    "@microsoft/sp-lodash-subset": "1.23.2",
+    "@microsoft/sp-office-ui-fabric-core": "1.23.2",
+    "@microsoft/sp-property-pane": "1.23.2",
+    "@microsoft/sp-webpart-base": "1.23.2",
+    "@pnp/sp": "^4.21.0",
+    "leaflet": "^1.9.4",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "tslib": "2.3.1"
+  },
   "devDependencies": {
-    "@types/googlemaps": "^3.30.4",
-    "@types/jquery": "^2.0.48",
-    "@types/lodash": "^4.14.92",
-    "@types/react": "^16.0.38",
-    "@types/react-dom": "^16.0.4",
-    "@types/sharepoint": "^2016.1.0",
-    "@uifabric/icons": "^6.5.2",
-    "anchorme": "^1.1.2",
-    "bootstrap": "3.4.1",
-    "core-js": "^2.5.7",
-    "css-loader": "^3.0.0",
-    "es6-promise": "^4.2.4",
-    "jquery": "^3.3.1",
-    "linkify-urls": "^1.4.0",
-    "lodash": "^4.17.4",
-    "mini-css-extract-plugin": "^0.7.0",
-    "moment": "^2.24.0",
-    "node-sass": "^4.12.0",
-    "office-ui-fabric-react": "^6.189.3",
-    "react": "^16.2.0",
-    "react-bootstrap": "^0.32.4",
-    "react-dom": "^16.2.0",
-    "react-google-maps": "^6.0.1",
-    "react-slick": "^0.24.0",
-    "sass-loader": "^7.1.0",
-    "slick-carousel": "^1.8.1",
-    "source-map-loader": "^0.1.5",
-    "style-loader": "^0.23.1",
-    "ts-loader": "^4.3.0",
-    "typescript": "^2.7.2",
-    "vis": "^4.21.0",
-    "webpack": "^4.35.2",
-    "webpack-cli": "^3.3.12"
+    "@microsoft/eslint-config-spfx": "1.23.2",
+    "@microsoft/eslint-plugin-spfx": "1.23.2",
+    "@microsoft/sp-module-interfaces": "1.23.2",
+    "@microsoft/spfx-heft-plugins": "1.23.2",
+    "@microsoft/spfx-web-build-rig": "1.23.2",
+    "@rushstack/heft": "1.2.17",
+    "@types/jest": "30.0.0",
+    "@types/leaflet": "^1.9.22",
+    "@types/react": "17.0.45",
+    "@types/react-dom": "17.0.17",
+    "@types/webpack-env": "~1.15.2",
+    "css-loader": "~7.1.2",
+    "eslint": "9.37.0",
+    "eslint-plugin-react-hooks": "5.2.0",
+    "typescript": "~5.8.0"
+  },
+  "overrides": {
+    "@rushstack/heft": "1.2.17"
+  },
+  "resolutions": {
+    "@types/react": "17.0.45"
   }
 }
