@@ -1,6 +1,6 @@
 {
   "name": "kominn",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "KomInn 2.0 – forslagsløsning for kommunale tiltak, bygget på SharePoint Framework",
   "private": true,
   "repository": {

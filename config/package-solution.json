@@ -3,7 +3,7 @@
   "solution": {
     "name": "kominn",
     "id": "6397cf1c-05fc-4281-82c0-384a4f5ac374",
-    "version": "2.0.0.0",
+    "version": "2.0.1.0",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
     "isDomainIsolated": false,
@@ -30,7 +30,7 @@
         "title": "KomInn",
         "description": "Aktiverer KomInn-webdelene.",
         "id": "d0bc803a-6813-4aad-8cce-b3ff55579492",
-        "version": "2.0.0.0"
+        "version": "2.0.1.0"
       }
     ]
   },
