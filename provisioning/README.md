@@ -15,6 +15,13 @@ Install-Module PnP.PowerShell -Scope CurrentUser
 ./Install.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ClientId <app-id>
 ```
 
+Uten nettleser (server, container) og med opplasting av app-pakken og tilgang for alle ansatte:
+
+```powershell
+./Install.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ClientId <app-id> -Tenant kommune.onmicrosoft.com `
+  -DeviceLogin -AppPackagePath ../sharepoint/solution/kominn.sppkg -GrantEveryone
+```
+
 Rekkefølge ved ny installasjon:
 
 1. Last opp `kominn.sppkg` til appkatalogen og distribuer globalt.
