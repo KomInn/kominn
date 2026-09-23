@@ -4,6 +4,7 @@ import { createV9Theme } from '@fluentui/react-migration-v8-v9';
 import type { IReadonlyTheme } from '@microsoft/sp-component-base';
 import type { IDataService } from '../services';
 import { DataServiceProvider } from '../hooks';
+import { ErrorBoundary } from './ErrorBoundary';
 
 export interface KomInnProviderProps {
   /** Tema fra SharePoint-siden (onThemeChanged i webdelen). */
@@ -30,7 +31,9 @@ export const KomInnProvider: React.FC<KomInnProviderProps> = ({ theme, instanceI
   return (
     <IdPrefixProvider value={`kominn-${instanceId}-`}>
       <FluentProvider theme={v9Theme} style={{ background: 'transparent' }}>
-        <DataServiceProvider service={service}>{children}</DataServiceProvider>
+        <ErrorBoundary>
+          <DataServiceProvider service={service}>{children}</DataServiceProvider>
+        </ErrorBoundary>
       </FluentProvider>
     </IdPrefixProvider>
   );
