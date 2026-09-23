@@ -15,7 +15,7 @@ Install-Module PnP.PowerShell -Scope CurrentUser
 ./Install.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ClientId <app-id> -GrantEveryone
 ```
 
-Skriptet bygger SPFx-løsningen, laster opp og publiserer `kominn.sppkg` i appkatalogen, kjører
+Skriptet bygger SPFx-løsningen, laster opp og publiserer `kominn.sppkg` i appkatalogen, installerer den på området, kjører
 malen og gir alle ansatte medlemstilgang. Innlogging skjer i nettleservindu (`-Interactive`).
 
 | Parameter | Virkning |
