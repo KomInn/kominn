@@ -12,24 +12,23 @@ Alt som trengs for å sette opp et KomInn-område.
 
 ```powershell
 Install-Module PnP.PowerShell -Scope CurrentUser
-./Install.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ClientId <app-id>
+./Install.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ClientId <app-id> -GrantEveryone
 ```
 
-Uten nettleser (server, container) og med opplasting av app-pakken og tilgang for alle ansatte:
+Skriptet bygger SPFx-løsningen, laster opp og publiserer `kominn.sppkg` i appkatalogen, kjører
+malen og gir alle ansatte medlemstilgang. Innlogging skjer i nettleservindu (`-Interactive`).
 
-```powershell
-./Install.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ClientId <app-id> -Tenant kommune.onmicrosoft.com `
-  -DeviceLogin -AppPackagePath ../sharepoint/solution/kominn.sppkg -GrantEveryone
-```
+| Parameter | Virkning |
+|---|---|
+| `-AppScope Site` | Bruk områdets egen appkatalog i stedet for leietakerens |
+| `-SkipBuild` | Bruk eksisterende `sharepoint/solution/kominn.sppkg` |
+| `-SkipApp` | Ikke last opp app-pakken |
+| `-SkipPages` | Hopp over sidene med webdeler |
+| `-GrantEveryone` | Legg «Alle unntatt eksterne brukere» i medlemsgruppen |
 
-Rekkefølge ved ny installasjon:
-
-1. Last opp `kominn.sppkg` til appkatalogen og distribuer globalt.
-2. Opprett et moderne område og gjør deg til områdeeier.
-3. Kjør `Install.ps1`. Bruk `-SkipPages` dersom app-pakken ikke er distribuert enda, og kjør igjen uten når den er det.
-4. Legg saksbehandlere i gruppen **Saksbehandlere**.
-
-Malen kan kjøres flere ganger. Seed-data skrives ikke over (`UpdateBehavior="Skip"`).
+Krever Node.js 22 for byggetrinnet, eierrettighet på området og tilgang til appkatalogen.
+Legg saksbehandlere i gruppen **Saksbehandlere** etterpå. Malen kan kjøres flere ganger; seed-data
+skrives ikke over (`UpdateBehavior="Skip"`).
 
 ## Datamodell
 

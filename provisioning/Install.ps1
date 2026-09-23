@@ -1,17 +1,19 @@
 <#
 .SYNOPSIS
-    Installerer KomInn 2.0 på et eksisterende, moderne SharePoint-område.
+    Bygger og installerer KomInn 2.0 på et eksisterende, moderne SharePoint-område.
 
 .DESCRIPTION
-    Kjører PnP-malen template.xml mot området. Malen oppretter felt, innholdstyper, lister,
-    gruppen Saksbehandlere, sider med KomInn-webdelene og navigasjon, og laster opp ikonene
-    for bærekraftsmålene. Skriptet kan også laste opp app-pakken og gi alle ansatte
-    medlemstilgang på området.
+    1. Bygger SPFx-løsningen (npm ci og npm run package) og får sharepoint/solution/kominn.sppkg.
+    2. Laster opp og publiserer app-pakken i appkatalogen.
+    3. Kjører PnP-malen template.xml: felt, innholdstyper, lister, gruppen Saksbehandlere,
+       sider med KomInn-webdelene, navigasjon og ikoner for bærekraftsmålene.
+    4. Gir eventuelt alle ansatte medlemstilgang (-GrantEveryone).
 
     Krav:
       - PnP.PowerShell 3.4 eller nyere (Install-Module PnP.PowerShell -Scope CurrentUser)
       - En Entra ID-appregistrering for PnP.PowerShell (Register-PnPEntraIDAppForInteractiveLogin)
-      - Områdeeier på målområdet. For -AppPackagePath med -AppScope Tenant: tilgang til appkatalogen.
+      - Node.js 22 og npm, med mindre -SkipBuild brukes
+      - Områdeeier på målområdet, og tilgang til appkatalogen med mindre -SkipApp brukes
 
 .PARAMETER Url
     Områdets adresse, f.eks. https://kommune.sharepoint.com/sites/kominn
@@ -19,69 +21,72 @@
 .PARAMETER ClientId
     Klient-ID for appregistreringen PnP.PowerShell logger på med.
 
-.PARAMETER Tenant
-    Leietaker, f.eks. kommune.onmicrosoft.com. Påkrevd ved -DeviceLogin.
-
-.PARAMETER DeviceLogin
-    Logg på med enhetskode i stedet for nettleservindu. Nyttig på servere og i containere.
-
-.PARAMETER AppPackagePath
-    Sti til kominn.sppkg. Når den er satt, lastes pakken opp og publiseres før malen kjøres.
-
 .PARAMETER AppScope
     Tenant (standard) for leietakerens appkatalog, eller Site for områdets egen appkatalog.
+
+.PARAMETER SkipBuild
+    Bruk eksisterende sharepoint/solution/kominn.sppkg i stedet for å bygge.
+
+.PARAMETER SkipApp
+    Ikke last opp app-pakken. Brukes når pakken allerede er publisert.
+
+.PARAMETER SkipPages
+    Hopp over sidene med webdeler.
 
 .PARAMETER GrantEveryone
     Legger «Alle unntatt eksterne brukere» i medlemsgruppen, slik at alle ansatte kan sende inn,
     like og kommentere.
 
-.PARAMETER SkipPages
-    Hopp over sidene. Brukes når app-pakken ikke er distribuert enda; sidene kan legges på senere.
-
 .EXAMPLE
-    ./Install.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ClientId <app-id>
-
-.EXAMPLE
-    ./Install.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ClientId <app-id> -Tenant kommune.onmicrosoft.com `
-        -DeviceLogin -AppPackagePath ../sharepoint/solution/kominn.sppkg -GrantEveryone
+    ./Install.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ClientId <app-id> -GrantEveryone
 #>
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)] [string] $Url,
     [Parameter(Mandatory = $true)] [string] $ClientId,
-    [Parameter(Mandatory = $false)] [string] $Tenant,
-    [Parameter(Mandatory = $false)] [switch] $DeviceLogin,
-    [Parameter(Mandatory = $false)] [string] $TemplatePath = (Join-Path $PSScriptRoot 'template.xml'),
-    [Parameter(Mandatory = $false)] [string] $AppPackagePath,
     [Parameter(Mandatory = $false)] [ValidateSet('Tenant', 'Site')] [string] $AppScope = 'Tenant',
-    [Parameter(Mandatory = $false)] [switch] $GrantEveryone,
-    [Parameter(Mandatory = $false)] [switch] $SkipPages
+    [Parameter(Mandatory = $false)] [switch] $SkipBuild,
+    [Parameter(Mandatory = $false)] [switch] $SkipApp,
+    [Parameter(Mandatory = $false)] [switch] $SkipPages,
+    [Parameter(Mandatory = $false)] [switch] $GrantEveryone
 )
 
 #Requires -Modules @{ ModuleName = 'PnP.PowerShell'; ModuleVersion = '3.4.0' }
 $ErrorActionPreference = 'Stop'
 
-if (-not (Test-Path $TemplatePath)) { throw "Finner ikke malen '$TemplatePath'." }
-if ($AppPackagePath -and -not (Test-Path $AppPackagePath)) { throw "Finner ikke app-pakken '$AppPackagePath'. Kjør 'npm run package' først." }
-if ($DeviceLogin -and -not $Tenant) { throw '-Tenant må angis sammen med -DeviceLogin.' }
+$root = Split-Path $PSScriptRoot -Parent
+$templatePath = Join-Path $PSScriptRoot 'template.xml'
+$packagePath = Join-Path $root 'sharepoint/solution/kominn.sppkg'
 
 Write-Host ''
 Write-Host 'KomInn 2.0' -ForegroundColor Green
 Write-Host "Område:  $Url"
-Write-Host "Mal:     $TemplatePath"
 Write-Host ''
 
-$connectParams = @{ Url = $Url; ClientId = $ClientId }
-if ($Tenant) { $connectParams.Tenant = $Tenant }
-if ($DeviceLogin) { $connectParams.DeviceLogin = $true; $connectParams.PersistLogin = $true } else { $connectParams.Interactive = $true }
-Connect-PnPOnline @connectParams
+# 1. Bygg
+if (-not $SkipApp -and -not $SkipBuild) {
+    if (-not (Get-Command npm -ErrorAction SilentlyContinue)) { throw 'Finner ikke npm. Installer Node.js 22, eller bruk -SkipBuild.' }
+    Write-Host 'Bygger SPFx-løsningen ...' -ForegroundColor Green
+    Push-Location $root
+    try {
+        npm ci --no-fund --no-audit
+        if ($LASTEXITCODE -ne 0) { throw 'npm ci feilet.' }
+        npm run package
+        if ($LASTEXITCODE -ne 0) { throw 'npm run package feilet.' }
+    }
+    finally { Pop-Location }
+}
+if (-not $SkipApp -and -not (Test-Path $packagePath)) { throw "Finner ikke app-pakken '$packagePath'." }
 
+# 2. Logg på
+Connect-PnPOnline -Url $Url -Interactive -ClientId $ClientId
 $web = Get-PnPWeb
 Write-Host "Koblet til '$($web.Title)'." -ForegroundColor Green
 
-if ($AppPackagePath) {
+# 3. App-pakke
+if (-not $SkipApp) {
     Write-Host "Laster opp app-pakken til appkatalogen ($AppScope) ..." -ForegroundColor Green
-    $app = Add-PnPApp -Path $AppPackagePath -Scope $AppScope -Publish -SkipFeatureDeployment -Overwrite
+    $app = Add-PnPApp -Path $packagePath -Scope $AppScope -Publish -SkipFeatureDeployment -Overwrite
     Write-Host "Publisert: $($app.Title) $($app.AppCatalogVersion)"
     if ($AppScope -eq 'Site') {
         $installed = Get-PnPApp -Identity $app.Id -Scope Site
@@ -89,22 +94,22 @@ if ($AppPackagePath) {
     }
 }
 
-$invokeParams = @{ Path = $TemplatePath; ClearNavigation = $true }
+# 4. Mal
+$invokeParams = @{ Path = $templatePath; ClearNavigation = $true }
 if ($SkipPages) { $invokeParams.ExcludeHandlers = 'Pages' }
-
 Write-Host 'Kjører malen ...' -ForegroundColor Green
 $sw = [Diagnostics.Stopwatch]::StartNew()
 Invoke-PnPSiteTemplate @invokeParams
 $sw.Stop()
 
+# 5. Tilgang for alle ansatte
 if ($GrantEveryone) {
     $tenantId = Get-PnPTenantId
     $members = Get-PnPGroup -AssociatedMemberGroup
-    $everyone = "c:0-.f|rolemanager|spo-grid-all-users/$tenantId"
     Write-Host "Legger «Alle unntatt eksterne brukere» i '$($members.Title)' ..." -ForegroundColor Green
-    Add-PnPGroupMember -Group $members -LoginName $everyone
+    Add-PnPGroupMember -Group $members -LoginName "c:0-.f|rolemanager|spo-grid-all-users/$tenantId"
 }
 
 Write-Host ''
-Write-Host "Ferdig på $($sw.Elapsed.ToString('mm\:ss'))." -ForegroundColor Green
+Write-Host "Malen brukte $($sw.Elapsed.ToString('mm\:ss'))." -ForegroundColor Green
 Write-Host "Legg saksbehandlere i gruppen 'Saksbehandlere' og åpne $Url/SitePages/Hjem.aspx"
