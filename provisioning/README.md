@@ -30,6 +30,21 @@ Krever Node.js 22 for byggetrinnet, eierrettighet på området og tilgang til ap
 Legg saksbehandlere i gruppen **Saksbehandlere** etterpå. Malen kan kjøres flere ganger; seed-data
 skrives ikke over (`UpdateBehavior="Skip"`).
 
+## Demodata
+
+`Seed-DemoData.ps1` fyller området med åtte demoforslag i alle statuser (sendt inn, publisert,
+promotert, suksess og gjort tidligere), med bærekraftsmål, sted, «inspirert av», kommentarer og
+vurderinger. Ett av forslagene er månedens forslag.
+
+```powershell
+./Seed-DemoData.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ClientId <app-id>
+./Seed-DemoData.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ClientId <app-id> -Remove
+```
+
+Demoforslagene merkes med konkurransereferansen `DEMO`, og skriptet kan kjøres flere ganger.
+`-Remove` sletter dem, og tilhørende kommentarer, likes og vurderinger slettes automatisk.
+Kommentarer og vurderinger opprettes i navnet til den som kjører skriptet.
+
 ## Datamodell
 
 | Liste | Innhold | Nøkkelfelt |
