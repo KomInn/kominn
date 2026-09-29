@@ -414,9 +414,10 @@
         <pnp:ClientSidePage PageName="Hjem.aspx" Title="KomInn" Layout="Home" PromoteAsNewsArticle="false" Overwrite="true" Publish="true" EnableComments="false">
           <pnp:Header Type="None" />
           <pnp:Sections>
-            <pnp:Section Order="1" Type="OneColumn">
+            <pnp:Section Order="1" Type="TwoColumnLeft">
               <pnp:Controls>
             <pnp:CanvasControl WebPartType="Custom" ControlId="c8de45fe-b3bf-4c22-84ae-a6f5d341440b" Order="1" Column="1" JsonControlData="{&quot;id&quot;:&quot;c8de45fe-b3bf-4c22-84ae-a6f5d341440b&quot;,&quot;instanceId&quot;:&quot;b3ed7295-b850-499c-b51d-a3c18efccc88&quot;,&quot;title&quot;:&quot;Søk i forslag&quot;,&quot;description&quot;:&quot;Søk i forslag&quot;,&quot;dataVersion&quot;:&quot;1.0&quot;,&quot;properties&quot;:{&quot;placeholder&quot;:&quot;Søk etter forslag …&quot;,&quot;maxResults&quot;:8,&quot;siteUrl&quot;:&quot;&quot;},&quot;serverProcessedContent&quot;:{&quot;htmlStrings&quot;:{},&quot;searchablePlainTexts&quot;:{},&quot;imageSources&quot;:{},&quot;links&quot;:{}}}" />
+            <pnp:CanvasControl WebPartType="Button" Order="1" Column="2" JsonControlData="{&quot;id&quot;:&quot;0f087d7f-520e-42b7-89c0-496aaf979d58&quot;,&quot;instanceId&quot;:&quot;1d952fba-eb87-46b5-9bc7-d19baff558cf&quot;,&quot;title&quot;:&quot;Knapp&quot;,&quot;description&quot;:&quot;Knapp som går til skjemaet for nye forslag&quot;,&quot;dataVersion&quot;:&quot;1.0&quot;,&quot;properties&quot;:{&quot;alignment&quot;:&quot;Right&quot;},&quot;serverProcessedContent&quot;:{&quot;htmlStrings&quot;:{},&quot;searchablePlainTexts&quot;:{&quot;label&quot;:&quot;Send inn forslag&quot;},&quot;imageSources&quot;:{},&quot;links&quot;:{&quot;linkUrl&quot;:&quot;{site}/SitePages/NyttForslag.aspx&quot;}}}" />
               </pnp:Controls>
             </pnp:Section>
             <pnp:Section Order="2" Type="TwoColumnLeft">
