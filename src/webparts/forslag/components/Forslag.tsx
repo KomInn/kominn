@@ -18,7 +18,7 @@ import {
   makeStyles,
   tokens
 } from '@fluentui/react-components';
-import { Heart20Filled, Heart20Regular, Lightbulb20Regular, Link20Regular, Chat20Regular } from '@fluentui/react-icons';
+import { Chat20Regular, Edit20Regular, Heart20Filled, Heart20Regular, Lightbulb20Regular, Link20Regular } from '@fluentui/react-icons';
 import * as strings from 'ForslagWebPartStrings';
 import type { IForslagProps } from './IForslagProps';
 import { Comments } from './Comments';
@@ -27,7 +27,7 @@ import { CaseWorkerPanel } from './CaseWorkerPanel';
 import { formatAmount, formatDate } from './format';
 import { useAsync, useConfig, useDataService, useIsCaseWorker, useSuggestion, useSustainabilityGoals } from '../../../shared/hooks';
 import { LocationPicker } from '../../../shared/components';
-import { copySuggestionUrl } from '../../../shared/services';
+import { copySuggestionUrl, editSuggestionUrl } from '../../../shared/services';
 import type { Suggestion, SuggestionStatus } from '../../../shared/models';
 import { parseLatLng } from '../../../shared/utils';
 
@@ -101,6 +101,7 @@ export const Forslag: React.FC<IForslagProps> = (props) => {
   const goals = useSustainabilityGoals();
   const isCaseWorker = useIsCaseWorker();
   const config = useConfig();
+  const canEdit = useAsync(async () => (props.suggestionId ? service.canEditSuggestion(props.suggestionId) : false), [service, props.suggestionId]);
   const [copied, setCopied] = React.useState(false);
 
   // Hopp til kommentarer når lenken har #kommentarer.
@@ -239,6 +240,11 @@ export const Forslag: React.FC<IForslagProps> = (props) => {
               </Button>
             )}
           </div>
+          {canEdit.data && (
+            <Button as="a" appearance="primary" href={editSuggestionUrl(service.webUrl, s.id)} icon={<Edit20Regular />}>
+              {strings.EditSuggestion}
+            </Button>
+          )}
           <Button as="a" href={copySuggestionUrl(service.webUrl, s.id)} icon={<Lightbulb20Regular />}>
             {strings.DoThisToo}
           </Button>

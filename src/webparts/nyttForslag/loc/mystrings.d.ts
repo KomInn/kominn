@@ -70,6 +70,14 @@ declare interface INyttForslagWebPartStrings {
   SuccessDefaultText: string;
   SuccessOpen: string;
   SuccessNew: string;
+  EditTitle: string;
+  EditNotFound: string;
+  EditNoAccessTitle: string;
+  EditNoAccessText: string;
+  SaveChanges: string;
+  Saving: string;
+  Cancel: string;
+  EditSuccessTitle: string;
 }
 
 declare module 'NyttForslagWebPartStrings' {

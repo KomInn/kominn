@@ -9,6 +9,8 @@ import '@pnp/sp/folders';
 import '@pnp/sp/site-users/web';
 import '@pnp/sp/site-groups/web';
 import '@pnp/sp/profiles';
+import '@pnp/sp/security';
+import { PermissionKind } from '@pnp/sp/security';
 import type { ISPFXContext } from '@pnp/sp';
 import type {
   Campaign,
@@ -121,7 +123,8 @@ export class SharePointDataService implements IDataService {
     return items.map((i) => mapSuggestion(i, this.webUrl));
   }
 
-  public async createSuggestion(s: NewSuggestion): Promise<Suggestion> {
+  /** Felles feltverdier for opprettelse og redigering. */
+  private contentPayload(s: NewSuggestion): ListItem {
     const payload: ListItem = {
       Title: s.title,
       [F.summary]: s.summary,
@@ -133,22 +136,44 @@ export class SharePointDataService implements IDataService {
       [F.tags]: s.tags,
       [F.image]: s.imageUrl ?? null,
       [F.location]: s.location ?? null,
-      [F.status]: 'Sendt inn',
-      [F.caseWorkerStatus]: 'Sendt inn',
       [F.name]: s.submitter.name,
       [F.email]: s.submitter.email ?? null,
       [F.department]: s.submitter.department ?? null,
       [F.telephone]: s.submitter.telephone ?? null,
+      [`${F.sustainabilityGoals}Id`]: s.sustainabilityGoalIds,
+      [`${F.inspiredBy}Id`]: s.inspiredByIds
+    };
+    return payload;
+  }
+
+  public async editSuggestion(id: number, s: NewSuggestion): Promise<Suggestion> {
+    await this.list(Lists.suggestions).items.getById(id).update(this.contentPayload(s));
+    const updated = await this.getSuggestion(id);
+    if (!updated) throw new Error('Forslaget ble lagret, men kunne ikke leses tilbake.');
+    return updated;
+  }
+
+  public async canEditSuggestion(id: number): Promise<boolean> {
+    try {
+      return await this.list(Lists.suggestions).items.getById(id).currentUserHasPermissions(PermissionKind.EditListItems);
+    } catch {
+      return false;
+    }
+  }
+
+  public async createSuggestion(s: NewSuggestion): Promise<Suggestion> {
+    const payload: ListItem = {
+      ...this.contentPayload(s),
+      [F.status]: 'Sendt inn',
+      [F.caseWorkerStatus]: 'Sendt inn',
+      [F.countyCode]: s.submitter.countyCode ?? null,
       [F.address]: s.submitter.address ?? null,
       [F.zipCode]: s.submitter.zipCode ?? null,
       [F.city]: s.submitter.city ?? null,
-      [F.countyCode]: s.submitter.countyCode ?? null,
       [F.competitionRef]: s.competitionRef ?? null,
       [F.likes]: 0,
       [F.numberOfComments]: 0,
-      [F.isPast]: false,
-      [`${F.sustainabilityGoals}Id`]: s.sustainabilityGoalIds,
-      [`${F.inspiredBy}Id`]: s.inspiredByIds
+      [F.isPast]: false
     };
     if (s.submitter.manager?.id) payload[`${F.manager}Id`] = s.submitter.manager.id;
     const added: ListItem = await this.list(Lists.suggestions).items.add(payload);

@@ -70,6 +70,14 @@ define([], function () {
     SuccessTitle: 'Takk! Forslaget er sendt inn.',
     SuccessDefaultText: 'En saksbehandler ser på forslaget og publiserer det når det er klart.',
     SuccessOpen: 'Se forslaget',
-    SuccessNew: 'Send inn et nytt forslag'
+    SuccessNew: 'Send inn et nytt forslag',
+    EditTitle: 'Du redigerer forslaget',
+    EditNotFound: 'Fant ikke forslaget som skal redigeres. Det kan være slettet.',
+    EditNoAccessTitle: 'Du har ikke tilgang til å redigere dette forslaget.',
+    EditNoAccessText: 'Kontakt innsenderen eller en saksbehandler. Gå tilbake til',
+    SaveChanges: 'Lagre endringer',
+    Saving: 'Lagrer …',
+    Cancel: 'Avbryt',
+    EditSuccessTitle: 'Endringene er lagret.'
   };
 });

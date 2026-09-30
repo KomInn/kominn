@@ -22,11 +22,11 @@ import {
 import { CheckmarkCircle24Filled } from '@fluentui/react-icons';
 import * as strings from 'NyttForslagWebPartStrings';
 import type { INyttForslagProps } from './INyttForslagProps';
-import { emptyForm, fillPersonalia, fromSuggestion, toNewSuggestion, validate, type FormErrors, type FormState } from './formState';
+import { emptyForm, fillPersonalia, fromExisting, fromSuggestion, toNewSuggestion, validate, type FormErrors, type FormState } from './formState';
 import { useConfig, useCurrentUser, useDataService, useFocusAreas, useSustainabilityGoals, useTags } from '../../../shared/hooks';
 import { GoalPicker, ImageUpload, LocationPicker, SuggestionPicker } from '../../../shared/components';
 import type { Suggestion } from '../../../shared/models';
-import { COPY_QUERY_KEY } from '../../../shared/services';
+import { COPY_QUERY_KEY, EDIT_QUERY_KEY } from '../../../shared/services';
 import { clearDraft, getQueryNumber, loadDraft, parseLatLng, saveDraft } from '../../../shared/utils';
 
 const useStyles = makeStyles({
@@ -48,46 +48,56 @@ export const NyttForslag: React.FC<INyttForslagProps> = (props) => {
   const tags = useTags();
   const config = useConfig();
   const draftKey = `kominn-draft-${props.webUrl}`;
-  const copyId = React.useMemo(() => getQueryNumber(COPY_QUERY_KEY), []);
+  const editId = React.useMemo(() => getQueryNumber(EDIT_QUERY_KEY), []);
+  const copyId = React.useMemo(() => (editId ? undefined : getQueryNumber(COPY_QUERY_KEY)), [editId]);
+  const sourceId = editId ?? copyId;
 
-  const [form, setForm] = React.useState<FormState>(() => (copyId ? emptyForm : loadDraft<FormState>(draftKey) ?? emptyForm));
+  const [form, setForm] = React.useState<FormState>(() => (sourceId ? emptyForm : loadDraft<FormState>(draftKey) ?? emptyForm));
   const [imageFile, setImageFile] = React.useState<File>();
   const [errors, setErrors] = React.useState<FormErrors>({});
   const [submitting, setSubmitting] = React.useState(false);
   const [submitError, setSubmitError] = React.useState<string>();
   const [created, setCreated] = React.useState<Suggestion>();
   const [copySource, setCopySource] = React.useState<Suggestion>();
-  const [copyLoading, setCopyLoading] = React.useState(!!copyId);
+  const [copyLoading, setCopyLoading] = React.useState(!!sourceId);
+  const [editing, setEditing] = React.useState<Suggestion>();
+  /** undefined = ikke sjekket ennå. */
+  const [canEdit, setCanEdit] = React.useState<boolean>();
 
-  // Kopier-modus: hent kildeforslaget og fyll skjemaet.
+  // Kopier- og redigeringsmodus: hent forslaget og fyll skjemaet.
   React.useEffect(() => {
-    if (!copyId) return;
+    if (!sourceId) return;
     let cancelled = false;
-    service
-      .getSuggestion(copyId)
-      .then((source) => {
+    Promise.all([service.getSuggestion(sourceId), editId ? service.canEditSuggestion(editId) : Promise.resolve(true)])
+      .then(([source, allowed]) => {
         if (cancelled || !source) return;
-        setCopySource(source);
-        setForm((f) => fromSuggestion(source, f));
+        if (editId) {
+          setEditing(source);
+          setCanEdit(allowed);
+          setForm(fromExisting(source));
+        } else {
+          setCopySource(source);
+          setForm((f) => fromSuggestion(source, f));
+        }
       })
       .catch(() => undefined)
       .finally(() => !cancelled && setCopyLoading(false));
     return () => {
       cancelled = true;
     };
-  }, [copyId, service]);
+  }, [sourceId, editId, service]);
 
   // Personalia fra profil, én gang.
   React.useEffect(() => {
     if (user.data) setForm((f) => fillPersonalia(f, user.data!));
   }, [user.data]);
 
-  // Utkast lagres fortløpende (uten bildefil).
+  // Utkast lagres fortløpende (uten bildefil). Ikke ved redigering.
   React.useEffect(() => {
-    if (created) return;
+    if (created || editId) return;
     const handle = setTimeout(() => saveDraft(draftKey, form), 400);
     return () => clearTimeout(handle);
-  }, [form, draftKey, created]);
+  }, [form, draftKey, created, editId]);
 
   const update = <K extends keyof FormState>(key: K, value: FormState[K]): void => {
     setForm((f) => ({ ...f, [key]: value }));
@@ -109,9 +119,15 @@ export const NyttForslag: React.FC<INyttForslagProps> = (props) => {
     try {
       let imageUrl = props.showImage ? form.imageUrl : undefined;
       if (props.showImage && imageFile) imageUrl = await service.uploadImage(imageFile);
-      const result = await service.createSuggestion(toNewSuggestion(form, user.data, imageUrl, props.competitionRef));
-      clearDraft(draftKey);
-      setCreated(result);
+      if (editId && editing) {
+        const submitter = { ...editing.submitter };
+        const result = await service.editSuggestion(editId, toNewSuggestion(form, submitter, imageUrl, editing.competitionRef ?? ''));
+        setCreated(result);
+      } else {
+        const result = await service.createSuggestion(toNewSuggestion(form, user.data, imageUrl, props.competitionRef));
+        clearDraft(draftKey);
+        setCreated(result);
+      }
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : String(err));
     } finally {
@@ -131,19 +147,37 @@ export const NyttForslag: React.FC<INyttForslagProps> = (props) => {
     return (
       <div className={styles.success} role="status">
         <CheckmarkCircle24Filled className={styles.successIcon} />
-        <Title3>{strings.SuccessTitle}</Title3>
-        <Text>{props.successText || strings.SuccessDefaultText}</Text>
+        <Title3>{editId ? strings.EditSuccessTitle : strings.SuccessTitle}</Title3>
+        {!editId && <Text>{props.successText || strings.SuccessDefaultText}</Text>}
         <div className={styles.actions}>
           <Button as="a" appearance="primary" href={created.url}>
             {strings.SuccessOpen}
           </Button>
-          <Button onClick={reset}>{strings.SuccessNew}</Button>
+          {!editId && <Button onClick={reset}>{strings.SuccessNew}</Button>}
         </div>
       </div>
     );
   }
 
   if (copyLoading) return <Spinner label={strings.Loading} />;
+
+  if (editId && !editing) {
+    return (
+      <MessageBar intent="warning">
+        <MessageBarBody>{strings.EditNotFound}</MessageBarBody>
+      </MessageBar>
+    );
+  }
+  if (editId && canEdit === false) {
+    return (
+      <MessageBar intent="warning">
+        <MessageBarBody>
+          <MessageBarTitle>{strings.EditNoAccessTitle}</MessageBarTitle> {strings.EditNoAccessText}{' '}
+          {editing && <Link href={editing.url}>{editing.title}</Link>}
+        </MessageBarBody>
+      </MessageBar>
+    );
+  }
 
   const center = parseLatLng(config.data?.KART_SENTER);
   const zoom = config.data?.KART_ZOOM ? parseInt(config.data.KART_ZOOM, 10) : undefined;
@@ -157,7 +191,14 @@ export const NyttForslag: React.FC<INyttForslagProps> = (props) => {
         submit().catch(() => undefined);
       }}
     >
-      {props.introText && <Text>{props.introText}</Text>}
+      {!editId && props.introText && <Text>{props.introText}</Text>}
+      {editing && (
+        <MessageBar intent="info">
+          <MessageBarBody>
+            <MessageBarTitle>{strings.EditTitle}</MessageBarTitle> <Link href={editing.url}>{editing.title}</Link>
+          </MessageBarBody>
+        </MessageBar>
+      )}
       {copySource && (
         <MessageBar intent="info">
           <MessageBarBody>
@@ -294,7 +335,7 @@ export const NyttForslag: React.FC<INyttForslagProps> = (props) => {
             <Input id="nf-telephone" type="tel" value={form.telephone} onChange={(_e, d) => update('telephone', d.value)} />
           </Field>
         </div>
-        {user.data?.manager && (
+        {!editId && user.data?.manager && (
           <Field label={strings.ManagerLabel} hint={strings.ManagerHint}>
             <Input id="nf-manager" value={user.data.manager.name} readOnly />
           </Field>
@@ -312,11 +353,17 @@ export const NyttForslag: React.FC<INyttForslagProps> = (props) => {
 
       <div className={styles.actions}>
         <Button appearance="primary" type="submit" disabled={submitting}>
-          {submitting ? strings.Submitting : strings.Submit}
+          {submitting ? (editId ? strings.Saving : strings.Submitting) : editId ? strings.SaveChanges : strings.Submit}
         </Button>
-        <Button appearance="subtle" type="button" disabled={submitting} onClick={() => { clearDraft(draftKey); reset(); }}>
-          {strings.Reset}
-        </Button>
+        {editing ? (
+          <Button as="a" appearance="subtle" href={editing.url}>
+            {strings.Cancel}
+          </Button>
+        ) : (
+          <Button appearance="subtle" type="button" disabled={submitting} onClick={() => { clearDraft(draftKey); reset(); }}>
+            {strings.Reset}
+          </Button>
+        )}
         {submitting && <Spinner size="tiny" />}
       </div>
     </form>

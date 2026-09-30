@@ -92,6 +92,29 @@ export function fromSuggestion(source: Suggestion, base: FormState): FormState {
   };
 }
 
+/** Fyller skjemaet med et eksisterende forslag for redigering (?rediger=<id>). */
+export function fromExisting(s: Suggestion): FormState {
+  return {
+    title: s.title,
+    summary: s.summary,
+    amount: s.amount !== undefined ? String(s.amount) : '',
+    challenges: s.challenges ?? '',
+    suggestedSolution: s.suggestedSolution ?? '',
+    usefulForOthers: s.usefulForOthers ?? '',
+    focusAreas: s.focusAreas,
+    tags: s.tags,
+    goalIds: s.sustainabilityGoals.map((g) => g.id),
+    imageUrl: s.imageUrl,
+    location: s.location,
+    inspiredBy: s.inspiredBy,
+    name: s.submitter.name,
+    email: s.submitter.email ?? '',
+    department: s.submitter.department ?? '',
+    telephone: s.submitter.telephone ?? '',
+    personaliaFilled: true
+  };
+}
+
 export function toNewSuggestion(form: FormState, user: Person | undefined, imageUrl: string | undefined, competitionRef: string): NewSuggestion {
   const amount = form.amount.trim() ? parseFloat(form.amount.replace(',', '.')) : undefined;
   return {

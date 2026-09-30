@@ -42,6 +42,10 @@ export interface IDataService {
   /** Forslag som oppgir det gitte forslaget som «inspirert av». */
   getInspiredSuggestions(id: number): Promise<Suggestion[]>;
   createSuggestion(suggestion: NewSuggestion): Promise<Suggestion>;
+  /** Oppdaterer innholdet i et forslag (feltene i skjemaet). Status endres med updateSuggestion. */
+  editSuggestion(id: number, suggestion: NewSuggestion): Promise<Suggestion>;
+  /** Om innlogget bruker har rettighet til å redigere forslaget. */
+  canEditSuggestion(id: number): Promise<boolean>;
   updateSuggestion(id: number, changes: Partial<Pick<Suggestion, 'status' | 'caseWorkerStatus' | 'caseWorker' | 'monthlyStartDate' | 'monthlyEndDate' | 'isPast'>>): Promise<void>;
   uploadImage(file: File): Promise<string>;
 

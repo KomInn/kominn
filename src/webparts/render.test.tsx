@@ -21,6 +21,19 @@ function amd(path: string): unknown {
   return result;
 }
 
+// jsdom har ikke ResizeObserver, som Fluent bruker i MessageBar. Nettleserne har det.
+(global as unknown as { ResizeObserver: unknown }).ResizeObserver = class {
+  public observe(): void {
+    /* stub */
+  }
+  public unobserve(): void {
+    /* stub */
+  }
+  public disconnect(): void {
+    /* stub */
+  }
+};
+
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
@@ -82,9 +95,24 @@ describe('webdelene tegnes med testdata', () => {
     expect(c.textContent).toContain('Send inn forslag');
   });
 
+  it('Nytt forslag i redigeringsmodus', async () => {
+    window.history.pushState({}, '', '/?rediger=1');
+    try {
+      const c = await renderWithData(
+        <NyttForslag introText="" successText="" competitionRef="" displayMode={DisplayMode.Read} webUrl="https://x" showAmount showChallenges showSolution={false} showUsefulForOthers={false} showTags showGoals showImage showLocation={false} showInspiredBy />
+      );
+      expect(c.textContent).toContain('Du redigerer forslaget');
+      expect(c.textContent).toContain('Lagre endringer');
+      expect((c.querySelector('#nf-title') as HTMLInputElement).value).toBe('Solceller på Risenga svømmehall');
+    } finally {
+      window.history.pushState({}, '', '/');
+    }
+  });
+
   it('Forslag', async () => {
     const c = await renderWithData(<Forslag suggestionId={1} showMap={false} showEvaluation showComments showRelated />);
     expect(c.textContent).toContain('Solceller på Risenga svømmehall');
+    expect(c.textContent).toContain('Rediger forslaget');
   });
 
   it('Saksbehandling', async () => {

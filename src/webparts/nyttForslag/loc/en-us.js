@@ -70,6 +70,14 @@ define([], function () {
     SuccessTitle: 'Thank you! The suggestion was submitted.',
     SuccessDefaultText: 'A case worker will review it and publish it when ready.',
     SuccessOpen: 'View suggestion',
-    SuccessNew: 'Submit another suggestion'
+    SuccessNew: 'Submit another suggestion',
+    EditTitle: 'You are editing',
+    EditNotFound: 'The suggestion to edit was not found. It may have been deleted.',
+    EditNoAccessTitle: 'You do not have access to edit this suggestion.',
+    EditNoAccessText: 'Contact the submitter or a case worker. Go back to',
+    SaveChanges: 'Save changes',
+    Saving: 'Saving …',
+    Cancel: 'Cancel',
+    EditSuccessTitle: 'Your changes were saved.'
   };
 });

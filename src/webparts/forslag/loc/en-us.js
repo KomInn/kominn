@@ -26,6 +26,7 @@ define([], function () {
     Like: 'Like',
     Liked: 'Liked',
     CommentsShort: 'comments',
+    EditSuggestion: 'Edit suggestion',
     DoThisToo: 'We want to do this too',
     DoThisTooHint: 'Opens the form pre-filled from this suggestion.',
     CopyLink: 'Copy link',

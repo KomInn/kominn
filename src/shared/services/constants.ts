@@ -21,6 +21,8 @@ export const SUGGESTION_QUERY_KEY = 'forslag';
 /** Siden med skjemaet for nye forslag. ?kopier=<id> fyller skjemaet fra et eksisterende forslag. */
 export const NEW_SUGGESTION_PAGE = 'SitePages/NyttForslag.aspx';
 export const COPY_QUERY_KEY = 'kopier';
+/** ?rediger=<id> åpner skjemaet for å endre et eksisterende forslag. */
+export const EDIT_QUERY_KEY = 'rediger';
 
 /** Interne feltnavn på listen Forslag. */
 export const SuggestionFields = {

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { MessageBar, MessageBarBody, MessageBarTitle } from '@fluentui/react-components';
 
 interface State {
   error?: Error;
@@ -22,12 +21,11 @@ export class ErrorBoundary extends React.Component<{ children?: React.ReactNode 
 
   public render(): React.ReactNode {
     if (this.state.error) {
+      // Ren HTML, uten Fluent: feilgrensen må ikke selv kunne feile.
       return (
-        <MessageBar intent="error">
-          <MessageBarBody>
-            <MessageBarTitle>Webdelen kunne ikke vises.</MessageBarTitle> {this.state.error.message}
-          </MessageBarBody>
-        </MessageBar>
+        <div role="alert" style={{ padding: '8px 12px', borderLeft: '4px solid #a4262c', background: 'rgba(164, 38, 44, 0.08)' }}>
+          <strong>Webdelen kunne ikke vises.</strong> {this.state.error.message}
+        </div>
       );
     }
     return this.props.children;

@@ -26,6 +26,7 @@ define([], function () {
     Like: 'Lik',
     Liked: 'Liker',
     CommentsShort: 'kommentarer',
+    EditSuggestion: 'Rediger forslaget',
     DoThisToo: 'Dette vil vi også gjøre',
     DoThisTooHint: 'Åpner skjemaet ferdig utfylt fra dette forslaget.',
     CopyLink: 'Kopier lenke',
