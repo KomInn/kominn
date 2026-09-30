@@ -7,6 +7,7 @@ Alt som trengs for å sette opp et KomInn-område.
 | `template.xml` | PnP Provisioning-mal på skjema 2022/09: felt, innholdstyper, lister med visninger, gruppen Saksbehandlere, rettigheter på Forslagsvurdering, moderne sider med KomInn-webdelene, navigasjon og seed-data (bærekraftsmål, standardtekst, kartkonfigurasjon). |
 | `Install.ps1` | Kobler til området og kjører malen. Krever PnP.PowerShell 3.4 eller nyere. |
 | `assets/icons/` | Ikoner for FNs 17 bærekraftsmål. Lastes opp til biblioteket Ikoner. |
+| `assets/logo/` | KomInn-logoen (SVG-kilde og PNG). PNG-en lastes opp til Ikoner og settes som områdelogo. |
 
 ## Kjøring
 
