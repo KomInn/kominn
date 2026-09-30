@@ -70,10 +70,15 @@ export const Forslagsliste: React.FC<IForslagslisteProps> = (props) => {
   const pageSize = props.layout === 'carousel' ? props.top : props.top * pages;
   // Hent én ekstra for å vite om det finnes flere.
   const { data, error, loading } = useSuggestions(buildQuery(props.mode, props.period, filters, pageSize + 1));
-  const items = (data ?? []).slice(0, pageSize);
+  const withMonthly = props.highlightMonthly && props.mode === 'published';
+  const monthly = useSuggestions(withMonthly ? buildQuery('monthly', 'all', filters, 3) : undefined);
+  const featured = withMonthly ? (monthly.data ?? []).filter((s) => s.status !== 'Sendt inn') : [];
+  const featuredIds = new Set(featured.map((s) => s.id));
+  const items = [...featured, ...(data ?? []).filter((s) => !featuredIds.has(s.id)).slice(0, pageSize)];
   const hasMore = (data?.length ?? 0) > pageSize;
   const filtered = filters.focusAreas.length > 0 || filters.tags.length > 0;
-  const cardLabels = { likesLabel: strings.Likes, commentsLabel: strings.Comments, showStatus: props.mode === 'mine' };
+  const cardLabels = { likesLabel: strings.Likes, commentsLabel: strings.Comments, showStatus: props.mode === 'mine', showImage: props.showImages };
+  const highlight = (id: number): string | undefined => (featuredIds.has(id) ? strings.MonthlyLabel : undefined);
 
   const scroll = (dir: 1 | -1): void => {
     const el = carousel.current;
@@ -177,7 +182,7 @@ export const Forslagsliste: React.FC<IForslagslisteProps> = (props) => {
         <ul className={styles.grid}>
           {items.map((s) => (
             <li key={s.id}>
-              <SuggestionCard suggestion={s} {...cardLabels} />
+              <SuggestionCard suggestion={s} {...cardLabels} highlightLabel={highlight(s.id)} />
             </li>
           ))}
         </ul>
@@ -187,7 +192,7 @@ export const Forslagsliste: React.FC<IForslagslisteProps> = (props) => {
         <ul className={styles.compactList}>
           {items.map((s) => (
             <li key={s.id}>
-              <SuggestionCard suggestion={s} variant="compact" {...cardLabels} />
+              <SuggestionCard suggestion={s} variant="compact" {...cardLabels} highlightLabel={highlight(s.id)} />
             </li>
           ))}
         </ul>
@@ -198,7 +203,7 @@ export const Forslagsliste: React.FC<IForslagslisteProps> = (props) => {
           <ul ref={carousel} className={styles.carousel} tabIndex={0} aria-roledescription="karusell">
             {items.map((s) => (
               <li key={s.id} className={styles.slide}>
-                <SuggestionCard suggestion={s} {...cardLabels} />
+                <SuggestionCard suggestion={s} {...cardLabels} highlightLabel={highlight(s.id)} />
               </li>
             ))}
           </ul>

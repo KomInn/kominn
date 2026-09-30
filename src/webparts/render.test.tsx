@@ -78,9 +78,21 @@ async function renderWithData(element: React.ReactElement): Promise<HTMLDivEleme
 describe('webdelene tegnes med testdata', () => {
   it('Forslagsliste', async () => {
     const c = await renderWithData(
-      <Forslagsliste title="Populære" mode="published" layout="cards" period="all" top={6} defaultOrder="likes" showFilters showSorting emptyText="Tom" displayMode={DisplayMode.Read} onTitleChange={() => undefined} />
+      <Forslagsliste title="Aktuelle" mode="published" layout="cards" period="all" top={6} defaultOrder="likes" showFilters showSorting showImages highlightMonthly emptyText="Tom" displayMode={DisplayMode.Read} onTitleChange={() => undefined} />
     );
-    expect(c.textContent).toContain('Klimasmart meny i skolekantinene');
+    const text = c.textContent ?? '';
+    expect(text).toContain('Månedens forslag');
+    // Månedens forslag vises først og bare én gang.
+    expect(text.split('Klimasmart meny i skolekantinene').length - 1).toBe(1);
+    expect(text.indexOf('Klimasmart meny')).toBeLessThan(text.indexOf('Solceller på Risenga'));
+  });
+
+  it('Forslagsliste – mine forslag uten bilder', async () => {
+    const c = await renderWithData(
+      <Forslagsliste title="Mine" mode="mine" layout="compact" period="all" top={6} defaultOrder="created" showFilters={false} showSorting={false} showImages={false} highlightMonthly={false} emptyText="Tom" displayMode={DisplayMode.Read} onTitleChange={() => undefined} />
+    );
+    expect(c.textContent).toContain('Solceller på Risenga');
+    expect(c.querySelectorAll('img')).toHaveLength(0);
   });
 
   it('Søk i forslag', async () => {

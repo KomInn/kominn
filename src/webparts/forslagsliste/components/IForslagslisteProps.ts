@@ -16,6 +16,9 @@ export interface IForslagslisteProps {
   defaultOrder: SuggestionOrder;
   showFilters: boolean;
   showSorting: boolean;
+  showImages: boolean;
+  /** Viser månedens forslag først, fremhevet (kun for publiserte forslag). */
+  highlightMonthly: boolean;
   emptyText: string;
   displayMode: DisplayMode;
   onTitleChange: (title: string) => void;

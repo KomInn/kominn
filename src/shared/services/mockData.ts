@@ -33,7 +33,7 @@ export const mockSuggestions: Suggestion[] = [
   {
     id: 1, title: 'Solceller på Risenga svømmehall', summary: 'Montere solcelleanlegg på taket for å dekke deler av strømforbruket til varmepumpene.',
     challenges: 'Høyt energiforbruk til oppvarming av basseng.', amount: 450000, focusAreas: ['Fremtidsrettede bygg og anlegg'], tags: ['Kommunalt'],
-    location: '59.8272,10.4394', status: 'Publisert', caseWorkerStatus: 'Vurderes', submitter: mockUser,
+    location: '59.8272,10.4394', imageUrl: `${MOCK_WEB_URL}/Bilder/solceller.jpg`, status: 'Publisert', caseWorkerStatus: 'Vurderes', submitter: mockUser,
     sustainabilityGoals: [goal(7), goal(13)], inspiredBy: [], likes: 14, numberOfComments: 3, isPast: false, created: daysAgo(12),
     url: `${MOCK_WEB_URL}/SitePages/Forslag.aspx?forslag=1`
   },
@@ -55,7 +55,7 @@ export const mockSuggestions: Suggestion[] = [
   {
     id: 4, title: 'Gjenbrukslager for kontormøbler', summary: 'Felles lager der virksomheter kan hente og levere brukte møbler før nykjøp.',
     amount: 60000, focusAreas: ['Bærekraftig forbruk'], tags: ['Kommunalt'],
-    status: 'Promotert', caseWorkerStatus: 'Godtatt', submitter: mockUser,
+    imageUrl: `${MOCK_WEB_URL}/Bilder/mobler.jpg`, status: 'Promotert', caseWorkerStatus: 'Godtatt', submitter: mockUser,
     sustainabilityGoals: [goal(12)], inspiredBy: [{ id: 3, title: 'Sykkelparkering under tak ved alle rådhusinnganger' }], likes: 19, numberOfComments: 4, isPast: false, created: daysAgo(45),
     url: `${MOCK_WEB_URL}/SitePages/Forslag.aspx?forslag=4`
   },

@@ -26,6 +26,8 @@ export interface IForslagslisteWebPartProps {
   defaultOrder: SuggestionOrder;
   showFilters: boolean;
   showSorting: boolean;
+  showImages: boolean;
+  highlightMonthly: boolean;
   /** Absolutt URL til KomInn-området. Tom = området webdelen står på. */
   siteUrl: string;
   top: number;
@@ -52,6 +54,8 @@ export default class ForslagslisteWebPart extends BaseClientSideWebPart<IForslag
       defaultOrder: p.defaultOrder ?? (p.mode === 'published' || !p.mode ? 'likes' : 'created'),
       showFilters: p.showFilters === true,
       showSorting: p.showSorting === true,
+      showImages: p.showImages !== false,
+      highlightMonthly: p.highlightMonthly !== false,
       top: p.top ?? 12,
       emptyText: p.emptyText || strings.DefaultEmptyText,
       displayMode: this.displayMode,
@@ -133,7 +137,9 @@ export default class ForslagslisteWebPart extends BaseClientSideWebPart<IForslag
                   ]
                 }),
                 PropertyPaneToggle('showFilters', { label: strings.ShowFiltersLabel, onText: 'På', offText: 'Av' }),
-                PropertyPaneToggle('showSorting', { label: strings.ShowSortingLabel, onText: 'På', offText: 'Av' })
+                PropertyPaneToggle('showSorting', { label: strings.ShowSortingLabel, onText: 'På', offText: 'Av' }),
+                PropertyPaneToggle('showImages', { label: strings.ShowImagesLabel, onText: 'På', offText: 'Av' }),
+                PropertyPaneToggle('highlightMonthly', { label: strings.HighlightMonthlyLabel, onText: 'På', offText: 'Av' })
               ]
             },
             {

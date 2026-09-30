@@ -29,6 +29,8 @@
       "defaultOrder": "likes",
       "showFilters": false,
       "showSorting": false,
+      "showImages": true,
+      "highlightMonthly": true,
       "siteUrl": "",
       "top": 12,
       "emptyText": ""
