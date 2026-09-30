@@ -75,31 +75,31 @@ $demo = @(
     @{ Key = 'sol'; Title = 'Solceller på Risenga svømmehall'; Summary = 'Montere solcelleanlegg på taket for å dekke deler av strømforbruket til varmepumpene i bassenget.'
        Challenges = 'Svømmehallen er en av kommunens største strømforbrukere, med høy last på dagtid om sommeren.'; Amount = 450000
        Areas = @('Fremtidsrettede bygg og anlegg'); Tags = @('Kommunalt'); Goals = @(7, 13); Location = '59.82720,10.43940'
-       Status = 'Publisert'; CwStatus = 'Vurderes'; Name = 'Kari Nordmann'; Department = 'Eiendom'; Likes = 14; Comments = 3; Created = 12 }
+       Status = 'Publisert'; CwStatus = 'Vurderes'; Name = 'Kari Nordmann'; Department = 'Eiendom'; Likes = 14; Created = 12 }
     @{ Key = 'mat'; Title = 'Klimasmart meny i skolekantinene'; Summary = 'Én vegetarisk dag i uken og mer lokale råvarer i alle kommunale kantiner, i samarbeid med elevrådene.'
        Challenges = 'Kjøttbasert meny gir høye utslipp og mye matsvinn.'; Amount = 80000
        Areas = @('Klimasmart mat'); Tags = @('Skole'); Goals = @(2, 12)
-       Status = 'Publisert'; CwStatus = 'Godtatt'; Name = 'Per Hansen'; Department = 'Oppvekst'; Likes = 27; Comments = 8; Created = 30; Monthly = $true }
+       Status = 'Publisert'; CwStatus = 'Godtatt'; Name = 'Per Hansen'; Department = 'Oppvekst'; Likes = 27; Created = 30; Monthly = $true }
     @{ Key = 'sykkel'; Title = 'Sykkelparkering under tak ved alle rådhusinnganger'; Summary = 'Trygg og tørr sykkelparkering med ladepunkt for elsykler ved rådhuset og servicetorget.'
        Amount = 120000; Areas = @('Grønn mobilitet'); Tags = @('Kommunalt'); Goals = @(11, 3); Location = '59.83400,10.43500'
-       Status = 'Suksess'; CwStatus = 'Godtatt'; Name = 'Anne Berg'; Department = 'Eiendom'; Likes = 41; Comments = 12; Created = 200 }
+       Status = 'Suksess'; CwStatus = 'Godtatt'; Name = 'Anne Berg'; Department = 'Eiendom'; Likes = 41; Created = 200 }
     @{ Key = 'mobler'; Title = 'Gjenbrukslager for kontormøbler'; Summary = 'Felles lager der virksomheter kan hente og levere brukte møbler før de kjøper nytt.'
        Challenges = 'Brukbare møbler kastes ved flytting og ombygging.'; Amount = 60000
        Areas = @('Bærekraftig forbruk'); Tags = @('Kommunalt'); Goals = @(12); InspiredBy = @('sykkel')
-       Status = 'Promotert'; CwStatus = 'Godtatt'; Name = 'Kari Nordmann'; Department = 'Innkjøp'; Likes = 19; Comments = 4; Created = 45 }
+       Status = 'Promotert'; CwStatus = 'Godtatt'; Name = 'Kari Nordmann'; Department = 'Innkjøp'; Likes = 19; Created = 45 }
     @{ Key = 'skog'; Title = 'Skogplanting på kommunal tomt i Heggedal'; Summary = 'Plante 2 000 trær som karbonlager og nytt turområde, med skoleklasser som dugnadsgjeng.'
        Amount = 95000; Areas = @('Naturen som karbonlager'); Tags = @('Kommunalt', 'Skole'); Goals = @(15, 13); Location = '59.78330,10.45000'
-       Status = 'Sendt inn'; CwStatus = 'Sendt inn'; Name = 'Lars Vik'; Department = 'Natur og idrett'; Likes = 0; Comments = 0; Created = 2 }
+       Status = 'Sendt inn'; CwStatus = 'Sendt inn'; Name = 'Lars Vik'; Department = 'Natur og idrett'; Likes = 0; Created = 2 }
     @{ Key = 'led'; Title = 'LED-belysning i alle barnehager'; Summary = 'Byttet all lysarmatur til LED med bevegelsessensor. Strømforbruket til lys gikk ned med over halvparten.'
        Areas = @('Fremtidsrettede bygg og anlegg'); Tags = @('Barnehage'); Goals = @(7)
-       Status = 'Suksess'; CwStatus = 'Godtatt'; Name = 'Eva Lund'; Department = 'Eiendom'; Likes = 33; Comments = 5; Created = 900; IsPast = $true }
+       Status = 'Suksess'; CwStatus = 'Godtatt'; Name = 'Eva Lund'; Department = 'Eiendom'; Likes = 33; Created = 900; IsPast = $true }
     @{ Key = 'bil'; Title = 'Bildeling mellom virksomhetene'; Summary = 'Felles bookingløsning for kommunens elbiler, så færre biler står ubrukt store deler av dagen.'
        Challenges = 'Mange tjenestebiler brukes under to timer om dagen.'; Amount = 150000
        Areas = @('Grønn mobilitet', 'Endring, ledelse og kommunikasjon'); Tags = @('Kommunalt'); Goals = @(11, 12); InspiredBy = @('sykkel')
-       Status = 'Publisert'; CwStatus = 'Løftes til linja'; Name = 'Ingrid Moe'; Department = 'Helse og omsorg'; Likes = 9; Comments = 2; Created = 20 }
+       Status = 'Publisert'; CwStatus = 'Løftes til linja'; Name = 'Ingrid Moe'; Department = 'Helse og omsorg'; Likes = 9; Created = 20 }
     @{ Key = 'reparasjon'; Title = 'Reparasjonskafé på biblioteket'; Summary = 'Månedlig kafé der innbyggere får hjelp til å reparere klær, sykler og småelektronikk.'
        Amount = 40000; Areas = @('Bærekraftig forbruk'); Tags = @(); Goals = @(12, 4)
-       Status = 'Sendt inn'; CwStatus = 'Vurderes'; Name = 'Ola Nilsen'; Department = 'Kultur'; Likes = 0; Comments = 1; Created = 6 }
+       Status = 'Sendt inn'; CwStatus = 'Vurderes'; Name = 'Ola Nilsen'; Department = 'Kultur'; Likes = 0; Created = 6 }
 )
 
 $comments = @{
@@ -133,7 +133,7 @@ foreach ($s in $demo) {
         KmiName                = $s.Name
         KmiDepartment          = $s.Department
         KmiLikes               = $s.Likes
-        KmiNumberOfComments    = $s.Comments
+        KmiNumberOfComments    = @($comments[$s.Key]).Where({ $_ }).Count
         KmiIsPast              = [bool]$s.IsPast
         KmiCompRef             = $DemoRef
         KmiSustainabilityGoals = @($s.Goals | ForEach-Object { $goals[$_] } | Where-Object { $_ })

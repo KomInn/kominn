@@ -127,6 +127,15 @@ describe('webdelene tegnes med testdata', () => {
     expect(c.textContent).toContain('Rediger forslaget');
   });
 
+  it('Forslag viser samme antall kommentarer overalt', async () => {
+    // Forslag 2 har telleren 8 i testdataene, men bare 1 kommentar i kommentarlisten.
+    const c = await renderWithData(<Forslag suggestionId={2} showMap={false} showEvaluation={false} showComments showRelated={false} />);
+    const text = c.textContent ?? '';
+    expect(text).toContain('Kommentarer (1)');
+    expect(text).toContain('1 kommentarer');
+    expect(text).not.toContain('8 kommentarer');
+  });
+
   it('Saksbehandling', async () => {
     const c = await renderWithData(<Saksbehandling defaultStatuses={['Sendt inn', 'Vurderes']} maxItems={100} />);
     expect(c.textContent).toContain('Behandle');

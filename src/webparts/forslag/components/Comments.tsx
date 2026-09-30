@@ -29,6 +29,11 @@ export const Comments: React.FC<CommentsProps> = ({ suggestionId, onCountChange 
   const [sending, setSending] = React.useState(false);
   const [error, setError] = React.useState<string>();
 
+  // Meld fra om faktisk antall hver gang listen er lastet, slik at resten av siden viser samme tall.
+  React.useEffect(() => {
+    if (comments.data) onCountChange?.(comments.data.length);
+  }, [comments.data, onCountChange]);
+
   const send = async (): Promise<void> => {
     const value = text.trim();
     if (!value) return;
@@ -38,7 +43,6 @@ export const Comments: React.FC<CommentsProps> = ({ suggestionId, onCountChange 
       await service.addComment(suggestionId, value);
       setText('');
       comments.reload();
-      onCountChange?.((comments.data?.length ?? 0) + 1);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
