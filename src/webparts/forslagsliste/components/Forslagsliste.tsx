@@ -74,8 +74,11 @@ export const Forslagsliste: React.FC<IForslagslisteProps> = (props) => {
   const monthly = useSuggestions(withMonthly ? buildQuery('monthly', 'all', filters, 3) : undefined);
   const featured = withMonthly ? (monthly.data ?? []).filter((s) => s.status !== 'Sendt inn') : [];
   const featuredIds = new Set(featured.map((s) => s.id));
-  const items = [...featured, ...(data ?? []).filter((s) => !featuredIds.has(s.id)).slice(0, pageSize)];
-  const hasMore = (data?.length ?? 0) > pageSize;
+  // Antallet gjelder totalt, med månedens forslag inkludert.
+  const rest = (data ?? []).filter((s) => !featuredIds.has(s.id));
+  const restCount = Math.max(0, pageSize - featured.length);
+  const items = [...featured, ...rest.slice(0, restCount)];
+  const hasMore = rest.length > restCount;
   const filtered = filters.focusAreas.length > 0 || filters.tags.length > 0;
   const cardLabels = { likesLabel: strings.Likes, commentsLabel: strings.Comments, showStatus: props.mode === 'mine', showImage: props.showImages };
   const highlight = (id: number): string | undefined => (featuredIds.has(id) ? strings.MonthlyLabel : undefined);

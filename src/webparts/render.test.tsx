@@ -87,6 +87,15 @@ describe('webdelene tegnes med testdata', () => {
     expect(text.indexOf('Klimasmart meny')).toBeLessThan(text.indexOf('Solceller på Risenga'));
   });
 
+  it('Forslagsliste – antallet inkluderer månedens forslag', async () => {
+    const c = await renderWithData(
+      <Forslagsliste title="Aktuelle" mode="published" layout="cards" period="all" top={1} defaultOrder="likes" showFilters={false} showSorting={false} showImages highlightMonthly emptyText="Tom" displayMode={DisplayMode.Read} onTitleChange={() => undefined} />
+    );
+    expect(c.querySelectorAll('li')).toHaveLength(1);
+    expect(c.textContent).toContain('Månedens forslag');
+    expect(c.textContent).toContain('Vis flere');
+  });
+
   it('Forslagsliste – mine forslag uten bilder', async () => {
     const c = await renderWithData(
       <Forslagsliste title="Mine" mode="mine" layout="compact" period="all" top={6} defaultOrder="created" showFilters={false} showSorting={false} showImages={false} highlightMonthly={false} emptyText="Tom" displayMode={DisplayMode.Read} onTitleChange={() => undefined} />
