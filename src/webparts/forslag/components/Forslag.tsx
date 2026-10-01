@@ -18,7 +18,7 @@ import {
   makeStyles,
   tokens
 } from '@fluentui/react-components';
-import { Heart20Filled, Heart20Regular, Lightbulb20Regular, Link20Regular, Chat20Regular } from '@fluentui/react-icons';
+import { Chat20Regular, Edit20Regular, Heart20Filled, Heart20Regular, Lightbulb20Regular, Link20Regular } from '@fluentui/react-icons';
 import * as strings from 'ForslagWebPartStrings';
 import type { IForslagProps } from './IForslagProps';
 import { Comments } from './Comments';
@@ -27,7 +27,7 @@ import { CaseWorkerPanel } from './CaseWorkerPanel';
 import { formatAmount, formatDate } from './format';
 import { useAsync, useConfig, useDataService, useIsCaseWorker, useSuggestion, useSustainabilityGoals } from '../../../shared/hooks';
 import { LocationPicker } from '../../../shared/components';
-import { copySuggestionUrl } from '../../../shared/services';
+import { copySuggestionUrl, editSuggestionUrl } from '../../../shared/services';
 import type { Suggestion, SuggestionStatus } from '../../../shared/models';
 import { parseLatLng } from '../../../shared/utils';
 
@@ -101,7 +101,10 @@ export const Forslag: React.FC<IForslagProps> = (props) => {
   const goals = useSustainabilityGoals();
   const isCaseWorker = useIsCaseWorker();
   const config = useConfig();
+  const canEdit = useAsync(async () => (props.suggestionId ? service.canEditSuggestion(props.suggestionId) : false), [service, props.suggestionId]);
   const [copied, setCopied] = React.useState(false);
+  /** Faktisk antall kommentarer fra kommentarlisten. Telleren på forslaget brukes til listen er lastet. */
+  const [commentCount, setCommentCount] = React.useState<number>();
 
   // Hopp til kommentarer når lenken har #kommentarer.
   React.useEffect(() => {
@@ -224,7 +227,7 @@ export const Forslag: React.FC<IForslagProps> = (props) => {
         {props.showComments && (
           <>
             <Divider />
-            <Comments suggestionId={s.id} />
+            <Comments suggestionId={s.id} onCountChange={setCommentCount} />
           </>
         )}
       </div>
@@ -235,10 +238,15 @@ export const Forslag: React.FC<IForslagProps> = (props) => {
             <LikeButton suggestion={s} />
             {props.showComments && (
               <Button as="a" href="#kommentarer" appearance="subtle" icon={<Chat20Regular />}>
-                {s.numberOfComments} {strings.CommentsShort}
+                {commentCount ?? s.numberOfComments} {strings.CommentsShort}
               </Button>
             )}
           </div>
+          {canEdit.data && (
+            <Button as="a" appearance="primary" href={editSuggestionUrl(service.webUrl, s.id)} icon={<Edit20Regular />}>
+              {strings.EditSuggestion}
+            </Button>
+          )}
           <Button as="a" href={copySuggestionUrl(service.webUrl, s.id)} icon={<Lightbulb20Regular />}>
             {strings.DoThisToo}
           </Button>

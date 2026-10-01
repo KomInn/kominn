@@ -26,6 +26,8 @@ export interface IForslagslisteWebPartProps {
   defaultOrder: SuggestionOrder;
   showFilters: boolean;
   showSorting: boolean;
+  showImages: boolean;
+  highlightMonthly: boolean;
   /** Absolutt URL til KomInn-området. Tom = området webdelen står på. */
   siteUrl: string;
   top: number;
@@ -33,11 +35,13 @@ export interface IForslagslisteWebPartProps {
 }
 
 export default class ForslagslisteWebPart extends BaseClientSideWebPart<IForslagslisteWebPartProps> {
-  private service!: IDataService;
+  private _service?: IDataService;
   private theme?: IReadonlyTheme;
 
-  protected async onInit(): Promise<void> {
-    this.service = createDataService(this.context, { siteUrl: this.properties.siteUrl });
+  /** Datalaget opprettes ved første bruk. SharePoint kan kalle render (via onThemeChanged) før onInit er ferdig. */
+  private get service(): IDataService {
+    if (!this._service) this._service = createDataService(this.context, { siteUrl: this.properties.siteUrl });
+    return this._service;
   }
 
   public render(): void {
@@ -50,6 +54,8 @@ export default class ForslagslisteWebPart extends BaseClientSideWebPart<IForslag
       defaultOrder: p.defaultOrder ?? (p.mode === 'published' || !p.mode ? 'likes' : 'created'),
       showFilters: p.showFilters === true,
       showSorting: p.showSorting === true,
+      showImages: p.showImages !== false,
+      highlightMonthly: p.highlightMonthly !== false,
       top: p.top ?? 12,
       emptyText: p.emptyText || strings.DefaultEmptyText,
       displayMode: this.displayMode,
@@ -64,12 +70,12 @@ export default class ForslagslisteWebPart extends BaseClientSideWebPart<IForslag
   }
 
   protected onPropertyPaneFieldChanged(propertyPath: string): void {
-    if (propertyPath === 'siteUrl') this.service = createDataService(this.context, { siteUrl: this.properties.siteUrl });
+    if (propertyPath === 'siteUrl') this._service = undefined;
   }
 
   protected onThemeChanged(currentTheme: IReadonlyTheme | undefined): void {
     this.theme = currentTheme;
-    this.render();
+    if (this.renderedOnce) this.render();
   }
 
   protected onDispose(): void {
@@ -131,7 +137,9 @@ export default class ForslagslisteWebPart extends BaseClientSideWebPart<IForslag
                   ]
                 }),
                 PropertyPaneToggle('showFilters', { label: strings.ShowFiltersLabel, onText: 'På', offText: 'Av' }),
-                PropertyPaneToggle('showSorting', { label: strings.ShowSortingLabel, onText: 'På', offText: 'Av' })
+                PropertyPaneToggle('showSorting', { label: strings.ShowSortingLabel, onText: 'På', offText: 'Av' }),
+                PropertyPaneToggle('showImages', { label: strings.ShowImagesLabel, onText: 'På', offText: 'Av' }),
+                PropertyPaneToggle('highlightMonthly', { label: strings.HighlightMonthlyLabel, onText: 'På', offText: 'Av' })
               ]
             },
             {

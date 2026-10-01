@@ -54,3 +54,20 @@ describe('MockDataService – relaterte forslag', () => {
     expect(inspired.map((s) => s.id)).toEqual([4]);
   });
 });
+
+describe('MockDataService – redigering', () => {
+  it('lar innsender redigere og oppdaterer innholdet', async () => {
+    const svc = new MockDataService({ isCaseWorker: false });
+    expect(await svc.canEditSuggestion(1)).toBe(true); // innsendt av testbrukeren
+    expect(await svc.canEditSuggestion(2)).toBe(false); // innsendt av en annen
+    const before = await svc.getSuggestion(1);
+    const updated = await svc.editSuggestion(1, {
+      title: 'Ny tittel', summary: 'Ny tekst', focusAreas: [], tags: [], submitter: before!.submitter,
+      sustainabilityGoalIds: [13], inspiredByIds: [3]
+    });
+    expect(updated.title).toBe('Ny tittel');
+    expect(updated.status).toBe(before!.status);
+    expect(updated.sustainabilityGoals.map((g) => g.id)).toEqual([13]);
+    expect(updated.inspiredBy.map((r) => r.id)).toEqual([3]);
+  });
+});

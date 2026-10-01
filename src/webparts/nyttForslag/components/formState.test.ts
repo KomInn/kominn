@@ -1,4 +1,4 @@
-import { emptyForm, fillPersonalia, fromSuggestion, toNewSuggestion, validate } from './formState';
+import { emptyForm, fillPersonalia, fromExisting, fromSuggestion, toNewSuggestion, validate } from './formState';
 import type { NyttForslagSections } from './INyttForslagProps';
 import { mockSuggestions, mockUser } from '../../../shared/services/mockData';
 
@@ -49,5 +49,17 @@ describe('fromSuggestion og toNewSuggestion', () => {
     expect(s.imageUrl).toBe('https://x/bilde.jpg');
     expect(s.competitionRef).toBe('REF');
     expect(s.sustainabilityGoalIds).toEqual([1]);
+  });
+});
+
+describe('fromExisting', () => {
+  it('fyller alle felt fra forslaget uten å hente personalia fra profilen', () => {
+    const s = mockSuggestions[3];
+    const form = fromExisting(s);
+    expect(form.title).toBe(s.title);
+    expect(form.inspiredBy).toEqual(s.inspiredBy);
+    expect(form.goalIds).toEqual(s.sustainabilityGoals.map((g) => g.id));
+    expect(form.name).toBe(s.submitter.name);
+    expect(fillPersonalia(form, { name: 'Noen andre' }).name).toBe(s.submitter.name);
   });
 });

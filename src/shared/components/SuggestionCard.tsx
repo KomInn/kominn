@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Badge, Caption1, Card, CardHeader, CardPreview, Link, Text, makeStyles, tokens } from '@fluentui/react-components';
-import { Chat16Regular, Heart16Regular } from '@fluentui/react-icons';
+import { Badge, Caption1, Card, CardHeader, CardPreview, Link, Text, makeStyles, mergeClasses, shorthands, tokens } from '@fluentui/react-components';
+import { Chat16Regular, Heart16Regular, Star16Filled } from '@fluentui/react-icons';
 import type { Suggestion, SuggestionStatus } from '../models';
 
 const useStyles = makeStyles({
@@ -13,7 +13,11 @@ const useStyles = makeStyles({
   summary: { display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' },
   meta: { display: 'flex', flexWrap: 'wrap', alignItems: 'center', columnGap: tokens.spacingHorizontalM, color: tokens.colorNeutralForeground3 },
   stat: { display: 'inline-flex', alignItems: 'center', columnGap: tokens.spacingHorizontalXXS },
-  badges: { display: 'flex', flexWrap: 'wrap', gap: tokens.spacingHorizontalXS }
+  badges: { display: 'flex', flexWrap: 'wrap', gap: tokens.spacingHorizontalXS },
+  highlighted: {
+    ...shorthands.border('2px', 'solid', tokens.colorBrandStroke1),
+    backgroundColor: tokens.colorBrandBackground2
+  }
 });
 
 const statusColor: Record<SuggestionStatus, 'informative' | 'brand' | 'success' | 'important'> = {
@@ -27,6 +31,10 @@ export interface SuggestionCardProps {
   suggestion: Suggestion;
   variant?: 'card' | 'compact';
   showStatus?: boolean;
+  /** Vis bilde (miniatyr i kompakt liste, forhåndsvisning i kort). Standard true. */
+  showImage?: boolean;
+  /** Fremhever kortet med ramme og merke, f.eks. «Månedens forslag». */
+  highlightLabel?: string;
   likesLabel: string;
   commentsLabel: string;
 }
@@ -34,7 +42,7 @@ export interface SuggestionCardProps {
 const formatDate = (d: Date): string => d.toLocaleDateString('nb-NO', { day: 'numeric', month: 'short', year: 'numeric' });
 
 /** Kort for ett forslag, brukt i lister og karusell. */
-export const SuggestionCard: React.FC<SuggestionCardProps> = ({ suggestion: s, variant = 'card', showStatus, likesLabel, commentsLabel }) => {
+export const SuggestionCard: React.FC<SuggestionCardProps> = ({ suggestion: s, variant = 'card', showStatus, showImage = true, highlightLabel, likesLabel, commentsLabel }) => {
   const styles = useStyles();
   const compact = variant === 'compact';
 
@@ -51,8 +59,13 @@ export const SuggestionCard: React.FC<SuggestionCardProps> = ({ suggestion: s, v
     </div>
   );
 
-  const badges = (showStatus || s.focusAreas.length > 0) && (
+  const badges = (showStatus || highlightLabel || s.focusAreas.length > 0) && (
     <div className={styles.badges}>
+      {highlightLabel && (
+        <Badge appearance="filled" color="brand" size="small" icon={<Star16Filled />}>
+          {highlightLabel}
+        </Badge>
+      )}
       {showStatus && (
         <Badge appearance="tint" color={statusColor[s.status]} size="small">
           {s.status}
@@ -69,8 +82,8 @@ export const SuggestionCard: React.FC<SuggestionCardProps> = ({ suggestion: s, v
 
   if (compact) {
     return (
-      <Card className={`${styles.card} ${styles.compact}`} appearance="subtle" size="small">
-        {s.imageUrl && <img className={styles.thumb} src={s.imageUrl} alt="" />}
+      <Card className={mergeClasses(styles.card, styles.compact, highlightLabel && styles.highlighted)} appearance="subtle" size="small">
+        {showImage && s.imageUrl && <img className={styles.thumb} src={s.imageUrl} alt="" />}
         <div className={styles.body}>
           <Link className={styles.title} href={s.url}>
             {s.title}
@@ -83,8 +96,8 @@ export const SuggestionCard: React.FC<SuggestionCardProps> = ({ suggestion: s, v
   }
 
   return (
-    <Card className={styles.card}>
-      {s.imageUrl && (
+    <Card className={mergeClasses(styles.card, highlightLabel && styles.highlighted)}>
+      {showImage && s.imageUrl && (
         <CardPreview>
           <img className={styles.image} src={s.imageUrl} alt="" />
         </CardPreview>

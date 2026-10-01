@@ -3,6 +3,8 @@ import { Combobox, Option, Tag, TagGroup, makeStyles, tokens } from '@fluentui/r
 import type { SuggestionRef } from '../models';
 import { useDataService } from '../hooks';
 
+const NO_IDS: number[] = [];
+
 const useStyles = makeStyles({
   root: { display: 'flex', flexDirection: 'column', rowGap: tokens.spacingVerticalS },
   combo: { minWidth: '0', width: '100%' }
@@ -19,7 +21,7 @@ export interface SuggestionPickerProps {
 }
 
 /** Søk opp og velg andre forslag, f.eks. «inspirert av». */
-export const SuggestionPicker: React.FC<SuggestionPickerProps> = ({ selected, onChange, placeholder, noResultsText, excludeIds = [], inputId }) => {
+export const SuggestionPicker: React.FC<SuggestionPickerProps> = ({ selected, onChange, placeholder, noResultsText, excludeIds = NO_IDS, inputId }) => {
   const styles = useStyles();
   const service = useDataService();
   const [query, setQuery] = React.useState('');
@@ -29,7 +31,7 @@ export const SuggestionPicker: React.FC<SuggestionPickerProps> = ({ selected, on
   React.useEffect(() => {
     const term = query.trim();
     if (term.length < 2) {
-      setResults([]);
+      setResults((r) => (r.length ? [] : r));
       return;
     }
     let cancelled = false;

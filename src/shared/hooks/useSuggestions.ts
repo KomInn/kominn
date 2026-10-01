@@ -3,9 +3,10 @@ import type { SuggestionQuery } from '../services';
 import { useAsync, type AsyncState } from './useAsync';
 import { useDataService } from './useDataService';
 
-export function useSuggestions(query: SuggestionQuery): AsyncState<Suggestion[]> {
+/** Henter forslag. Med query undefined gjøres ingen kall, og resultatet er en tom liste. */
+export function useSuggestions(query: SuggestionQuery | undefined): AsyncState<Suggestion[]> {
   const service = useDataService();
-  return useAsync(() => service.getSuggestions(query), [service, JSON.stringify(query)]);
+  return useAsync(async () => (query ? service.getSuggestions(query) : []), [service, JSON.stringify(query ?? null)]);
 }
 
 export function useInspiredSuggestions(id: number | undefined): AsyncState<Suggestion[]> {

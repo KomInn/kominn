@@ -19,11 +19,13 @@ export interface INyttForslagWebPartProps extends NyttForslagSections {
 }
 
 export default class NyttForslagWebPart extends BaseClientSideWebPart<INyttForslagWebPartProps> {
-  private service!: IDataService;
+  private _service?: IDataService;
   private theme?: IReadonlyTheme;
 
-  protected async onInit(): Promise<void> {
-    this.service = createDataService(this.context, { siteUrl: this.properties.siteUrl });
+  /** Datalaget opprettes ved første bruk. SharePoint kan kalle render (via onThemeChanged) før onInit er ferdig. */
+  private get service(): IDataService {
+    if (!this._service) this._service = createDataService(this.context, { siteUrl: this.properties.siteUrl });
+    return this._service;
   }
 
   public render(): void {
@@ -51,12 +53,12 @@ export default class NyttForslagWebPart extends BaseClientSideWebPart<INyttForsl
   }
 
   protected onPropertyPaneFieldChanged(propertyPath: string): void {
-    if (propertyPath === 'siteUrl') this.service = createDataService(this.context, { siteUrl: this.properties.siteUrl });
+    if (propertyPath === 'siteUrl') this._service = undefined;
   }
 
   protected onThemeChanged(currentTheme: IReadonlyTheme | undefined): void {
     this.theme = currentTheme;
-    this.render();
+    if (this.renderedOnce) this.render();
   }
 
   protected onDispose(): void {

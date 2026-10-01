@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="KomInn">
+  <rect width="256" height="256" rx="56" fill="#0E6B66"/>
+  <g stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- Stråler -->
+    <g stroke-width="11">
+      <line x1="128" y1="20" x2="128" y2="36"/>
+      <line x1="62" y1="46" x2="73" y2="57"/>
+      <line x1="194" y1="46" x2="183" y2="57"/>
+      <line x1="36" y1="110" x2="52" y2="110"/>
+      <line x1="220" y1="110" x2="204" y2="110"/>
+    </g>
+    <!-- Lyspære -->
+    <path stroke-width="14" d="M128 56 a56 56 0 0 1 33 101 c-7 6 -11 13 -11 22 v9 h-44 v-9 c0 -9 -4 -16 -11 -22 A56 56 0 0 1 128 56 z"/>
+    <line stroke-width="12" x1="106" y1="212" x2="150" y2="212"/>
+    <line stroke-width="12" x1="114" y1="232" x2="142" y2="232"/>
+  </g>
+  <!-- Gnist -->
+  <path fill="#FFC83D" d="M128 86 L135 105 L154 112 L135 119 L128 138 L121 119 L102 112 L121 105 Z"/>
+</svg>

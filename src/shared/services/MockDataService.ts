@@ -96,6 +96,35 @@ export class MockDataService implements IDataService {
     return clone(created);
   }
 
+  public async editSuggestion(id: number, s: NewSuggestion): Promise<Suggestion> {
+    await this.wait();
+    const existing = this.suggestions.find((x) => x.id === id);
+    if (!existing) throw new Error(`Forslag ${id} finnes ikke.`);
+    Object.assign(existing, {
+      title: s.title,
+      summary: s.summary,
+      challenges: s.challenges,
+      suggestedSolution: s.suggestedSolution,
+      usefulForOthers: s.usefulForOthers,
+      amount: s.amount,
+      focusAreas: s.focusAreas,
+      tags: s.tags,
+      imageUrl: s.imageUrl,
+      location: s.location,
+      submitter: { ...existing.submitter, ...s.submitter },
+      sustainabilityGoals: mockGoals.filter((g) => s.sustainabilityGoalIds.includes(g.id)).map((g) => ({ id: g.id, title: g.title })),
+      inspiredBy: this.suggestions.filter((x) => s.inspiredByIds.includes(x.id)).map((x) => ({ id: x.id, title: x.title }))
+    });
+    return clone(existing);
+  }
+
+  /** Innsender og saksbehandlere kan redigere, som med standard redigeringsrettighet i SharePoint. */
+  public async canEditSuggestion(id: number): Promise<boolean> {
+    await this.wait();
+    const s = this.suggestions.find((x) => x.id === id);
+    return !!s && (this.caseWorker || s.submitter.id === this.user.id);
+  }
+
   public async updateSuggestion(id: number, changes: Parameters<IDataService['updateSuggestion']>[1]): Promise<void> {
     await this.wait();
     const s = this.suggestions.find((x) => x.id === id);

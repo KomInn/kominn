@@ -25,6 +25,7 @@ declare interface IForslagWebPartStrings {
   Like: string;
   Liked: string;
   CommentsShort: string;
+  EditSuggestion: string;
   DoThisToo: string;
   DoThisTooHint: string;
   CopyLink: string;

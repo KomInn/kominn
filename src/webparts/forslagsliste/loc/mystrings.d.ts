@@ -21,6 +21,9 @@ declare interface IForslagslisteWebPartStrings {
   LayoutCompact: string;
   ShowFiltersLabel: string;
   ShowSortingLabel: string;
+  ShowImagesLabel: string;
+  HighlightMonthlyLabel: string;
+  MonthlyLabel: string;
   SiteUrlFieldLabel: string;
   SiteUrlFieldDescription: string;
   TitlePlaceholder: string;

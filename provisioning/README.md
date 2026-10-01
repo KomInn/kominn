@@ -7,6 +7,7 @@ Alt som trengs for å sette opp et KomInn-område.
 | `template.xml` | PnP Provisioning-mal på skjema 2022/09: felt, innholdstyper, lister med visninger, gruppen Saksbehandlere, rettigheter på Forslagsvurdering, moderne sider med KomInn-webdelene, navigasjon og seed-data (bærekraftsmål, standardtekst, kartkonfigurasjon). |
 | `Install.ps1` | Kobler til området og kjører malen. Krever PnP.PowerShell 3.4 eller nyere. |
 | `assets/icons/` | Ikoner for FNs 17 bærekraftsmål. Lastes opp til biblioteket Ikoner. |
+| `assets/logo/` | KomInn-logoen (SVG-kilde og PNG). PNG-en lastes opp til Ikoner og settes som områdelogo. |
 
 ## Kjøring
 
@@ -15,7 +16,7 @@ Install-Module PnP.PowerShell -Scope CurrentUser
 ./Install.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ClientId <app-id> -GrantEveryone
 ```
 
-Skriptet bygger SPFx-løsningen, laster opp og publiserer `kominn.sppkg` i appkatalogen, kjører
+Skriptet bygger SPFx-løsningen, laster opp og publiserer `kominn.sppkg` i appkatalogen, installerer den på området, kjører
 malen og gir alle ansatte medlemstilgang. Innlogging skjer i nettleservindu (`-Interactive`).
 
 | Parameter | Virkning |
@@ -29,6 +30,21 @@ malen og gir alle ansatte medlemstilgang. Innlogging skjer i nettleservindu (`-I
 Krever Node.js 22 for byggetrinnet, eierrettighet på området og tilgang til appkatalogen.
 Legg saksbehandlere i gruppen **Saksbehandlere** etterpå. Malen kan kjøres flere ganger; seed-data
 skrives ikke over (`UpdateBehavior="Skip"`).
+
+## Demodata
+
+`Seed-DemoData.ps1` fyller området med åtte demoforslag i alle statuser (sendt inn, publisert,
+promotert, suksess og gjort tidligere), med bærekraftsmål, sted, «inspirert av», kommentarer og
+vurderinger. Ett av forslagene er månedens forslag.
+
+```powershell
+./Seed-DemoData.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ClientId <app-id>
+./Seed-DemoData.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ClientId <app-id> -Remove
+```
+
+Demoforslagene merkes med konkurransereferansen `DEMO`, og skriptet kan kjøres flere ganger.
+`-Remove` sletter dem, og tilhørende kommentarer, likes og vurderinger slettes automatisk.
+Kommentarer og vurderinger opprettes i navnet til den som kjører skriptet.
 
 ## Datamodell
 
