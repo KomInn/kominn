@@ -47,7 +47,7 @@ $GoalList = 'Baerekraftsmaal'
 
 Connect-PnPOnline -Url $Url -Interactive -ClientId $ClientId
 $web = Get-PnPWeb
-Write-Host "Koblet til '$($web.Title)'." -ForegroundColor Green
+Write-Host "Koblet til '$($web.Title)': $($web.Url)" -ForegroundColor Green
 
 $existing = @(Get-PnPListItem -List $SuggestionList -PageSize 500 -Fields 'Title', 'KmiCompRef' |
     Where-Object { $_['KmiCompRef'] -eq $DemoRef })
@@ -195,4 +195,4 @@ foreach ($key in $evaluations.Keys) {
 Write-Host 'Vurderinger lagt inn.' -ForegroundColor Green
 
 Write-Host ''
-Write-Host "Ferdig: $created forslag. Fjern igjen med -Remove." -ForegroundColor Green
+Write-Host "Ferdig: $created forslag på $($web.Url). Fjern igjen med -Remove." -ForegroundColor Green

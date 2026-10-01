@@ -81,11 +81,16 @@ if (-not $SkipApp -and -not (Test-Path $packagePath)) { throw "Finner ikke app-p
 # 2. Logg på
 Connect-PnPOnline -Url $Url -Interactive -ClientId $ClientId
 $web = Get-PnPWeb
-Write-Host "Koblet til '$($web.Title)'." -ForegroundColor Green
+$siteUrl = $web.Url
+Write-Host "Koblet til '$($web.Title)': $siteUrl" -ForegroundColor Green
+
+$catalogUrl = if ($AppScope -eq 'Site') { "$siteUrl/AppCatalog" } else {
+    try { Get-PnPTenantAppCatalogUrl } catch { '(leietakerens appkatalog)' }
+}
 
 # 3. App-pakke
 if (-not $SkipApp) {
-    Write-Host "Laster opp app-pakken til appkatalogen ($AppScope) ..." -ForegroundColor Green
+    Write-Host "Laster opp app-pakken til $catalogUrl ..." -ForegroundColor Green
     $app = Add-PnPApp -Path $packagePath -Scope $AppScope -Publish -Overwrite
     Write-Host "Publisert: $($app.Title) $($app.AppCatalogVersion)"
 }
@@ -95,21 +100,21 @@ $app = Get-PnPApp -Scope $AppScope | Where-Object { $_.Title -eq 'kominn' } | Se
 if (-not $app) { throw "Finner ikke app-pakken 'kominn' i appkatalogen ($AppScope). Kjør uten -SkipApp." }
 if (-not $app.Deployed) { throw "App-pakken 'kominn' er lastet opp, men ikke distribuert i appkatalogen." }
 if (-not $app.InstalledVersion) {
-    Write-Host 'Installerer app-pakken på området ...' -ForegroundColor Green
+    Write-Host "Installerer app-pakken på $siteUrl ..." -ForegroundColor Green
     Install-PnPApp -Identity $app.Id -Scope $AppScope -Wait
 }
 elseif ($app.CanUpgrade) {
-    Write-Host "Oppgraderer app-pakken fra $($app.InstalledVersion) til $($app.AppCatalogVersion) ..." -ForegroundColor Green
+    Write-Host "Oppgraderer app-pakken på $siteUrl fra $($app.InstalledVersion) til $($app.AppCatalogVersion) ..." -ForegroundColor Green
     Update-PnPApp -Identity $app.Id -Scope $AppScope
 }
 else {
-    Write-Host "App-pakken er installert ($($app.InstalledVersion))."
+    Write-Host "App-pakken er installert på $siteUrl ($($app.InstalledVersion))."
 }
 
 # 4. Mal
 $invokeParams = @{ Path = $templatePath; ClearNavigation = $true }
 if ($SkipPages) { $invokeParams.ExcludeHandlers = 'Pages' }
-Write-Host 'Kjører malen ...' -ForegroundColor Green
+Write-Host "Kjører malen mot $siteUrl ..." -ForegroundColor Green
 $sw = [Diagnostics.Stopwatch]::StartNew()
 Invoke-PnPSiteTemplate @invokeParams
 $sw.Stop()
@@ -124,4 +129,5 @@ if ($GrantEveryone) {
 
 Write-Host ''
 Write-Host "Malen brukte $($sw.Elapsed.ToString('mm\:ss'))." -ForegroundColor Green
-Write-Host "Legg saksbehandlere i gruppen 'Saksbehandlere' og åpne $Url/SitePages/Hjem.aspx"
+Write-Host "Installert på: $siteUrl" -ForegroundColor Green
+Write-Host "Legg saksbehandlere i gruppen 'Saksbehandlere' og åpne $siteUrl/SitePages/Hjem.aspx"
