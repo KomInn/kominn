@@ -19,6 +19,19 @@ declare interface INyttForslagWebPartStrings {
   SiteUrlFieldLabel: string;
   SiteUrlFieldDescription: string;
 
+  SummaryLabelOverride: string;
+  SummaryHintOverride: string;
+  AmountLabelOverride: string;
+  AmountHintOverride: string;
+  HintOverrideDescription: string;
+  ImageSectionTitleOverride: string;
+  ShowFocusAreasLabel: string;
+  ShowManagerInformedLabel: string;
+  SectionImage: string;
+  ManagerInformedLabel: string;
+  Yes: string;
+  No: string;
+
   Loading: string;
   SelectPlaceholder: string;
   NoResults: string;

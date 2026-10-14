@@ -7,11 +7,11 @@ import type { IReadonlyTheme } from '@microsoft/sp-component-base';
 
 import * as strings from 'NyttForslagWebPartStrings';
 import { NyttForslag } from './components/NyttForslag';
-import type { INyttForslagProps, NyttForslagSections } from './components/INyttForslagProps';
+import type { INyttForslagProps, NyttForslagSections, NyttForslagTexts } from './components/INyttForslagProps';
 import { createDataService, type IDataService } from '../../shared/services';
 import { KomInnProvider } from '../../shared/components';
 
-export interface INyttForslagWebPartProps extends NyttForslagSections {
+export interface INyttForslagWebPartProps extends NyttForslagSections, NyttForslagTexts {
   introText: string;
   successText: string;
   competitionRef: string;
@@ -35,6 +35,13 @@ export default class NyttForslagWebPart extends BaseClientSideWebPart<INyttForsl
       successText: p.successText ?? '',
       competitionRef: p.competitionRef ?? '',
       showAmount: p.showAmount !== false,
+      showFocusAreas: p.showFocusAreas !== false,
+      showManagerInformed: p.showManagerInformed === true,
+      summaryLabel: p.summaryLabel,
+      summaryHint: p.summaryHint,
+      amountLabel: p.amountLabel,
+      amountHint: p.amountHint,
+      imageSectionTitle: p.imageSectionTitle,
       showChallenges: p.showChallenges !== false,
       showSolution: p.showSolution === true,
       showUsefulForOthers: p.showUsefulForOthers === true,
@@ -81,13 +88,20 @@ export default class NyttForslagWebPart extends BaseClientSideWebPart<INyttForsl
               groupFields: [
                 PropertyPaneTextField('introText', { label: strings.IntroTextLabel, multiline: true, rows: 3 }),
                 PropertyPaneTextField('successText', { label: strings.SuccessTextLabel, multiline: true, rows: 3 }),
-                PropertyPaneTextField('competitionRef', { label: strings.CompetitionRefLabel, description: strings.CompetitionRefDescription })
+                PropertyPaneTextField('competitionRef', { label: strings.CompetitionRefLabel, description: strings.CompetitionRefDescription }),
+                PropertyPaneTextField('summaryLabel', { label: strings.SummaryLabelOverride, placeholder: strings.SummaryLabel }),
+                PropertyPaneTextField('summaryHint', { label: strings.SummaryHintOverride, placeholder: strings.SummaryHint, description: strings.HintOverrideDescription }),
+                PropertyPaneTextField('amountLabel', { label: strings.AmountLabelOverride, placeholder: strings.AmountLabel }),
+                PropertyPaneTextField('amountHint', { label: strings.AmountHintOverride, placeholder: strings.AmountHint, description: strings.HintOverrideDescription }),
+                PropertyPaneTextField('imageSectionTitle', { label: strings.ImageSectionTitleOverride, placeholder: strings.SectionImage })
               ]
             },
             {
               groupName: strings.SectionsGroupName,
               groupFields: [
                 toggle('showAmount', strings.ShowAmountLabel),
+                toggle('showFocusAreas', strings.ShowFocusAreasLabel),
+                toggle('showManagerInformed', strings.ShowManagerInformedLabel),
                 toggle('showChallenges', strings.ShowChallengesLabel),
                 toggle('showSolution', strings.ShowSolutionLabel),
                 toggle('showUsefulForOthers', strings.ShowUsefulForOthersLabel),

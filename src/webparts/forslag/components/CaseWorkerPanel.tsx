@@ -33,21 +33,19 @@ const useStyles = makeStyles({
   actions: { display: 'flex', columnGap: tokens.spacingHorizontalS, alignItems: 'center' }
 });
 
-type ScoreKey = 'feasibility' | 'emissionReductionPotential' | 'distributionPotential' | 'degreeOfInnovation';
+type ScoreKey = 'feasibility' | 'learningPotential' | 'distributionPotential';
 
 const criteria: { key: ScoreKey; label: () => string }[] = [
   { key: 'feasibility', label: () => strings.ScoreFeasibility },
-  { key: 'emissionReductionPotential', label: () => strings.ScoreEmission },
-  { key: 'distributionPotential', label: () => strings.ScoreDistribution },
-  { key: 'degreeOfInnovation', label: () => strings.ScoreInnovation }
+  { key: 'learningPotential', label: () => strings.ScoreLearning },
+  { key: 'distributionPotential', label: () => strings.ScoreDistribution }
 ];
 
 const emptyEvaluation = (suggestionId: number): NewEvaluation => ({
   suggestionId,
   feasibility: 3,
-  emissionReductionPotential: 3,
+  learningPotential: 3,
   distributionPotential: 3,
-  degreeOfInnovation: 3,
   moreActors: false,
   lawRequirements: false,
   comment: ''
@@ -78,9 +76,8 @@ export const CaseWorkerPanel: React.FC<CaseWorkerPanelProps> = ({ suggestion, on
       setEvaluation({
         suggestionId: mine.suggestionId,
         feasibility: mine.feasibility,
-        emissionReductionPotential: mine.emissionReductionPotential,
+        learningPotential: mine.learningPotential,
         distributionPotential: mine.distributionPotential,
-        degreeOfInnovation: mine.degreeOfInnovation,
         moreActors: mine.moreActors,
         lawRequirements: mine.lawRequirements,
         comment: mine.comment ?? ''

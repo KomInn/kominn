@@ -37,7 +37,7 @@ import { mapCampaign, mapComment, mapEvaluation, mapSuggestion, mapSustainabilit
 const SUGGESTION_SELECT = [
   'Id', 'Title', 'Created',
   F.summary, F.challenges, F.suggestedSolution, F.usefulForOthers, F.amount, F.focusAreas, F.tags, F.image, F.location,
-  F.status, F.caseWorkerStatus, F.name, F.email, F.department, F.telephone, F.address, F.zipCode, F.city, F.countyCode,
+  F.status, F.caseWorkerStatus, F.managerInformed, F.name, F.email, F.department, F.telephone, F.address, F.zipCode, F.city, F.countyCode,
   F.likes, F.numberOfComments, F.monthlyStartDate, F.monthlyEndDate, F.isPast, F.competitionRef,
   'Author/Id', 'Author/Title', 'Author/EMail',
   `${F.caseWorker}/Id`, `${F.caseWorker}/Title`, `${F.caseWorker}/EMail`,
@@ -140,6 +140,7 @@ export class SharePointDataService implements IDataService {
       [F.email]: s.submitter.email ?? null,
       [F.department]: s.submitter.department ?? null,
       [F.telephone]: s.submitter.telephone ?? null,
+      [F.managerInformed]: s.managerInformed ?? null,
       [`${F.sustainabilityGoals}Id`]: s.sustainabilityGoalIds,
       [`${F.inspiredBy}Id`]: s.inspiredByIds
     };
@@ -251,7 +252,7 @@ export class SharePointDataService implements IDataService {
 
   public async getEvaluations(suggestionId?: number): Promise<Evaluation[]> {
     let q = this.list(Lists.evaluations).items
-      .select('Id', 'Created', `${EvaluationFields.suggestion}Id`, EvaluationFields.feasibility, EvaluationFields.emissionReductionPotential,
+      .select('Id', 'Created', `${EvaluationFields.suggestion}Id`, EvaluationFields.feasibility, EvaluationFields.learningPotential,
         EvaluationFields.distributionPotential, EvaluationFields.degreeOfInnovation, EvaluationFields.moreActors, EvaluationFields.lawRequirements,
         EvaluationFields.comment, 'Author/Id', 'Author/Title', 'Author/EMail')
       .expand('Author').top(5000);
@@ -266,9 +267,8 @@ export class SharePointDataService implements IDataService {
       Title: `Vurdering ${e.suggestionId}`,
       [`${EvaluationFields.suggestion}Id`]: e.suggestionId,
       [EvaluationFields.feasibility]: e.feasibility,
-      [EvaluationFields.emissionReductionPotential]: e.emissionReductionPotential,
+      [EvaluationFields.learningPotential]: e.learningPotential,
       [EvaluationFields.distributionPotential]: e.distributionPotential,
-      [EvaluationFields.degreeOfInnovation]: e.degreeOfInnovation,
       [EvaluationFields.moreActors]: e.moreActors,
       [EvaluationFields.lawRequirements]: e.lawRequirements,
       [EvaluationFields.comment]: e.comment ?? null

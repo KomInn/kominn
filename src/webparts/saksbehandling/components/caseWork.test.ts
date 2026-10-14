@@ -9,7 +9,7 @@ describe('caseWork', () => {
     expect(overallScore(undefined)).toBeUndefined();
     const r1 = rows.find((r) => r.suggestion.id === 1);
     expect(r1?.average?.count).toBe(2);
-    expect(r1?.score).toBe(3.4);
+    expect(r1?.score).toBe(3.8);
   });
 
   it('filtrerer på status, tekst og mine', () => {

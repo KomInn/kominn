@@ -59,6 +59,8 @@ export interface Suggestion {
   caseWorkerStatus: CaseWorkerStatus;
   caseWorker?: Person;
   submitter: Person;
+  /** Innsender har bekreftet at nærmeste leder er orientert (KmiManagerInformed). */
+  managerInformed?: boolean;
   sustainabilityGoals: SustainabilityGoal[];
   inspiredBy: SuggestionRef[];
   likes: number;
@@ -75,7 +77,7 @@ export interface Suggestion {
 /** Feltene brukeren fyller ut når et forslag sendes inn. */
 export type NewSuggestion = Pick<
   Suggestion,
-  'title' | 'summary' | 'challenges' | 'suggestedSolution' | 'usefulForOthers' | 'amount' | 'focusAreas' | 'tags' | 'imageUrl' | 'location' | 'submitter'
+  'title' | 'summary' | 'challenges' | 'suggestedSolution' | 'usefulForOthers' | 'amount' | 'focusAreas' | 'tags' | 'imageUrl' | 'location' | 'submitter' | 'managerInformed'
 > & {
   sustainabilityGoalIds: number[];
   inspiredByIds: number[];
@@ -91,14 +93,18 @@ export interface SuggestionComment {
   imageUrl?: string;
 }
 
-/** Én vurdering fra én saksbehandler (listen Forslagsvurdering). Score 1–5. */
+/**
+ * Én vurdering fra én saksbehandler (listen Forslagsvurdering). Score 1–5.
+ * Aktive kriterier: gjennomførbarhet, potensial for læring og tjenesteutvikling, spredningspotensial.
+ */
 export interface Evaluation {
   id: number;
   suggestionId: number;
   feasibility: number;
-  emissionReductionPotential: number;
+  learningPotential: number;
   distributionPotential: number;
-  degreeOfInnovation: number;
+  /** Ikke lenger i bruk som kriterium. Leses fra eldre vurderinger, skrives ikke. */
+  degreeOfInnovation?: number;
   moreActors: boolean;
   lawRequirements: boolean;
   comment?: string;

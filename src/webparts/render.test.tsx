@@ -111,16 +111,55 @@ describe('webdelene tegnes med testdata', () => {
 
   it('Nytt forslag', async () => {
     const c = await renderWithData(
-      <NyttForslag introText="Hei" successText="" competitionRef="" displayMode={DisplayMode.Read} webUrl="https://x" showAmount showChallenges showSolution={false} showUsefulForOthers={false} showTags showGoals showImage showLocation={false} showInspiredBy />
+      <NyttForslag introText="Hei" successText="" competitionRef="" displayMode={DisplayMode.Read} webUrl="https://x" showAmount showFocusAreas showManagerInformed={false} showChallenges showSolution={false} showUsefulForOthers={false} showTags showGoals showImage showLocation={false} showInspiredBy />
     );
     expect(c.textContent).toContain('Send inn forslag');
+  });
+
+  it('Nytt forslag – nedstrippet skjema for 2026', async () => {
+    const c = await renderWithData(
+      <NyttForslag
+        introText=""
+        successText=""
+        competitionRef=""
+        displayMode={DisplayMode.Read}
+        webUrl="https://x"
+        summaryLabel="Beskrivelse av tiltaket (Er dette noe helt nytt, eller er dere inspirert av andre?)"
+        summaryHint=""
+        amountLabel="Hvor mye søker du om? (inntil 15 000,-)"
+        imageSectionTitle="Bilde (husk rettigheter)"
+        showAmount
+        showChallenges
+        showFocusAreas={false}
+        showTags={false}
+        showGoals={false}
+        showImage
+        showLocation={false}
+        showInspiredBy={false}
+        showManagerInformed
+        showSolution={false}
+        showUsefulForOthers={false}
+      />
+    );
+    const text = c.textContent ?? '';
+    expect(text).toContain('Er dette noe helt nytt, eller er dere inspirert av andre?');
+    expect(text).not.toContain('Hva vil du gjøre, og hvorfor?');
+    expect(text).toContain('(inntil 15 000,-)');
+    expect(text).not.toContain('Innsatsområder');
+    expect(text).not.toContain('Tags');
+    expect(text).not.toContain('Bærekraftsmål');
+    expect(text).toContain('Bilde (husk rettigheter)');
+    expect(text).not.toContain('Bilde og sted');
+    expect(text).not.toContain('Inspirert av');
+    expect(text).toContain('Min nærmeste leder er orientert om søknaden');
+    expect(c.querySelectorAll('input[type="radio"]')).toHaveLength(2);
   });
 
   it('Nytt forslag i redigeringsmodus', async () => {
     window.history.pushState({}, '', '/?rediger=1');
     try {
       const c = await renderWithData(
-        <NyttForslag introText="" successText="" competitionRef="" displayMode={DisplayMode.Read} webUrl="https://x" showAmount showChallenges showSolution={false} showUsefulForOthers={false} showTags showGoals showImage showLocation={false} showInspiredBy />
+        <NyttForslag introText="" successText="" competitionRef="" displayMode={DisplayMode.Read} webUrl="https://x" showAmount showFocusAreas showManagerInformed={false} showChallenges showSolution={false} showUsefulForOthers={false} showTags showGoals showImage showLocation={false} showInspiredBy />
       );
       expect(c.textContent).toContain('Du redigerer forslaget');
       expect(c.textContent).toContain('Lagre endringer');

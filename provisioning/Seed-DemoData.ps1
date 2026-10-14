@@ -111,10 +111,10 @@ $comments = @{
 }
 
 $evaluations = @{
-    'sol'        = @{ F = 4; E = 5; D = 3; I = 2; Actors = $true; Law = $false; Comment = 'Solid, men dyrt. Bør se på leasing.' }
-    'mat'        = @{ F = 5; E = 3; D = 5; I = 3; Actors = $false; Law = $false; Comment = 'Lett å spre til alle skoler.' }
-    'bil'        = @{ F = 3; E = 4; D = 4; I = 3; Actors = $true; Law = $false; Comment = 'Krever avklaring med HR om kjørebok.' }
-    'reparasjon' = @{ F = 5; E = 2; D = 3; I = 4; Actors = $true; Law = $false; Comment = $null }
+    'sol'        = @{ F = 4; E = 5; D = 3; Actors = $true; Law = $false; Comment = 'Solid, men dyrt. Bør se på leasing.' }
+    'mat'        = @{ F = 5; E = 3; D = 5; Actors = $false; Law = $false; Comment = 'Lett å spre til alle skoler.' }
+    'bil'        = @{ F = 3; E = 4; D = 4; Actors = $true; Law = $false; Comment = 'Krever avklaring med HR om kjørebok.' }
+    'reparasjon' = @{ F = 5; E = 2; D = 3; Actors = $true; Law = $false; Comment = $null }
 }
 
 $ids = @{}
@@ -135,6 +135,7 @@ foreach ($s in $demo) {
         KmiLikes               = $s.Likes
         KmiNumberOfComments    = @($comments[$s.Key]).Where({ $_ }).Count
         KmiIsPast              = [bool]$s.IsPast
+        KmiManagerInformed     = $true
         KmiCompRef             = $DemoRef
         KmiSustainabilityGoals = @($s.Goals | ForEach-Object { $goals[$_] } | Where-Object { $_ })
     }
@@ -183,9 +184,8 @@ foreach ($key in $evaluations.Keys) {
         Title                         = "Vurdering $($ids[$key])"
         KmiSuggestion                 = $ids[$key]
         KmiScoreFeasability           = $e.F
-        KmiScoreUserInvolvement       = $e.E
+        KmiScoreUserInvolvement       = $e.E   # Potensial for læring og tjenesteutvikling
         KmiScoreDistributionPotential = $e.D
-        KmiScoreDegreeOfInnovation    = $e.I
         KmiMoreActors                 = $e.Actors
         KmiLawRequirements            = $e.Law
     }

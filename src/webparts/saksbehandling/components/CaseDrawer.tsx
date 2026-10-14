@@ -150,12 +150,10 @@ export const CaseDrawer: React.FC<CaseDrawerProps> = ({ row, caseWorkers, curren
               <div className={styles.scores}>
                 <Text size={200}>{strings.ScoreFeasibility}</Text>
                 <Text size={200} className={styles.num}>{row.average.feasibility.toFixed(1)}</Text>
-                <Text size={200}>{strings.ScoreEmission}</Text>
-                <Text size={200} className={styles.num}>{row.average.emissionReductionPotential.toFixed(1)}</Text>
+                <Text size={200}>{strings.ScoreLearning}</Text>
+                <Text size={200} className={styles.num}>{row.average.learningPotential.toFixed(1)}</Text>
                 <Text size={200}>{strings.ScoreDistribution}</Text>
                 <Text size={200} className={styles.num}>{row.average.distributionPotential.toFixed(1)}</Text>
-                <Text size={200}>{strings.ScoreInnovation}</Text>
-                <Text size={200} className={styles.num}>{row.average.degreeOfInnovation.toFixed(1)}</Text>
                 <Caption1>{strings.EvaluationCount}</Caption1>
                 <Caption1 className={styles.num}>{row.average.count}</Caption1>
               </div>

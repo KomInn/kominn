@@ -43,9 +43,8 @@ declare interface ISaksbehandlingWebPartStrings {
   NoEvaluations: string;
   EvaluateHint: string;
   ScoreFeasibility: string;
-  ScoreEmission: string;
+  ScoreLearning: string;
   ScoreDistribution: string;
-  ScoreInnovation: string;
   Save: string;
   Cancel: string;
 }

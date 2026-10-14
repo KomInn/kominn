@@ -26,6 +26,8 @@
       "successText": "",
       "competitionRef": "",
       "showAmount": true,
+      "showFocusAreas": true,
+      "showManagerInformed": false,
       "showChallenges": true,
       "showSolution": false,
       "showUsefulForOthers": false,

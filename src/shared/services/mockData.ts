@@ -83,9 +83,9 @@ export const mockComments: SuggestionComment[] = [
 ];
 
 export const mockEvaluations: Evaluation[] = [
-  { id: 1, suggestionId: 1, feasibility: 4, emissionReductionPotential: 5, distributionPotential: 3, degreeOfInnovation: 2, moreActors: true, lawRequirements: false, comment: 'Solid, men dyrt.', author: { id: 20, name: 'Saks Behandler' }, created: daysAgo(8) },
-  { id: 2, suggestionId: 1, feasibility: 3, emissionReductionPotential: 4, distributionPotential: 4, degreeOfInnovation: 2, moreActors: true, lawRequirements: false, author: { id: 21, name: 'Vurd Erer' }, created: daysAgo(7) },
-  { id: 3, suggestionId: 2, feasibility: 5, emissionReductionPotential: 3, distributionPotential: 5, degreeOfInnovation: 3, moreActors: false, lawRequirements: false, author: { id: 20, name: 'Saks Behandler' }, created: daysAgo(25) }
+  { id: 1, suggestionId: 1, feasibility: 4, learningPotential: 5, distributionPotential: 3, degreeOfInnovation: 2, moreActors: true, lawRequirements: false, comment: 'Solid, men dyrt.', author: { id: 20, name: 'Saks Behandler' }, created: daysAgo(8) },
+  { id: 2, suggestionId: 1, feasibility: 3, learningPotential: 4, distributionPotential: 4, degreeOfInnovation: 2, moreActors: true, lawRequirements: false, author: { id: 21, name: 'Vurd Erer' }, created: daysAgo(7) },
+  { id: 3, suggestionId: 2, feasibility: 5, learningPotential: 3, distributionPotential: 5, degreeOfInnovation: 3, moreActors: false, lawRequirements: false, author: { id: 20, name: 'Saks Behandler' }, created: daysAgo(25) }
 ];
 
 export const mockCampaigns: Campaign[] = [

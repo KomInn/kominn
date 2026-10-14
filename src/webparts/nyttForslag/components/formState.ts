@@ -18,6 +18,8 @@ export interface FormState {
   email: string;
   department: string;
   telephone: string;
+  /** «Min nærmeste leder er orientert om søknaden». undefined = ikke besvart. */
+  managerInformed?: boolean;
   /** Om personalia er hentet fra profilen (så vi ikke overskriver det brukeren har endret). */
   personaliaFilled: boolean;
 }
@@ -111,6 +113,7 @@ export function fromExisting(s: Suggestion): FormState {
     email: s.submitter.email ?? '',
     department: s.submitter.department ?? '',
     telephone: s.submitter.telephone ?? '',
+    managerInformed: s.managerInformed,
     personaliaFilled: true
   };
 }
@@ -128,6 +131,7 @@ export function toNewSuggestion(form: FormState, user: Person | undefined, image
     tags: form.tags,
     imageUrl,
     location: form.location,
+    managerInformed: form.managerInformed,
     submitter: {
       id: user?.id,
       name: form.name.trim(),

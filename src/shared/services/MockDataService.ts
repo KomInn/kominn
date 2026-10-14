@@ -83,6 +83,7 @@ export class MockDataService implements IDataService {
       status: 'Sendt inn',
       caseWorkerStatus: 'Sendt inn',
       submitter: s.submitter,
+      managerInformed: s.managerInformed,
       sustainabilityGoals: mockGoals.filter((g) => s.sustainabilityGoalIds.includes(g.id)).map((g) => ({ id: g.id, title: g.title })),
       inspiredBy: this.suggestions.filter((x) => s.inspiredByIds.includes(x.id)).map((x) => ({ id: x.id, title: x.title })),
       likes: 0,
@@ -112,6 +113,7 @@ export class MockDataService implements IDataService {
       imageUrl: s.imageUrl,
       location: s.location,
       submitter: { ...existing.submitter, ...s.submitter },
+      managerInformed: s.managerInformed,
       sustainabilityGoals: mockGoals.filter((g) => s.sustainabilityGoalIds.includes(g.id)).map((g) => ({ id: g.id, title: g.title })),
       inspiredBy: this.suggestions.filter((x) => s.inspiredByIds.includes(x.id)).map((x) => ({ id: x.id, title: x.title }))
     });

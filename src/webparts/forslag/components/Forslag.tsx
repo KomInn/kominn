@@ -291,6 +291,12 @@ export const Forslag: React.FC<IForslagProps> = (props) => {
                 <dd className={styles.dd}>{s.submitter.manager.name}</dd>
               </>
             )}
+            {s.managerInformed !== undefined && (
+              <>
+                <dt className={styles.dt}>{strings.ManagerInformedLabel}</dt>
+                <dd className={styles.dd}>{s.managerInformed ? strings.Yes : strings.No}</dd>
+              </>
+            )}
             {s.competitionRef && (
               <>
                 <dt className={styles.dt}>{strings.CompetitionRefLabel}</dt>

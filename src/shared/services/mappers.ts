@@ -85,6 +85,7 @@ export function mapSuggestion(item: ListItem, webUrl: string): Suggestion {
     caseWorkerStatus: (item.KmiCaseWorkerStatus as CaseWorkerStatus) ?? 'Sendt inn',
     caseWorker: toPerson(item.KmiCaseWorker),
     submitter,
+    managerInformed: typeof item.KmiManagerInformed === 'boolean' ? item.KmiManagerInformed : undefined,
     sustainabilityGoals: goals.map((g) => ({ id: g.Id, title: g.Title ?? '' })),
     inspiredBy: inspired.map((s) => ({ id: s.Id, title: s.Title ?? '' })),
     likes: item.KmiLikes ?? 0,
@@ -114,9 +115,9 @@ export function mapEvaluation(item: ListItem): Evaluation {
     id: item.Id,
     suggestionId: item.KmiSuggestionId ?? item.KmiSuggestion?.Id ?? 0,
     feasibility: item.KmiScoreFeasability ?? 0,
-    emissionReductionPotential: item.KmiScoreUserInvolvement ?? 0,
+    learningPotential: item.KmiScoreUserInvolvement ?? 0,
     distributionPotential: item.KmiScoreDistributionPotential ?? 0,
-    degreeOfInnovation: item.KmiScoreDegreeOfInnovation ?? 0,
+    degreeOfInnovation: typeof item.KmiScoreDegreeOfInnovation === 'number' ? item.KmiScoreDegreeOfInnovation : undefined,
     moreActors: item.KmiMoreActors === true,
     lawRequirements: item.KmiLawRequirements === true,
     comment: item.KmiShortComment || undefined,
@@ -143,9 +144,8 @@ export interface EvaluationAverage {
   suggestionId: number;
   count: number;
   feasibility: number;
-  emissionReductionPotential: number;
+  learningPotential: number;
   distributionPotential: number;
-  degreeOfInnovation: number;
 }
 
 export function averageEvaluations(evaluations: Evaluation[]): EvaluationAverage[] {
@@ -163,9 +163,8 @@ export function averageEvaluations(evaluations: Evaluation[]): EvaluationAverage
       suggestionId,
       count: list.length,
       feasibility: avg(list, (e) => e.feasibility),
-      emissionReductionPotential: avg(list, (e) => e.emissionReductionPotential),
-      distributionPotential: avg(list, (e) => e.distributionPotential),
-      degreeOfInnovation: avg(list, (e) => e.degreeOfInnovation)
+      learningPotential: avg(list, (e) => e.learningPotential),
+      distributionPotential: avg(list, (e) => e.distributionPotential)
     });
   });
   return result;

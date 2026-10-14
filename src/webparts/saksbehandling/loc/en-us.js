@@ -44,9 +44,8 @@ define([], function () {
     NoEvaluations: 'No evaluations yet.',
     EvaluateHint: 'Your own evaluation is done on the suggestion page.',
     ScoreFeasibility: 'Feasibility',
-    ScoreEmission: 'Emission reduction',
+    ScoreLearning: 'Potential for learning and service development',
     ScoreDistribution: 'Distribution potential',
-    ScoreInnovation: 'Degree of innovation',
     Save: 'Save',
     Cancel: 'Cancel'
   };
