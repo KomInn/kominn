@@ -1,5 +1,5 @@
 import type { Campaign, Evaluation, Person, Suggestion, SuggestionComment, SustainabilityGoal, SuggestionStatus, CaseWorkerStatus, CampaignType } from '../models';
-import { COPY_QUERY_KEY, EDIT_QUERY_KEY, Lists, NEW_SUGGESTION_PAGE, SUGGESTION_PAGE, SUGGESTION_QUERY_KEY } from './constants';
+import { ALL_SUGGESTIONS_PAGE, COPY_QUERY_KEY, EDIT_QUERY_KEY, Lists, NEW_SUGGESTION_PAGE, SUGGESTION_PAGE, SUGGESTION_QUERY_KEY, VIEW_QUERY_KEY } from './constants';
 
 /** Rå listeelementer slik PnPjs (odata=nometadata) returnerer dem. */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -24,6 +24,12 @@ export function copySuggestionUrl(webUrl: string, id: number): string {
 /** Adressen til skjemaet i redigeringsmodus for et forslag. */
 export function editSuggestionUrl(webUrl: string, id: number): string {
   return `${webUrl.replace(/\/$/, '')}/${NEW_SUGGESTION_PAGE}?${EDIT_QUERY_KEY}=${id}`;
+}
+
+/** Adressen til siden med alle forslag, for en gitt visning (f.eks. «mine»). */
+export function allSuggestionsUrl(webUrl: string, view?: string): string {
+  const base = `${webUrl.replace(/\/$/, '')}/${ALL_SUGGESTIONS_PAGE}`;
+  return view ? `${base}?${VIEW_QUERY_KEY}=${encodeURIComponent(view)}` : base;
 }
 
 export function toDate(value: unknown): Date | undefined {

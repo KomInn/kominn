@@ -5,14 +5,25 @@ import type { SuggestionOrder } from '../../../shared/services';
 export type ListMode = 'published' | 'promoted' | 'success' | 'monthly' | 'mine';
 export type ListLayout = 'cards' | 'carousel' | 'compact';
 export type ListPeriod = 'all' | 'thisYear' | 'last12Months';
+/** Som i SharePoints webdel for uthevet innhold: ingen sideinndeling, eller forrige/neste. */
+export type ListPaging = 'none' | 'prevNext';
+
+export const LIST_MODES: ListMode[] = ['published', 'promoted', 'success', 'monthly', 'mine'];
 
 export interface IForslagslisteProps {
   title: string;
   mode: ListMode;
   layout: ListLayout;
   period: ListPeriod;
-  /** Antall per side. «Vis flere» henter én side til. */
+  /** Antall forslag som vises (per side ved sideinndeling). */
   top: number;
+  paging: ListPaging;
+  /** Viser lenken «Se alle» ved overskriften. */
+  showSeeAll: boolean;
+  /** Mål for «Se alle». Tom = siden Alle forslag på KomInn-området, med samme visning. */
+  seeAllUrl: string;
+  /** Lar ?visning=<modus> i adressen overstyre modus (brukes på siden Alle forslag). */
+  modeFromUrl: boolean;
   defaultOrder: SuggestionOrder;
   showFilters: boolean;
   showSorting: boolean;

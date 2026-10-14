@@ -11,9 +11,29 @@ const useStyles = makeStyles({
   body: { display: 'flex', flexDirection: 'column', rowGap: tokens.spacingVerticalXS, minWidth: 0 },
   title: { fontWeight: tokens.fontWeightSemibold, fontSize: tokens.fontSizeBase400, lineHeight: tokens.lineHeightBase400 },
   summary: { display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' },
-  meta: { display: 'flex', flexWrap: 'wrap', alignItems: 'center', columnGap: tokens.spacingHorizontalM, color: tokens.colorNeutralForeground3 },
-  stat: { display: 'inline-flex', alignItems: 'center', columnGap: tokens.spacingHorizontalXXS },
+  // Metadata holdes på én linje. Avdelingen kortes ned med … ved behov.
+  meta: {
+    display: 'flex',
+    flexWrap: 'nowrap',
+    alignItems: 'center',
+    columnGap: tokens.spacingHorizontalS,
+    minWidth: 0,
+    whiteSpace: 'nowrap',
+    color: tokens.colorNeutralForeground3
+  },
+  metaText: { flexShrink: 0 },
+  department: { minWidth: 0, flexShrink: 1, overflow: 'hidden', textOverflow: 'ellipsis' },
+  stat: { display: 'inline-flex', alignItems: 'center', flexShrink: 0, columnGap: tokens.spacingHorizontalXXS },
   badges: { display: 'flex', flexWrap: 'wrap', gap: tokens.spacingHorizontalXS },
+  badge: {
+    height: 'auto',
+    minHeight: '20px',
+    ...shorthands.padding(tokens.spacingVerticalXXS, tokens.spacingHorizontalS),
+    lineHeight: tokens.lineHeightBase200
+  },
+  statusBadge: { flexShrink: 0 },
+  // Etiketter og metadata legges nederst, så de står på linje i rutenettet.
+  footer: { marginTop: 'auto', display: 'flex', flexDirection: 'column', rowGap: tokens.spacingVerticalS, minWidth: 0 },
   highlighted: {
     ...shorthands.border('2px', 'solid', tokens.colorBrandStroke1),
     backgroundColor: tokens.colorBrandBackground2
@@ -48,35 +68,37 @@ export const SuggestionCard: React.FC<SuggestionCardProps> = ({ suggestion: s, v
 
   const meta = (
     <div className={styles.meta}>
-      <Caption1>{s.submitter.department || s.submitter.name}</Caption1>
-      <Caption1>{formatDate(s.created)}</Caption1>
+      <Caption1 className={styles.department} title={s.submitter.department || s.submitter.name}>
+        {s.submitter.department || s.submitter.name}
+      </Caption1>
+      <Caption1 className={styles.metaText}>{formatDate(s.created)}</Caption1>
       <Caption1 className={styles.stat} aria-label={`${s.likes} ${likesLabel}`}>
         <Heart16Regular aria-hidden /> {s.likes}
       </Caption1>
       <Caption1 className={styles.stat} aria-label={`${s.numberOfComments} ${commentsLabel}`}>
         <Chat16Regular aria-hidden /> {s.numberOfComments}
       </Caption1>
-    </div>
-  );
-
-  const badges = (showStatus || highlightLabel || s.focusAreas.length > 0) && (
-    <div className={styles.badges}>
-      {highlightLabel && (
-        <Badge appearance="filled" color="brand" size="small" icon={<Star16Filled />}>
-          {highlightLabel}
-        </Badge>
-      )}
       {showStatus && (
-        <Badge appearance="tint" color={statusColor[s.status]} size="small">
+        <Badge className={mergeClasses(styles.badge, styles.statusBadge)} appearance="tint" color={statusColor[s.status]} size="small">
           {s.status}
         </Badge>
       )}
-      {!compact &&
-        s.focusAreas.slice(0, 2).map((a) => (
-          <Badge key={a} appearance="outline" size="small">
-            {a}
-          </Badge>
-        ))}
+    </div>
+  );
+
+  const focusAreas = compact ? [] : s.focusAreas.slice(0, 2);
+  const badges = (highlightLabel || focusAreas.length > 0) && (
+    <div className={styles.badges}>
+      {highlightLabel && (
+        <Badge className={styles.badge} appearance="filled" color="brand" size="small" icon={<Star16Filled />}>
+          {highlightLabel}
+        </Badge>
+      )}
+      {focusAreas.map((a) => (
+        <Badge key={a} className={styles.badge} appearance="outline" size="small">
+          {a}
+        </Badge>
+      ))}
     </div>
   );
 
@@ -112,8 +134,10 @@ export const SuggestionCard: React.FC<SuggestionCardProps> = ({ suggestion: s, v
       <Text className={styles.summary} size={300}>
         {s.summary}
       </Text>
-      {badges}
-      {meta}
+      <div className={styles.footer}>
+        {badges}
+        {meta}
+      </div>
     </Card>
   );
 };

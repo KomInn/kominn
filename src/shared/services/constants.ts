@@ -24,6 +24,10 @@ export const COPY_QUERY_KEY = 'kopier';
 /** ?rediger=<id> åpner skjemaet for å endre et eksisterende forslag. */
 export const EDIT_QUERY_KEY = 'rediger';
 
+/** Siden med alle forslag («Se alle»). ?visning=<modus> velger hvilke forslag som vises. */
+export const ALL_SUGGESTIONS_PAGE = 'SitePages/AlleForslag.aspx';
+export const VIEW_QUERY_KEY = 'visning';
+
 /** Interne feltnavn på listen Forslag. */
 export const SuggestionFields = {
   title: 'Title',

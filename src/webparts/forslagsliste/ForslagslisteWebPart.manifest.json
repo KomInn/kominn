@@ -33,6 +33,10 @@
       "highlightMonthly": true,
       "siteUrl": "",
       "top": 12,
+      "paging": "none",
+      "showSeeAll": true,
+      "seeAllUrl": "",
+      "modeFromUrl": false,
       "emptyText": ""
     }
   }]

@@ -50,6 +50,15 @@ import { Forslag } from './forslag/components/Forslag';
 import { Saksbehandling } from './saksbehandling/components/Saksbehandling';
 
 const containers: HTMLDivElement[] = [];
+const listDefaults = {
+  emptyText: 'Tom',
+  paging: 'none' as const,
+  showSeeAll: true,
+  seeAllUrl: '',
+  modeFromUrl: false,
+  displayMode: DisplayMode.Read,
+  onTitleChange: () => undefined
+};
 
 afterEach(() => {
   for (const c of containers.splice(0)) {
@@ -78,7 +87,7 @@ async function renderWithData(element: React.ReactElement): Promise<HTMLDivEleme
 describe('webdelene tegnes med testdata', () => {
   it('Forslagsliste', async () => {
     const c = await renderWithData(
-      <Forslagsliste title="Aktuelle" mode="published" layout="cards" period="all" top={6} defaultOrder="likes" showFilters showSorting showImages highlightMonthly emptyText="Tom" displayMode={DisplayMode.Read} onTitleChange={() => undefined} />
+      <Forslagsliste title="Aktuelle" mode="published" layout="cards" period="all" top={6} defaultOrder="likes" showFilters showSorting showImages highlightMonthly {...listDefaults} />
     );
     const text = c.textContent ?? '';
     expect(text).toContain('Månedens forslag');
@@ -89,19 +98,55 @@ describe('webdelene tegnes med testdata', () => {
 
   it('Forslagsliste – antallet inkluderer månedens forslag', async () => {
     const c = await renderWithData(
-      <Forslagsliste title="Aktuelle" mode="published" layout="cards" period="all" top={1} defaultOrder="likes" showFilters={false} showSorting={false} showImages highlightMonthly emptyText="Tom" displayMode={DisplayMode.Read} onTitleChange={() => undefined} />
+      <Forslagsliste title="Aktuelle" mode="published" layout="cards" period="all" top={1} defaultOrder="likes" showFilters={false} showSorting={false} showImages highlightMonthly {...listDefaults} />
     );
     expect(c.querySelectorAll('li')).toHaveLength(1);
     expect(c.textContent).toContain('Månedens forslag');
-    expect(c.textContent).toContain('Vis flere');
+    expect(c.textContent).not.toContain('Vis flere');
+  });
+
+  it('Forslagsliste – «Se alle» ved overskriften, som i SharePoint', async () => {
+    const c = await renderWithData(
+      <Forslagsliste title="Mine" mode="mine" layout="compact" period="all" top={2} defaultOrder="created" showFilters={false} showSorting={false} showImages={false} highlightMonthly={false} {...listDefaults} />
+    );
+    const link = Array.from(c.querySelectorAll('a')).find((a) => a.textContent === 'Se alle');
+    expect(link?.getAttribute('href')).toBe('https://mock.sharepoint.com/sites/kominn/SitePages/AlleForslag.aspx?visning=mine');
+    expect(c.querySelector('nav')).toBeNull();
+  });
+
+  it('Forslagsliste – forrige/neste på siden Alle forslag', async () => {
+    const c = await renderWithData(
+      <Forslagsliste title="Alle forslag" mode="published" layout="cards" period="all" top={1} defaultOrder="created" showFilters={false} showSorting={false} showImages={false} highlightMonthly={false} {...listDefaults} paging="prevNext" showSeeAll={false} />
+    );
+    expect(c.querySelectorAll('li')).toHaveLength(1);
+    expect(c.textContent).not.toContain('Se alle');
+    expect(c.textContent).toContain('Side 1');
+    const next = Array.from(c.querySelectorAll('button')).find((b) => b.textContent === 'Neste');
+    const firstTitles = Array.from(c.querySelectorAll('li a')).map((a) => a.textContent);
+    await act(async () => {
+      next?.click();
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
+    for (let i = 0; i < 5; i++) {
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      });
+    }
+    expect(c.textContent).toContain('Side 2');
+    const secondTitles = Array.from(c.querySelectorAll('li a')).map((a) => a.textContent);
+    expect(secondTitles).toHaveLength(1);
+    expect(secondTitles.some((t) => firstTitles.includes(t))).toBe(false);
   });
 
   it('Forslagsliste – mine forslag uten bilder', async () => {
     const c = await renderWithData(
-      <Forslagsliste title="Mine" mode="mine" layout="compact" period="all" top={6} defaultOrder="created" showFilters={false} showSorting={false} showImages={false} highlightMonthly={false} emptyText="Tom" displayMode={DisplayMode.Read} onTitleChange={() => undefined} />
+      <Forslagsliste title="Mine" mode="mine" layout="compact" period="all" top={6} defaultOrder="created" showFilters={false} showSorting={false} showImages={false} highlightMonthly={false} {...listDefaults} />
     );
     expect(c.textContent).toContain('Solceller på Risenga');
     expect(c.querySelectorAll('img')).toHaveLength(0);
+    // Status står på samme linje som dato og tall, ikke på egen linje.
+    const meta = c.querySelector('li .fui-Caption1')?.parentElement;
+    expect(meta?.textContent).toMatch(/Publisert|Sendt inn|Suksess|Promotert/);
   });
 
   it('Søk i forslag', async () => {

@@ -42,7 +42,16 @@ declare interface IForslagslisteWebPartStrings {
   SortLikes: string;
   SortComments: string;
   SortCreated: string;
-  ShowMore: string;
+  ShowSeeAllLabel: string;
+  SeeAllUrlFieldLabel: string;
+  SeeAllUrlFieldDescription: string;
+  PagingFieldLabel: string;
+  PagingNone: string;
+  PagingPrevNext: string;
+  ModeFromUrlLabel: string;
+  SeeAll: string;
+  PagingLabel: string;
+  PageLabel: string;
   Previous: string;
   Next: string;
 }

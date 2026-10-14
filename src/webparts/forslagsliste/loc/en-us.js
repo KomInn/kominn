@@ -43,7 +43,16 @@ define([], function () {
     SortLikes: 'Most liked',
     SortComments: 'Most commented',
     SortCreated: 'Newest first',
-    ShowMore: 'Show more',
+    ShowSeeAllLabel: 'Show the "See all" link',
+    SeeAllUrlFieldLabel: '"See all" target',
+    SeeAllUrlFieldDescription: 'Leave empty to go to the All suggestions page with the same view.',
+    PagingFieldLabel: 'Paging',
+    PagingNone: 'None',
+    PagingPrevNext: 'Previous and next buttons',
+    ModeFromUrlLabel: 'Follow view from the address (?visning=)',
+    SeeAll: 'See all',
+    PagingLabel: 'Paging',
+    PageLabel: 'Page {0}',
     Previous: 'Previous',
     Next: 'Next'
   };
