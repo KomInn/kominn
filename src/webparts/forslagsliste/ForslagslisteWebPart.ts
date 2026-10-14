@@ -14,7 +14,7 @@ import type { IReadonlyTheme } from '@microsoft/sp-component-base';
 
 import * as strings from 'ForslagslisteWebPartStrings';
 import { Forslagsliste } from './components/Forslagsliste';
-import type { IForslagslisteProps, ListLayout, ListMode, ListPeriod } from './components/IForslagslisteProps';
+import type { IForslagslisteProps, ListLayout, ListMode, ListPaging, ListPeriod } from './components/IForslagslisteProps';
 import { createDataService, type IDataService, type SuggestionOrder } from '../../shared/services';
 import { KomInnProvider } from '../../shared/components';
 
@@ -31,6 +31,10 @@ export interface IForslagslisteWebPartProps {
   /** Absolutt URL til KomInn-området. Tom = området webdelen står på. */
   siteUrl: string;
   top: number;
+  paging: ListPaging;
+  showSeeAll: boolean;
+  seeAllUrl: string;
+  modeFromUrl: boolean;
   emptyText: string;
 }
 
@@ -57,6 +61,10 @@ export default class ForslagslisteWebPart extends BaseClientSideWebPart<IForslag
       showImages: p.showImages !== false,
       highlightMonthly: p.highlightMonthly !== false,
       top: p.top ?? 12,
+      paging: p.paging ?? 'none',
+      showSeeAll: p.showSeeAll !== false,
+      seeAllUrl: p.seeAllUrl ?? '',
+      modeFromUrl: p.modeFromUrl === true,
       emptyText: p.emptyText || strings.DefaultEmptyText,
       displayMode: this.displayMode,
       onTitleChange: (title) => {
@@ -139,7 +147,21 @@ export default class ForslagslisteWebPart extends BaseClientSideWebPart<IForslag
                 PropertyPaneToggle('showFilters', { label: strings.ShowFiltersLabel, onText: 'På', offText: 'Av' }),
                 PropertyPaneToggle('showSorting', { label: strings.ShowSortingLabel, onText: 'På', offText: 'Av' }),
                 PropertyPaneToggle('showImages', { label: strings.ShowImagesLabel, onText: 'På', offText: 'Av' }),
-                PropertyPaneToggle('highlightMonthly', { label: strings.HighlightMonthlyLabel, onText: 'På', offText: 'Av' })
+                PropertyPaneToggle('highlightMonthly', { label: strings.HighlightMonthlyLabel, onText: 'På', offText: 'Av' }),
+                PropertyPaneDropdown('paging', {
+                  label: strings.PagingFieldLabel,
+                  options: [
+                    { key: 'none', text: strings.PagingNone },
+                    { key: 'prevNext', text: strings.PagingPrevNext }
+                  ]
+                }),
+                PropertyPaneToggle('showSeeAll', { label: strings.ShowSeeAllLabel, onText: 'På', offText: 'Av' }),
+                PropertyPaneTextField('seeAllUrl', {
+                  label: strings.SeeAllUrlFieldLabel,
+                  description: strings.SeeAllUrlFieldDescription,
+                  disabled: this.properties.showSeeAll === false
+                }),
+                PropertyPaneToggle('modeFromUrl', { label: strings.ModeFromUrlLabel, onText: 'På', offText: 'Av' })
               ]
             },
             {

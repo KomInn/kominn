@@ -46,6 +46,8 @@ const SUGGESTION_SELECT = [
   `${F.inspiredBy}/Id`, `${F.inspiredBy}/Title`
 ];
 const SUGGESTION_EXPAND = ['Author', F.caseWorker, F.manager, F.sustainabilityGoals, F.inspiredBy];
+/** Felt lagt til i senere versjoner. Mangler de i listen, hentes forslag uten dem i stedet for å feile. */
+const OPTIONAL_FIELDS: string[] = [F.managerInformed];
 
 function odataString(value: string): string {
   return `'${value.replace(/'/g, "''")}'`;
@@ -60,6 +62,7 @@ export class SharePointDataService implements IDataService {
   public readonly webUrl: string;
   private readonly sp: SPFI;
   private currentUser?: Promise<Person>;
+  private readonly missingFields = new Set<string>();
 
   constructor(context: ISPFXContext, siteUrl?: string) {
     const url = (siteUrl ?? '').trim().replace(/\/$/, '');
@@ -69,6 +72,24 @@ export class SharePointDataService implements IDataService {
 
   private list(title: string): IList {
     return this.sp.web.lists.getByTitle(title);
+  }
+
+  private suggestionSelect(): string[] {
+    return SUGGESTION_SELECT.filter((f) => !this.missingFields.has(f));
+  }
+
+  /** Kjører kallet på nytt uten valgfrie felt som SharePoint melder at ikke finnes (gjelder både lesing og lagring). */
+  private async withOptionalFields<T>(run: (select: string[]) => Promise<T>): Promise<T> {
+    try {
+      return await run(this.suggestionSelect());
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      const missing = OPTIONAL_FIELDS.filter((f) => !this.missingFields.has(f) && message.includes(f));
+      if (!missing.length) throw err;
+      missing.forEach((f) => this.missingFields.add(f));
+      console.warn(`KomInn: feltet ${missing.join(', ')} mangler i listen ${Lists.suggestions}. Kjør provisjoneringsmalen på nytt.`);
+      return this.withOptionalFields(run);
+    }
   }
 
   // ---------- Forslag ----------
@@ -90,15 +111,19 @@ export class SharePointDataService implements IDataService {
     for (const tag of query.tags ?? []) filters.push(`${F.tags} eq ${odataString(tag)}`);
 
     const orderField = query.orderBy === 'likes' ? F.likes : query.orderBy === 'comments' ? F.numberOfComments : 'Created';
-    let q = this.list(Lists.suggestions).items.select(...SUGGESTION_SELECT).expand(...SUGGESTION_EXPAND).orderBy(orderField, false).top(query.top ?? 50);
-    if (filters.length) q = q.filter(filters.join(' and '));
-    const items: ListItem[] = await q();
+    const items: ListItem[] = await this.withOptionalFields((select) => {
+      let q = this.list(Lists.suggestions).items.select(...select).expand(...SUGGESTION_EXPAND).orderBy(orderField, false).top(query.top ?? 50);
+      if (filters.length) q = q.filter(filters.join(' and '));
+      return q();
+    });
     return items.map((i) => mapSuggestion(i, this.webUrl));
   }
 
   public async getSuggestion(id: number): Promise<Suggestion | undefined> {
     try {
-      const item: ListItem = await this.list(Lists.suggestions).items.getById(id).select(...SUGGESTION_SELECT).expand(...SUGGESTION_EXPAND)();
+      const item: ListItem = await this.withOptionalFields((select) =>
+        this.list(Lists.suggestions).items.getById(id).select(...select).expand(...SUGGESTION_EXPAND)()
+      );
       return mapSuggestion(item, this.webUrl);
     } catch {
       return undefined;
@@ -108,18 +133,18 @@ export class SharePointDataService implements IDataService {
   public async searchSuggestions(text: string, top = 20): Promise<Suggestion[]> {
     const term = text.trim();
     if (!term) return [];
-    const items: ListItem[] = await this.list(Lists.suggestions).items
-      .select(...SUGGESTION_SELECT).expand(...SUGGESTION_EXPAND)
+    const items: ListItem[] = await this.withOptionalFields((select) => this.list(Lists.suggestions).items
+      .select(...select).expand(...SUGGESTION_EXPAND)
       .filter(`substringof(${odataString(term)}, Title)`)
-      .orderBy('Created', false).top(top)();
+      .orderBy('Created', false).top(top)());
     return items.map((i) => mapSuggestion(i, this.webUrl));
   }
 
   public async getInspiredSuggestions(id: number): Promise<Suggestion[]> {
-    const items: ListItem[] = await this.list(Lists.suggestions).items
-      .select(...SUGGESTION_SELECT).expand(...SUGGESTION_EXPAND)
+    const items: ListItem[] = await this.withOptionalFields((select) => this.list(Lists.suggestions).items
+      .select(...select).expand(...SUGGESTION_EXPAND)
       .filter(`${F.inspiredBy}/Id eq ${id}`)
-      .orderBy('Created', false).top(20)();
+      .orderBy('Created', false).top(20)());
     return items.map((i) => mapSuggestion(i, this.webUrl));
   }
 
@@ -140,15 +165,17 @@ export class SharePointDataService implements IDataService {
       [F.email]: s.submitter.email ?? null,
       [F.department]: s.submitter.department ?? null,
       [F.telephone]: s.submitter.telephone ?? null,
-      [F.managerInformed]: s.managerInformed ?? null,
       [`${F.sustainabilityGoals}Id`]: s.sustainabilityGoalIds,
       [`${F.inspiredBy}Id`]: s.inspiredByIds
     };
+    if (s.managerInformed !== undefined && !this.missingFields.has(F.managerInformed)) {
+      payload[F.managerInformed] = s.managerInformed;
+    }
     return payload;
   }
 
   public async editSuggestion(id: number, s: NewSuggestion): Promise<Suggestion> {
-    await this.list(Lists.suggestions).items.getById(id).update(this.contentPayload(s));
+    await this.withOptionalFields(() => this.list(Lists.suggestions).items.getById(id).update(this.contentPayload(s)));
     const updated = await this.getSuggestion(id);
     if (!updated) throw new Error('Forslaget ble lagret, men kunne ikke leses tilbake.');
     return updated;
@@ -163,6 +190,13 @@ export class SharePointDataService implements IDataService {
   }
 
   public async createSuggestion(s: NewSuggestion): Promise<Suggestion> {
+    const added: ListItem = await this.withOptionalFields(() => this.list(Lists.suggestions).items.add(this.createPayload(s)));
+    const created = await this.getSuggestion(added.Id);
+    if (!created) throw new Error('Forslaget ble opprettet, men kunne ikke leses tilbake.');
+    return created;
+  }
+
+  private createPayload(s: NewSuggestion): ListItem {
     const payload: ListItem = {
       ...this.contentPayload(s),
       [F.status]: 'Sendt inn',
@@ -177,10 +211,7 @@ export class SharePointDataService implements IDataService {
       [F.isPast]: false
     };
     if (s.submitter.manager?.id) payload[`${F.manager}Id`] = s.submitter.manager.id;
-    const added: ListItem = await this.list(Lists.suggestions).items.add(payload);
-    const created = await this.getSuggestion(added.Id);
-    if (!created) throw new Error('Forslaget ble opprettet, men kunne ikke leses tilbake.');
-    return created;
+    return payload;
   }
 
   public async updateSuggestion(id: number, changes: Parameters<IDataService['updateSuggestion']>[1]): Promise<void> {

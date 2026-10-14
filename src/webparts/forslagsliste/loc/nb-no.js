@@ -43,7 +43,16 @@ define([], function () {
     SortLikes: 'Mest likt',
     SortComments: 'Mest kommentert',
     SortCreated: 'Nyeste først',
-    ShowMore: 'Vis flere',
+    ShowSeeAllLabel: 'Vis lenken «Se alle»',
+    SeeAllUrlFieldLabel: 'Mål for «Se alle»',
+    SeeAllUrlFieldDescription: 'La stå tom for å gå til siden Alle forslag med samme visning.',
+    PagingFieldLabel: 'Sideinndeling',
+    PagingNone: 'Ingen',
+    PagingPrevNext: 'Knapper for forrige og neste',
+    ModeFromUrlLabel: 'Følg visning fra adressen (?visning=)',
+    SeeAll: 'Se alle',
+    PagingLabel: 'Sideinndeling',
+    PageLabel: 'Side {0}',
     Previous: 'Forrige',
     Next: 'Neste'
   };
