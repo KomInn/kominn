@@ -118,7 +118,8 @@ export const Forslag: React.FC<IForslagProps> = (props) => {
       </MessageBar>
     );
   }
-  if (loading) return <Spinner label={strings.Loading} />;
+  // Ved ny innlasting (f.eks. etter lagring) beholdes innholdet, så paneler og meldinger ikke forsvinner.
+  if (loading && !suggestion) return <Spinner label={strings.Loading} />;
   if (error) {
     return (
       <MessageBar intent="error">

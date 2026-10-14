@@ -59,6 +59,7 @@ declare interface IForslagWebPartStrings {
   CaseWorkerHint: string;
   SaveStatus: string;
   StatusSaved: string;
+  StatusSavedButton: string;
   AverageTitle: string;
   AverageEmpty: string;
   AverageCount: string;
@@ -71,6 +72,7 @@ declare interface IForslagWebPartStrings {
   EvaluationCommentLabel: string;
   SaveEvaluation: string;
   EvaluationSaved: string;
+  EvaluationSavedButton: string;
 }
 
 declare module 'ForslagWebPartStrings' {
