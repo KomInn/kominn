@@ -197,6 +197,7 @@ export const CaseWorkerPanel: React.FC<CaseWorkerPanelProps> = ({ suggestion, on
           </div>
           <div className={styles.actions}>
             <Button
+              appearance={statusDirty ? 'primary' : 'secondary'}
               icon={statusSaved ? <Checkmark16Filled /> : undefined}
               disabled={!statusDirty || !!saving}
               onClick={() =>
