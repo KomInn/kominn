@@ -8,6 +8,7 @@ Alt som trengs for å sette opp et KomInn-område.
 | `Install.ps1` | Kobler til området og kjører malen. Krever PnP.PowerShell 3.4 eller nyere. |
 | `assets/icons/` | Ikoner for FNs 17 bærekraftsmål. Lastes opp til biblioteket Ikoner. |
 | `assets/logo/` | KomInn-logoen (SVG-kilde og PNG). PNG-en lastes opp til Ikoner og settes som områdelogo. |
+| `assets/images/` | `kominn-standardbilde.jpg` vises på forslagskort uten eget bilde. Lastes opp til Ikoner, og kan byttes ut der med en fil med samme navn. Kilden ligger i `docs/kominn-illustrasjon.jpg`. |
 
 ## Kjøring
 

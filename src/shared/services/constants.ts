@@ -28,6 +28,9 @@ export const EDIT_QUERY_KEY = 'rediger';
 export const ALL_SUGGESTIONS_PAGE = 'SitePages/AlleForslag.aspx';
 export const VIEW_QUERY_KEY = 'visning';
 
+/** Illustrasjon for forslag uten bilde. Ligger i biblioteket Ikoner og kan byttes ut der. */
+export const DEFAULT_IMAGE = 'Ikoner/kominn-standardbilde.jpg';
+
 /** Interne feltnavn på listen Forslag. */
 export const SuggestionFields = {
   title: 'Title',

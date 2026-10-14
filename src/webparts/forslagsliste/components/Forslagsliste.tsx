@@ -21,7 +21,7 @@ import { LIST_MODES, type IForslagslisteProps, type ListMode } from './IForslags
 import { buildQuery, type ListFilters } from './listQuery';
 import { useDataService, useFocusAreas, useSuggestions, useTags } from '../../../shared/hooks';
 import { SuggestionCard } from '../../../shared/components';
-import { allSuggestionsUrl, VIEW_QUERY_KEY, type SuggestionOrder } from '../../../shared/services';
+import { allSuggestionsUrl, defaultImageUrl, VIEW_QUERY_KEY, type SuggestionOrder } from '../../../shared/services';
 
 const modeTitles: Record<ListMode, string> = {
   published: strings.ModePublished,
@@ -103,9 +103,10 @@ export const Forslagsliste: React.FC<IForslagslisteProps> = (props) => {
   const items = all.slice((currentPage - 1) * props.top, currentPage * props.top);
   const hasNext = all.length > currentPage * props.top;
   const seeAllHref = props.seeAllUrl.trim() || allSuggestionsUrl(service.webUrl, mode);
-  const showSeeAll = props.showSeeAll && items.length > 0;
+  // Som i SharePoint, men bare når det faktisk finnes flere forslag enn listen viser.
+  const showSeeAll = props.showSeeAll && !paged && hasNext;
   const filtered = filters.focusAreas.length > 0 || filters.tags.length > 0;
-  const cardLabels = { likesLabel: strings.Likes, commentsLabel: strings.Comments, showStatus: props.mode === 'mine', showImage: props.showImages };
+  const cardLabels = { likesLabel: strings.Likes, commentsLabel: strings.Comments, showStatus: props.mode === 'mine', showImage: props.showImages, fallbackImageUrl: defaultImageUrl(service.webUrl) };
   const highlight = (id: number): string | undefined => (featuredIds.has(id) ? strings.MonthlyLabel : undefined);
 
   const scroll = (dir: 1 | -1): void => {
