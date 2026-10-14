@@ -131,7 +131,8 @@ export const CaseWorkerPanel: React.FC<CaseWorkerPanelProps> = ({ suggestion, on
         </Toast>,
         { intent: 'success' }
       );
-      onChanged();
+      // Vurderinger endrer ikke selve forslaget, så bare statusendringer laster forslaget på nytt.
+      if (kind === 'status') onChanged();
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
@@ -205,8 +206,8 @@ export const CaseWorkerPanel: React.FC<CaseWorkerPanelProps> = ({ suggestion, on
 
       <div className={styles.section}>
         <Text weight="semibold">{strings.AverageTitle}</Text>
-        {evaluations.loading && <Spinner size="tiny" />}
-        {!evaluations.loading && !average && <Text size={200}>{strings.AverageEmpty}</Text>}
+        {evaluations.loading && !evaluations.data && <Spinner size="tiny" />}
+        {evaluations.data && !average && <Text size={200}>{strings.AverageEmpty}</Text>}
         {average && (
           <div className={styles.avg}>
             {criteria.map((c) => (
