@@ -254,6 +254,7 @@ describe('webdelene tegnes med testdata', () => {
     }
     // Panelet blir stående mens forslaget lastes på nytt, og knappen bytter tekst.
     expect(button()?.textContent).toBe('Vurdering lagret');
+    expect(c.querySelector('.fui-Spinner')).toBeNull();
     expect(document.body.textContent).toContain('Vurderingen er lagret.');
   });
 

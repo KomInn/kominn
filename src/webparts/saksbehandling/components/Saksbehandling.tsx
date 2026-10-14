@@ -135,7 +135,7 @@ export const Saksbehandling: React.FC<ISaksbehandlingProps> = ({ defaultStatuses
           </Dropdown>
         </Field>
         <Switch id="sb-mine" label={strings.MineOnly} checked={mineOnly} onChange={(_e, d) => setMineOnly(d.checked)} />
-        <Button appearance="subtle" icon={<ArrowClockwise20Regular />} onClick={data.reload} disabled={data.loading}>
+        <Button appearance="subtle" icon={<ArrowClockwise20Regular />} onClick={data.reload} disabled={data.loading || data.refreshing}>
           {strings.Refresh}
         </Button>
       </div>
