@@ -239,6 +239,24 @@ describe('webdelene tegnes med testdata', () => {
     expect(c.textContent).toContain('Rediger forslaget');
   });
 
+  it('Forslag – «Lagre vurdering» viser at vurderingen er lagret', async () => {
+    const c = await renderWithData(<Forslag suggestionId={1} showMap={false} showEvaluation showComments={false} showRelated={false} />);
+    const button = (): HTMLButtonElement | undefined =>
+      Array.from(c.querySelectorAll('button')).find((b) => /Lagre vurdering|Vurdering lagret/.test(b.textContent ?? ''));
+    expect(button()?.textContent).toBe('Lagre vurdering');
+    await act(async () => {
+      button()?.click();
+    });
+    for (let i = 0; i < 10; i++) {
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      });
+    }
+    // Panelet blir stående mens forslaget lastes på nytt, og knappen bytter tekst.
+    expect(button()?.textContent).toBe('Vurdering lagret');
+    expect(document.body.textContent).toContain('Vurderingen er lagret.');
+  });
+
   it('Forslag viser samme antall kommentarer overalt', async () => {
     // Forslag 2 har telleren 8 i testdataene, men bare 1 kommentar i kommentarlisten.
     const c = await renderWithData(<Forslag suggestionId={2} showMap={false} showEvaluation={false} showComments showRelated={false} />);

@@ -15,19 +15,36 @@ import {
   Subtitle2,
   Text,
   Textarea,
+  Toast,
+  ToastTitle,
+  Toaster,
   makeStyles,
-  tokens
+  tokens,
+  useId,
+  useToastController
 } from '@fluentui/react-components';
-import { Gavel20Regular } from '@fluentui/react-icons';
+import { Checkmark16Filled, Gavel20Regular } from '@fluentui/react-icons';
 import * as strings from 'ForslagWebPartStrings';
-import { CASE_WORKER_STATUSES, SUGGESTION_STATUSES, type CaseWorkerStatus, type NewEvaluation, type Suggestion, type SuggestionStatus } from '../../../shared/models';
+import {
+  CASE_WORKER_STATUSES,
+  SUGGESTION_STATUSES,
+  type CaseWorkerStatus,
+  type NewEvaluation,
+  type Suggestion,
+  type SuggestionStatus
+} from '../../../shared/models';
 import { averageEvaluations } from '../../../shared/services';
 import { useAsync, useCurrentUser, useDataService } from '../../../shared/hooks';
 
 const useStyles = makeStyles({
   card: { display: 'flex', flexDirection: 'column', rowGap: tokens.spacingVerticalM, background: tokens.colorNeutralBackground2 },
   section: { display: 'flex', flexDirection: 'column', rowGap: tokens.spacingVerticalS },
-  row: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', columnGap: tokens.spacingHorizontalM, rowGap: tokens.spacingVerticalS },
+  row: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+    columnGap: tokens.spacingHorizontalM,
+    rowGap: tokens.spacingVerticalS
+  },
   // Fluent sin Dropdown har min-width 250px, som er bredere enn kolonnene i sidepanelet.
   dropdown: { minWidth: 0, width: '100%' },
   avg: { display: 'grid', gridTemplateColumns: '1fr auto', columnGap: tokens.spacingHorizontalM, rowGap: tokens.spacingVerticalXXS },
@@ -69,7 +86,12 @@ export const CaseWorkerPanel: React.FC<CaseWorkerPanelProps> = ({ suggestion, on
   const [cwStatus, setCwStatus] = React.useState<CaseWorkerStatus>(suggestion.caseWorkerStatus);
   const [evaluation, setEvaluation] = React.useState<NewEvaluation>(emptyEvaluation(suggestion.id));
   const [saving, setSaving] = React.useState<'status' | 'evaluation'>();
-  const [message, setMessage] = React.useState<{ intent: 'success' | 'error'; text: string }>();
+  const [error, setError] = React.useState<string>();
+  // Det som sist ble lagret. Knappen viser «Lagret» så lenge skjemaet er uendret siden da.
+  const [savedEvaluation, setSavedEvaluation] = React.useState<string>();
+  const [savedStatus, setSavedStatus] = React.useState<string>();
+  const toasterId = useId('kominn-caseworker-toaster');
+  const { dispatchToast } = useToastController(toasterId);
 
   // Fyll inn egen tidligere vurdering.
   React.useEffect(() => {
@@ -89,31 +111,57 @@ export const CaseWorkerPanel: React.FC<CaseWorkerPanelProps> = ({ suggestion, on
 
   const average = averageEvaluations(evaluations.data ?? [])[0];
 
+  const evaluationKey = JSON.stringify(evaluation);
+  const statusKey = `${status}|${cwStatus}`;
+
   const run = async (kind: 'status' | 'evaluation', fn: () => Promise<unknown>, ok: string): Promise<void> => {
     setSaving(kind);
-    setMessage(undefined);
+    setError(undefined);
     try {
       await fn();
-      setMessage({ intent: 'success', text: ok });
-      if (kind === 'evaluation') evaluations.reload();
+      if (kind === 'evaluation') {
+        setSavedEvaluation(evaluationKey);
+        evaluations.reload();
+      } else {
+        setSavedStatus(statusKey);
+      }
+      dispatchToast(
+        <Toast>
+          <ToastTitle>{ok}</ToastTitle>
+        </Toast>,
+        { intent: 'success' }
+      );
       onChanged();
     } catch (err) {
-      setMessage({ intent: 'error', text: err instanceof Error ? err.message : String(err) });
+      setError(err instanceof Error ? err.message : String(err));
     } finally {
       setSaving(undefined);
     }
   };
 
   const statusDirty = status !== suggestion.status || cwStatus !== suggestion.caseWorkerStatus;
+  const statusSaved = !statusDirty && savedStatus === statusKey;
+  const evaluationSaved = savedEvaluation === evaluationKey;
 
   return (
     <Card className={styles.card} appearance="filled-alternative">
-      <CardHeader image={<Gavel20Regular />} header={<Subtitle2>{strings.CaseWorkerTitle}</Subtitle2>} description={<Caption1>{strings.CaseWorkerHint}</Caption1>} />
+      <Toaster toasterId={toasterId} position="bottom-end" />
+      <CardHeader
+        image={<Gavel20Regular />}
+        header={<Subtitle2>{strings.CaseWorkerTitle}</Subtitle2>}
+        description={<Caption1>{strings.CaseWorkerHint}</Caption1>}
+      />
 
       <div className={styles.section}>
         <div className={styles.row}>
           <Field label={strings.StatusLabel}>
-            <Dropdown id="fs-status" className={styles.dropdown} value={status} selectedOptions={[status]} onOptionSelect={(_e, d) => setStatus(d.optionValue as SuggestionStatus)}>
+            <Dropdown
+              id="fs-status"
+              className={styles.dropdown}
+              value={status}
+              selectedOptions={[status]}
+              onOptionSelect={(_e, d) => setStatus(d.optionValue as SuggestionStatus)}
+            >
               {SUGGESTION_STATUSES.map((s) => (
                 <Option key={s} value={s}>
                   {s}
@@ -122,7 +170,13 @@ export const CaseWorkerPanel: React.FC<CaseWorkerPanelProps> = ({ suggestion, on
             </Dropdown>
           </Field>
           <Field label={strings.CaseWorkerStatusLabel}>
-            <Dropdown id="fs-cwstatus" className={styles.dropdown} value={cwStatus} selectedOptions={[cwStatus]} onOptionSelect={(_e, d) => setCwStatus(d.optionValue as CaseWorkerStatus)}>
+            <Dropdown
+              id="fs-cwstatus"
+              className={styles.dropdown}
+              value={cwStatus}
+              selectedOptions={[cwStatus]}
+              onOptionSelect={(_e, d) => setCwStatus(d.optionValue as CaseWorkerStatus)}
+            >
               {CASE_WORKER_STATUSES.map((s) => (
                 <Option key={s} value={s}>
                   {s}
@@ -133,10 +187,17 @@ export const CaseWorkerPanel: React.FC<CaseWorkerPanelProps> = ({ suggestion, on
         </div>
         <div className={styles.actions}>
           <Button
+            icon={statusSaved ? <Checkmark16Filled /> : undefined}
             disabled={!statusDirty || !!saving}
-            onClick={() => run('status', () => service.updateSuggestion(suggestion.id, { status, caseWorkerStatus: cwStatus }), strings.StatusSaved).catch(() => undefined)}
+            onClick={() =>
+              run(
+                'status',
+                () => service.updateSuggestion(suggestion.id, { status, caseWorkerStatus: cwStatus }),
+                strings.StatusSaved
+              ).catch(() => undefined)
+            }
           >
-            {strings.SaveStatus}
+            {statusSaved ? strings.StatusSavedButton : strings.SaveStatus}
           </Button>
           {saving === 'status' && <Spinner size="tiny" />}
         </div>
@@ -167,28 +228,56 @@ export const CaseWorkerPanel: React.FC<CaseWorkerPanelProps> = ({ suggestion, on
         <div className={styles.row}>
           {criteria.map((c) => (
             <Field key={c.key} label={`${c.label()}: ${evaluation[c.key]}`}>
-              <Slider id={`fs-score-${c.key}`} min={1} max={5} step={1} value={evaluation[c.key]} onChange={(_e, d) => setEvaluation((v) => ({ ...v, [c.key]: d.value }))} />
+              <Slider
+                id={`fs-score-${c.key}`}
+                min={1}
+                max={5}
+                step={1}
+                value={evaluation[c.key]}
+                onChange={(_e, d) => setEvaluation((v) => ({ ...v, [c.key]: d.value }))}
+              />
             </Field>
           ))}
         </div>
         <div className={styles.row}>
-          <Checkbox id="fs-more-actors" label={strings.MoreActorsLabel} checked={evaluation.moreActors} onChange={(_e, d) => setEvaluation((v) => ({ ...v, moreActors: d.checked === true }))} />
-          <Checkbox id="fs-law" label={strings.LawRequirementsLabel} checked={evaluation.lawRequirements} onChange={(_e, d) => setEvaluation((v) => ({ ...v, lawRequirements: d.checked === true }))} />
+          <Checkbox
+            id="fs-more-actors"
+            label={strings.MoreActorsLabel}
+            checked={evaluation.moreActors}
+            onChange={(_e, d) => setEvaluation((v) => ({ ...v, moreActors: d.checked === true }))}
+          />
+          <Checkbox
+            id="fs-law"
+            label={strings.LawRequirementsLabel}
+            checked={evaluation.lawRequirements}
+            onChange={(_e, d) => setEvaluation((v) => ({ ...v, lawRequirements: d.checked === true }))}
+          />
         </div>
         <Field label={strings.EvaluationCommentLabel}>
-          <Textarea id="fs-eval-comment" rows={2} resize="vertical" value={evaluation.comment ?? ''} onChange={(_e, d) => setEvaluation((v) => ({ ...v, comment: d.value }))} />
+          <Textarea
+            id="fs-eval-comment"
+            rows={2}
+            resize="vertical"
+            value={evaluation.comment ?? ''}
+            onChange={(_e, d) => setEvaluation((v) => ({ ...v, comment: d.value }))}
+          />
         </Field>
         <div className={styles.actions}>
-          <Button appearance="primary" disabled={!!saving} onClick={() => run('evaluation', () => service.saveEvaluation(evaluation), strings.EvaluationSaved).catch(() => undefined)}>
-            {strings.SaveEvaluation}
+          <Button
+            appearance={evaluationSaved ? 'secondary' : 'primary'}
+            icon={evaluationSaved ? <Checkmark16Filled /> : undefined}
+            disabled={!!saving}
+            onClick={() => run('evaluation', () => service.saveEvaluation(evaluation), strings.EvaluationSaved).catch(() => undefined)}
+          >
+            {evaluationSaved ? strings.EvaluationSavedButton : strings.SaveEvaluation}
           </Button>
           {saving === 'evaluation' && <Spinner size="tiny" />}
         </div>
       </div>
 
-      {message && (
-        <MessageBar intent={message.intent}>
-          <MessageBarBody>{message.text}</MessageBarBody>
+      {error && (
+        <MessageBar intent="error">
+          <MessageBarBody>{error}</MessageBarBody>
         </MessageBar>
       )}
     </Card>

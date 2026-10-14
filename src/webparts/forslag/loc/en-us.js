@@ -60,6 +60,7 @@ define([], function () {
     CaseWorkerHint: 'Only visible to the Case workers group.',
     SaveStatus: 'Save status',
     StatusSaved: 'Status saved.',
+    StatusSavedButton: 'Status saved',
     AverageTitle: 'Average of all evaluations',
     AverageEmpty: 'No evaluations yet.',
     AverageCount: 'Number of evaluations',
@@ -71,6 +72,7 @@ define([], function () {
     LawRequirementsLabel: 'Legal requirements',
     EvaluationCommentLabel: 'Short comment',
     SaveEvaluation: 'Save evaluation',
-    EvaluationSaved: 'Evaluation saved.'
+    EvaluationSaved: 'Evaluation saved.',
+    EvaluationSavedButton: 'Evaluation saved'
   };
 });

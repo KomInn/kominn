@@ -60,6 +60,7 @@ define([], function () {
     CaseWorkerHint: 'Kun synlig for gruppen Saksbehandlere.',
     SaveStatus: 'Lagre status',
     StatusSaved: 'Status er lagret.',
+    StatusSavedButton: 'Status lagret',
     AverageTitle: 'Snitt av alle vurderinger',
     AverageEmpty: 'Ingen vurderinger ennå.',
     AverageCount: 'Antall vurderinger',
@@ -71,6 +72,7 @@ define([], function () {
     LawRequirementsLabel: 'Lovkrav',
     EvaluationCommentLabel: 'Kort kommentar',
     SaveEvaluation: 'Lagre vurdering',
-    EvaluationSaved: 'Vurderingen er lagret.'
+    EvaluationSaved: 'Vurderingen er lagret.',
+    EvaluationSavedButton: 'Vurdering lagret'
   };
 });
