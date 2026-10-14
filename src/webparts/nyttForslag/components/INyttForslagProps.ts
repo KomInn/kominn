@@ -2,6 +2,8 @@ import type { DisplayMode } from '@microsoft/sp-core-library';
 
 export interface NyttForslagSections {
   showAmount: boolean;
+  showFocusAreas: boolean;
+  showManagerInformed: boolean;
   showChallenges: boolean;
   showSolution: boolean;
   showUsefulForOthers: boolean;
@@ -12,7 +14,16 @@ export interface NyttForslagSections {
   showInspiredBy: boolean;
 }
 
-export interface INyttForslagProps extends NyttForslagSections {
+/** Tekster som kan overstyres i egenskapsruten. Tom ledetekst gir standardteksten; tom hjelpetekst fjerner den. */
+export interface NyttForslagTexts {
+  summaryLabel?: string;
+  summaryHint?: string;
+  amountLabel?: string;
+  amountHint?: string;
+  imageSectionTitle?: string;
+}
+
+export interface INyttForslagProps extends NyttForslagSections, NyttForslagTexts {
   introText: string;
   successText: string;
   competitionRef: string;

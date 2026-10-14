@@ -3,7 +3,7 @@ import type { NyttForslagSections } from './INyttForslagProps';
 import { mockSuggestions, mockUser } from '../../../shared/services/mockData';
 
 const sections: NyttForslagSections = {
-  showAmount: true, showChallenges: true, showSolution: true, showUsefulForOthers: true, showTags: true,
+  showAmount: true, showFocusAreas: true, showManagerInformed: false, showChallenges: true, showSolution: true, showUsefulForOthers: true, showTags: true,
   showGoals: true, showImage: true, showLocation: true, showInspiredBy: true
 };
 const t = { required: 'Må fylles ut', invalidAmount: 'Ugyldig sum', invalidEmail: 'Ugyldig e-post' };

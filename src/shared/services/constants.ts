@@ -48,6 +48,7 @@ export const SuggestionFields = {
   city: 'KmiCity',
   countyCode: 'KmiCountyCode',
   manager: 'KmiManager',
+  managerInformed: 'KmiManagerInformed',
   sustainabilityGoals: 'KmiSustainabilityGoals',
   inspiredBy: 'KmiInspiredBy',
   likes: 'KmiLikes',
@@ -61,7 +62,7 @@ export const SuggestionFields = {
 export const EvaluationFields = {
   suggestion: 'KmiSuggestion',
   feasibility: 'KmiScoreFeasability',
-  emissionReductionPotential: 'KmiScoreUserInvolvement',
+  learningPotential: 'KmiScoreUserInvolvement',
   distributionPotential: 'KmiScoreDistributionPotential',
   degreeOfInnovation: 'KmiScoreDegreeOfInnovation',
   moreActors: 'KmiMoreActors',

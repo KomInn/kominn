@@ -11,6 +11,8 @@ import {
   MessageBarBody,
   MessageBarTitle,
   Option,
+  Radio,
+  RadioGroup,
   Spinner,
   Subtitle2,
   Text,
@@ -22,7 +24,16 @@ import {
 import { CheckmarkCircle24Filled } from '@fluentui/react-icons';
 import * as strings from 'NyttForslagWebPartStrings';
 import type { INyttForslagProps } from './INyttForslagProps';
-import { emptyForm, fillPersonalia, fromExisting, fromSuggestion, toNewSuggestion, validate, type FormErrors, type FormState } from './formState';
+import {
+  emptyForm,
+  fillPersonalia,
+  fromExisting,
+  fromSuggestion,
+  toNewSuggestion,
+  validate,
+  type FormErrors,
+  type FormState
+} from './formState';
 import { useConfig, useCurrentUser, useDataService, useFocusAreas, useSustainabilityGoals, useTags } from '../../../shared/hooks';
 import { GoalPicker, ImageUpload, LocationPicker, SuggestionPicker } from '../../../shared/components';
 import type { Suggestion } from '../../../shared/models';
@@ -32,12 +43,22 @@ import { clearDraft, getQueryNumber, loadDraft, parseLatLng, saveDraft } from '.
 const useStyles = makeStyles({
   root: { display: 'flex', flexDirection: 'column', rowGap: tokens.spacingVerticalL, maxWidth: '760px' },
   section: { display: 'flex', flexDirection: 'column', rowGap: tokens.spacingVerticalM },
-  row: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', columnGap: tokens.spacingHorizontalM, rowGap: tokens.spacingVerticalM },
-  actions: { display: 'flex', flexWrap: 'wrap', columnGap: tokens.spacingHorizontalS, rowGap: tokens.spacingVerticalS, alignItems: 'center' },
+  row: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+    columnGap: tokens.spacingHorizontalM,
+    rowGap: tokens.spacingVerticalM
+  },
+  actions: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    columnGap: tokens.spacingHorizontalS,
+    rowGap: tokens.spacingVerticalS,
+    alignItems: 'center'
+  },
   success: { display: 'flex', flexDirection: 'column', rowGap: tokens.spacingVerticalM, alignItems: 'flex-start' },
   successIcon: { color: tokens.colorPaletteGreenForeground3 }
 });
-
 
 export const NyttForslag: React.FC<INyttForslagProps> = (props) => {
   const styles = useStyles();
@@ -52,7 +73,7 @@ export const NyttForslag: React.FC<INyttForslagProps> = (props) => {
   const copyId = React.useMemo(() => (editId ? undefined : getQueryNumber(COPY_QUERY_KEY)), [editId]);
   const sourceId = editId ?? copyId;
 
-  const [form, setForm] = React.useState<FormState>(() => (sourceId ? emptyForm : loadDraft<FormState>(draftKey) ?? emptyForm));
+  const [form, setForm] = React.useState<FormState>(() => (sourceId ? emptyForm : (loadDraft<FormState>(draftKey) ?? emptyForm)));
   const [imageFile, setImageFile] = React.useState<File>();
   const [errors, setErrors] = React.useState<FormErrors>({});
   const [submitting, setSubmitting] = React.useState(false);
@@ -212,81 +233,126 @@ export const NyttForslag: React.FC<INyttForslagProps> = (props) => {
         <Field label={strings.TitleLabel} required validationMessage={errors.title} validationState={errors.title ? 'error' : 'none'}>
           <Input id="nf-title" value={form.title} maxLength={255} onChange={(_e, d) => update('title', d.value)} />
         </Field>
-        <Field label={strings.SummaryLabel} hint={strings.SummaryHint} required validationMessage={errors.summary} validationState={errors.summary ? 'error' : 'none'}>
+        <Field
+          label={props.summaryLabel || strings.SummaryLabel}
+          hint={(props.summaryHint ?? strings.SummaryHint) || undefined}
+          required
+          validationMessage={errors.summary}
+          validationState={errors.summary ? 'error' : 'none'}
+        >
           <Textarea id="nf-summary" value={form.summary} rows={5} resize="vertical" onChange={(_e, d) => update('summary', d.value)} />
         </Field>
         {props.showAmount && (
-          <Field label={strings.AmountLabel} hint={strings.AmountHint} required validationMessage={errors.amount} validationState={errors.amount ? 'error' : 'none'}>
-            <Input id="nf-amount" type="text" inputMode="numeric" value={form.amount} contentAfter={<Text size={200}>kr</Text>} onChange={(_e, d) => update('amount', d.value)} />
+          <Field
+            label={props.amountLabel || strings.AmountLabel}
+            hint={(props.amountHint ?? strings.AmountHint) || undefined}
+            required
+            validationMessage={errors.amount}
+            validationState={errors.amount ? 'error' : 'none'}
+          >
+            <Input
+              id="nf-amount"
+              type="text"
+              inputMode="numeric"
+              value={form.amount}
+              contentAfter={<Text size={200}>kr</Text>}
+              onChange={(_e, d) => update('amount', d.value)}
+            />
           </Field>
         )}
         {props.showChallenges && (
           <Field label={strings.ChallengesLabel} hint={strings.ChallengesHint}>
-            <Textarea id="nf-challenges" value={form.challenges} rows={3} resize="vertical" onChange={(_e, d) => update('challenges', d.value)} />
+            <Textarea
+              id="nf-challenges"
+              value={form.challenges}
+              rows={3}
+              resize="vertical"
+              onChange={(_e, d) => update('challenges', d.value)}
+            />
           </Field>
         )}
         {props.showSolution && (
           <Field label={strings.SolutionLabel}>
-            <Textarea id="nf-solution" value={form.suggestedSolution} rows={3} resize="vertical" onChange={(_e, d) => update('suggestedSolution', d.value)} />
+            <Textarea
+              id="nf-solution"
+              value={form.suggestedSolution}
+              rows={3}
+              resize="vertical"
+              onChange={(_e, d) => update('suggestedSolution', d.value)}
+            />
           </Field>
         )}
         {props.showUsefulForOthers && (
           <Field label={strings.UsefulForOthersLabel}>
-            <Textarea id="nf-useful" value={form.usefulForOthers} rows={3} resize="vertical" onChange={(_e, d) => update('usefulForOthers', d.value)} />
+            <Textarea
+              id="nf-useful"
+              value={form.usefulForOthers}
+              rows={3}
+              resize="vertical"
+              onChange={(_e, d) => update('usefulForOthers', d.value)}
+            />
           </Field>
         )}
-        <div className={styles.row}>
-          <Field label={strings.FocusAreasLabel}>
-            <Dropdown
-              id="nf-areas"
-              multiselect
-              placeholder={areas.loading ? strings.Loading : strings.SelectPlaceholder}
-              selectedOptions={form.focusAreas}
-              value={form.focusAreas.join(', ')}
-              onOptionSelect={(_e, d) => update('focusAreas', d.selectedOptions)}
-            >
-              {(areas.data ?? []).map((a) => (
-                <Option key={a} value={a}>
-                  {a}
-                </Option>
-              ))}
-            </Dropdown>
-          </Field>
-          {props.showTags && (
-            <Field label={strings.TagsLabel}>
-              <Dropdown
-                id="nf-tags"
-                multiselect
-                placeholder={tags.loading ? strings.Loading : strings.SelectPlaceholder}
-                selectedOptions={form.tags}
-                value={form.tags.join(', ')}
-                onOptionSelect={(_e, d) => update('tags', d.selectedOptions)}
-              >
-                {(tags.data ?? []).map((t) => (
-                  <Option key={t} value={t}>
-                    {t}
-                  </Option>
-                ))}
-              </Dropdown>
-            </Field>
-          )}
-        </div>
+        {(props.showFocusAreas || props.showTags) && (
+          <div className={styles.row}>
+            {props.showFocusAreas && (
+              <Field label={strings.FocusAreasLabel}>
+                <Dropdown
+                  id="nf-areas"
+                  multiselect
+                  placeholder={areas.loading ? strings.Loading : strings.SelectPlaceholder}
+                  selectedOptions={form.focusAreas}
+                  value={form.focusAreas.join(', ')}
+                  onOptionSelect={(_e, d) => update('focusAreas', d.selectedOptions)}
+                >
+                  {(areas.data ?? []).map((a) => (
+                    <Option key={a} value={a}>
+                      {a}
+                    </Option>
+                  ))}
+                </Dropdown>
+              </Field>
+            )}
+            {props.showTags && (
+              <Field label={strings.TagsLabel}>
+                <Dropdown
+                  id="nf-tags"
+                  multiselect
+                  placeholder={tags.loading ? strings.Loading : strings.SelectPlaceholder}
+                  selectedOptions={form.tags}
+                  value={form.tags.join(', ')}
+                  onOptionSelect={(_e, d) => update('tags', d.selectedOptions)}
+                >
+                  {(tags.data ?? []).map((t) => (
+                    <Option key={t} value={t}>
+                      {t}
+                    </Option>
+                  ))}
+                </Dropdown>
+              </Field>
+            )}
+          </div>
+        )}
       </section>
 
       {props.showGoals && (
         <section className={styles.section} aria-labelledby="nf-goals">
           <Subtitle2 id="nf-goals">{strings.SectionGoals}</Subtitle2>
           <Text size={200}>{strings.GoalsHint}</Text>
-          {goals.loading ? <Spinner size="tiny" /> : <GoalPicker goals={goals.data ?? []} selectedIds={form.goalIds} onChange={(ids) => update('goalIds', ids)} />}
+          {goals.loading ? (
+            <Spinner size="tiny" />
+          ) : (
+            <GoalPicker goals={goals.data ?? []} selectedIds={form.goalIds} onChange={(ids) => update('goalIds', ids)} />
+          )}
         </section>
       )}
 
       {(props.showImage || props.showLocation) && (
         <section className={styles.section} aria-labelledby="nf-media">
-          <Subtitle2 id="nf-media">{strings.SectionMedia}</Subtitle2>
+          <Subtitle2 id="nf-media">{props.showLocation ? strings.SectionMedia : props.imageSectionTitle || strings.SectionImage}</Subtitle2>
           <div className={styles.row}>
             {props.showImage && (
-              <Field label={strings.ImageLabel}>
+              <Field label={props.showLocation ? strings.ImageLabel : undefined}>
                 <ImageUpload
                   inputId="nf-image"
                   imageUrl={form.imageUrl}
@@ -301,7 +367,14 @@ export const NyttForslag: React.FC<INyttForslagProps> = (props) => {
             )}
             {props.showLocation && (
               <Field label={strings.LocationLabel}>
-                <LocationPicker value={form.location} onChange={(v) => update('location', v)} center={center} zoom={zoom} helpText={strings.LocationHint} clearLabel={strings.LocationClear} />
+                <LocationPicker
+                  value={form.location}
+                  onChange={(v) => update('location', v)}
+                  center={center}
+                  zoom={zoom}
+                  helpText={strings.LocationHint}
+                  clearLabel={strings.LocationClear}
+                />
               </Field>
             )}
           </div>
@@ -312,7 +385,13 @@ export const NyttForslag: React.FC<INyttForslagProps> = (props) => {
         <section className={styles.section} aria-labelledby="nf-inspired">
           <Subtitle2 id="nf-inspired">{strings.SectionInspiredBy}</Subtitle2>
           <Text size={200}>{strings.InspiredByHint}</Text>
-          <SuggestionPicker inputId="nf-inspired-input" selected={form.inspiredBy} onChange={(v) => update('inspiredBy', v)} placeholder={strings.InspiredByPlaceholder} noResultsText={strings.NoResults} />
+          <SuggestionPicker
+            inputId="nf-inspired-input"
+            selected={form.inspiredBy}
+            onChange={(v) => update('inspiredBy', v)}
+            placeholder={strings.InspiredByPlaceholder}
+            noResultsText={strings.NoResults}
+          />
         </section>
       )}
 
@@ -340,6 +419,19 @@ export const NyttForslag: React.FC<INyttForslagProps> = (props) => {
             <Input id="nf-manager" value={user.data.manager.name} readOnly />
           </Field>
         )}
+        {props.showManagerInformed && (
+          <Field label={strings.ManagerInformedLabel}>
+            <RadioGroup
+              id="nf-manager-informed"
+              layout="horizontal"
+              value={form.managerInformed === undefined ? '' : form.managerInformed ? 'ja' : 'nei'}
+              onChange={(_e, d) => update('managerInformed', d.value === 'ja')}
+            >
+              <Radio value="ja" label={strings.Yes} />
+              <Radio value="nei" label={strings.No} />
+            </RadioGroup>
+          </Field>
+        )}
         <Checkbox id="nf-consent" label={strings.ConsentLabel} checked disabled />
       </section>
 
@@ -360,7 +452,15 @@ export const NyttForslag: React.FC<INyttForslagProps> = (props) => {
             {strings.Cancel}
           </Button>
         ) : (
-          <Button appearance="subtle" type="button" disabled={submitting} onClick={() => { clearDraft(draftKey); reset(); }}>
+          <Button
+            appearance="subtle"
+            type="button"
+            disabled={submitting}
+            onClick={() => {
+              clearDraft(draftKey);
+              reset();
+            }}
+          >
             {strings.Reset}
           </Button>
         )}

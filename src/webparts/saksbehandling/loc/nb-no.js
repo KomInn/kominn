@@ -44,9 +44,8 @@ define([], function () {
     NoEvaluations: 'Ingen vurderinger ennå.',
     EvaluateHint: 'Egen vurdering gjøres på forslagssiden.',
     ScoreFeasibility: 'Gjennomførbarhet',
-    ScoreEmission: 'Utslippsreduksjon',
+    ScoreLearning: 'Potensial for læring og tjenesteutvikling',
     ScoreDistribution: 'Spredningspotensial',
-    ScoreInnovation: 'Innovasjonsgrad',
     Save: 'Lagre',
     Cancel: 'Avbryt'
   };

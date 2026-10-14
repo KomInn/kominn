@@ -38,6 +38,9 @@ declare interface IForslagWebPartStrings {
   SubmitterLabel: string;
   EmailLabel: string;
   ManagerLabel: string;
+  ManagerInformedLabel: string;
+  Yes: string;
+  No: string;
   CompetitionRefLabel: string;
   MapTitle: string;
 
@@ -61,9 +64,8 @@ declare interface IForslagWebPartStrings {
   AverageCount: string;
   MyEvaluationTitle: string;
   ScoreFeasibility: string;
-  ScoreEmission: string;
+  ScoreLearning: string;
   ScoreDistribution: string;
-  ScoreInnovation: string;
   MoreActorsLabel: string;
   LawRequirementsLabel: string;
   EvaluationCommentLabel: string;

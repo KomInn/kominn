@@ -4,7 +4,7 @@ import type { EvaluationAverage } from '../../../shared/services';
 export interface CaseRow {
   suggestion: Suggestion;
   average?: EvaluationAverage;
-  /** Snitt av de fire kriteriene, eller undefined uten vurderinger. */
+  /** Snitt av de tre kriteriene, eller undefined uten vurderinger. */
   score?: number;
 }
 
@@ -23,7 +23,7 @@ export interface CaseFilter {
 
 export function overallScore(a?: EvaluationAverage): number | undefined {
   if (!a || a.count === 0) return undefined;
-  return Math.round(((a.feasibility + a.emissionReductionPotential + a.distributionPotential + a.degreeOfInnovation) / 4) * 10) / 10;
+  return Math.round(((a.feasibility + a.learningPotential + a.distributionPotential) / 3) * 10) / 10;
 }
 
 export function buildRows(suggestions: Suggestion[], averages: EvaluationAverage[]): CaseRow[] {

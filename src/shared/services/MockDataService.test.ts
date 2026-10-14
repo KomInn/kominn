@@ -39,8 +39,8 @@ describe('MockDataService', () => {
   it('erstatter egen vurdering i stedet for å legge til ny', async () => {
     const svc = new MockDataService();
     const before = (await svc.getEvaluations(5)).length;
-    await svc.saveEvaluation({ suggestionId: 5, feasibility: 3, emissionReductionPotential: 3, distributionPotential: 3, degreeOfInnovation: 3, moreActors: false, lawRequirements: false });
-    await svc.saveEvaluation({ suggestionId: 5, feasibility: 5, emissionReductionPotential: 3, distributionPotential: 3, degreeOfInnovation: 3, moreActors: false, lawRequirements: false });
+    await svc.saveEvaluation({ suggestionId: 5, feasibility: 3, learningPotential: 3, distributionPotential: 3, moreActors: false, lawRequirements: false });
+    await svc.saveEvaluation({ suggestionId: 5, feasibility: 5, learningPotential: 3, distributionPotential: 3, moreActors: false, lawRequirements: false });
     const after = await svc.getEvaluations(5);
     expect(after.length).toBe(before + 1);
     expect(after[after.length - 1].feasibility).toBe(5);

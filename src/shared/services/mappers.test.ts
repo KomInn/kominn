@@ -55,14 +55,14 @@ describe('hjelpefunksjoner', () => {
 describe('averageEvaluations', () => {
   it('beregner snitt per forslag', () => {
     const avg = averageEvaluations([
-      { id: 1, suggestionId: 1, feasibility: 4, emissionReductionPotential: 5, distributionPotential: 3, degreeOfInnovation: 2, moreActors: true, lawRequirements: false },
-      { id: 2, suggestionId: 1, feasibility: 3, emissionReductionPotential: 4, distributionPotential: 4, degreeOfInnovation: 2, moreActors: true, lawRequirements: false },
-      { id: 3, suggestionId: 2, feasibility: 5, emissionReductionPotential: 3, distributionPotential: 5, degreeOfInnovation: 3, moreActors: false, lawRequirements: false }
+      { id: 1, suggestionId: 1, feasibility: 4, learningPotential: 5, distributionPotential: 3, degreeOfInnovation: 2, moreActors: true, lawRequirements: false },
+      { id: 2, suggestionId: 1, feasibility: 3, learningPotential: 4, distributionPotential: 4, degreeOfInnovation: 2, moreActors: true, lawRequirements: false },
+      { id: 3, suggestionId: 2, feasibility: 5, learningPotential: 3, distributionPotential: 5, degreeOfInnovation: 3, moreActors: false, lawRequirements: false }
     ]);
     expect(avg).toHaveLength(2);
     const first = avg.find((a) => a.suggestionId === 1);
     expect(first?.count).toBe(2);
     expect(first?.feasibility).toBe(3.5);
-    expect(first?.emissionReductionPotential).toBe(4.5);
+    expect(first?.learningPotential).toBe(4.5);
   });
 });
