@@ -49,6 +49,7 @@
     "SokWebPartStrings": "lib/webparts/sok/loc/{locale}.js",
     "NyttForslagWebPartStrings": "lib/webparts/nyttForslag/loc/{locale}.js",
     "ForslagWebPartStrings": "lib/webparts/forslag/loc/{locale}.js",
-    "SaksbehandlingWebPartStrings": "lib/webparts/saksbehandling/loc/{locale}.js"
+    "SaksbehandlingWebPartStrings": "lib/webparts/saksbehandling/loc/{locale}.js",
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js"
   }
 }

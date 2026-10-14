@@ -28,6 +28,8 @@ const useStyles = makeStyles({
   card: { display: 'flex', flexDirection: 'column', rowGap: tokens.spacingVerticalM, background: tokens.colorNeutralBackground2 },
   section: { display: 'flex', flexDirection: 'column', rowGap: tokens.spacingVerticalS },
   row: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', columnGap: tokens.spacingHorizontalM, rowGap: tokens.spacingVerticalS },
+  // Fluent sin Dropdown har min-width 250px, som er bredere enn kolonnene i sidepanelet.
+  dropdown: { minWidth: 0, width: '100%' },
   avg: { display: 'grid', gridTemplateColumns: '1fr auto', columnGap: tokens.spacingHorizontalM, rowGap: tokens.spacingVerticalXXS },
   num: { fontVariantNumeric: 'tabular-nums', textAlign: 'right' },
   actions: { display: 'flex', columnGap: tokens.spacingHorizontalS, alignItems: 'center' }
@@ -111,7 +113,7 @@ export const CaseWorkerPanel: React.FC<CaseWorkerPanelProps> = ({ suggestion, on
       <div className={styles.section}>
         <div className={styles.row}>
           <Field label={strings.StatusLabel}>
-            <Dropdown id="fs-status" value={status} selectedOptions={[status]} onOptionSelect={(_e, d) => setStatus(d.optionValue as SuggestionStatus)}>
+            <Dropdown id="fs-status" className={styles.dropdown} value={status} selectedOptions={[status]} onOptionSelect={(_e, d) => setStatus(d.optionValue as SuggestionStatus)}>
               {SUGGESTION_STATUSES.map((s) => (
                 <Option key={s} value={s}>
                   {s}
@@ -120,7 +122,7 @@ export const CaseWorkerPanel: React.FC<CaseWorkerPanelProps> = ({ suggestion, on
             </Dropdown>
           </Field>
           <Field label={strings.CaseWorkerStatusLabel}>
-            <Dropdown id="fs-cwstatus" value={cwStatus} selectedOptions={[cwStatus]} onOptionSelect={(_e, d) => setCwStatus(d.optionValue as CaseWorkerStatus)}>
+            <Dropdown id="fs-cwstatus" className={styles.dropdown} value={cwStatus} selectedOptions={[cwStatus]} onOptionSelect={(_e, d) => setCwStatus(d.optionValue as CaseWorkerStatus)}>
               {CASE_WORKER_STATUSES.map((s) => (
                 <Option key={s} value={s}>
                   {s}

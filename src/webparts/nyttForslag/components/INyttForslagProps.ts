@@ -1,3 +1,4 @@
+import type { BaseComponentContext } from '@microsoft/sp-component-base';
 import type { DisplayMode } from '@microsoft/sp-core-library';
 
 export interface NyttForslagSections {
@@ -30,4 +31,6 @@ export interface INyttForslagProps extends NyttForslagSections, NyttForslagTexts
   displayMode: DisplayMode;
   /** Absolutt URL til KomInn-området webdelen er koblet til. */
   webUrl: string;
+  /** SPFx-konteksten, brukes av SharePoints filvelger for bilder. */
+  context?: BaseComponentContext;
 }
