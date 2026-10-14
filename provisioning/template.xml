@@ -150,7 +150,7 @@
             <pnp:FieldRef ID="e605364e-4956-4bad-9de0-5ac72a8f83aa" Name="KmiCity" />
             <pnp:FieldRef ID="4574c53c-b0e2-415c-af76-5661de396f06" Name="KmiCountyCode" />
             <pnp:FieldRef ID="710ef48a-adb9-4f55-81bd-8a0f248e29ba" Name="KmiManager" />
-            <pnp:FieldRef ID="eaf9699e-918e-4151-95d4-3c2e276fce2f" Name="KmiManagerInformed" />
+            <pnp:FieldRef ID="eaf9699e-918e-4151-95d4-3c2e276fce2f" Name="KmiManagerInformed" UpdateChildren="true" />
             <pnp:FieldRef ID="988a9f76-884b-4d5a-906a-55c6f896880d" Name="KmiLikes" />
             <pnp:FieldRef ID="00aa7464-6dd6-4483-87bc-d80fd098badd" Name="KmiNumberOfComments" />
             <pnp:FieldRef ID="f55199fd-8cb6-4583-a98e-a6363524f38f" Name="KmiMonthlyStartDate" />
@@ -276,6 +276,9 @@
           <pnp:ContentTypeBindings>
             <pnp:ContentTypeBinding ContentTypeID="0x010063D756B686FA90498E2CB193C077DEA0" Default="true" />
           </pnp:ContentTypeBindings>
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="eaf9699e-918e-4151-95d4-3c2e276fce2f" Name="KmiManagerInformed" DisplayName="Leder orientert" />
+          </pnp:FieldRefs>
           <pnp:Fields>
             <Field Type="LookupMulti" DisplayName="Bærekraftsmål" List="{listid:Baerekraftsmaal}" ShowField="Title" Mult="TRUE" Sortable="FALSE" ID="{bc3203f8-17cb-4d08-a56d-f27163916c16}" Group="KomInn" StaticName="KmiSustainabilityGoals" Name="KmiSustainabilityGoals" />
             <Field Type="LookupMulti" DisplayName="Inspirert av" List="{listid:Forslag}" ShowField="Title" Mult="TRUE" Sortable="FALSE" ID="{07e827ec-c34f-48d6-b69c-6f0ef48f7c90}" Group="KomInn" StaticName="KmiInspiredBy" Name="KmiInspiredBy" />
