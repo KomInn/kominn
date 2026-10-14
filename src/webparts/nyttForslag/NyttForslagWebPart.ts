@@ -51,7 +51,8 @@ export default class NyttForslagWebPart extends BaseClientSideWebPart<INyttForsl
       showLocation: p.showLocation !== false,
       showInspiredBy: p.showInspiredBy !== false,
       displayMode: this.displayMode,
-      webUrl: this.service.webUrl
+      webUrl: this.service.webUrl,
+      context: this.context
     };
     ReactDom.render(
       React.createElement(KomInnProvider, { theme: this.theme, instanceId: this.instanceId, service: this.service }, React.createElement(NyttForslag, props)),

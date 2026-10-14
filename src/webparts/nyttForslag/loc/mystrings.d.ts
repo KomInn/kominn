@@ -55,6 +55,10 @@ declare interface INyttForslagWebPartStrings {
   ImageBrowse: string;
   ImageRemove: string;
   ImageHint: string;
+  ImageChoose: string;
+  ImageChange: string;
+  ImageError: string;
+  ImageLoading: string;
   LocationLabel: string;
   LocationHint: string;
   LocationClear: string;

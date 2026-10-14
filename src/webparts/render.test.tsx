@@ -5,6 +5,8 @@
 
 jest.mock('@microsoft/sp-core-library', () => ({ DisplayMode: { Read: 1, Edit: 2 } }));
 jest.mock('../shared/services/SharePointDataService', () => ({ SharePointDataService: class {} }));
+// SharePoints filvelger trenger en ekte SPFx-kontekst. Uten kontekst faller skjemaet tilbake til enkel opplasting.
+jest.mock('@pnp/spfx-controls-react/lib/FilePicker', () => ({ FilePicker: () => null }));
 jest.mock('ForslagslisteWebPartStrings', () => amd('./forslagsliste/loc/nb-no.js'), { virtual: true });
 jest.mock('SokWebPartStrings', () => amd('./sok/loc/nb-no.js'), { virtual: true });
 jest.mock('NyttForslagWebPartStrings', () => amd('./nyttForslag/loc/nb-no.js'), { virtual: true });

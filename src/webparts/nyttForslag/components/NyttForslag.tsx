@@ -35,7 +35,9 @@ import {
   type FormState
 } from './formState';
 import { useConfig, useCurrentUser, useDataService, useFocusAreas, useSustainabilityGoals, useTags } from '../../../shared/hooks';
-import { GoalPicker, ImageUpload, LocationPicker, SuggestionPicker } from '../../../shared/components';
+import { GoalPicker, LocationPicker, SuggestionPicker } from '../../../shared/components';
+// Importeres direkte, ikke via indeksen, så de andre webdelene slipper filvelgeren.
+import { ImagePicker } from '../../../shared/components/ImagePicker';
 import type { Suggestion } from '../../../shared/models';
 import { COPY_QUERY_KEY, EDIT_QUERY_KEY } from '../../../shared/services';
 import { clearDraft, getQueryNumber, loadDraft, parseLatLng, saveDraft } from '../../../shared/utils';
@@ -353,14 +355,25 @@ export const NyttForslag: React.FC<INyttForslagProps> = (props) => {
           <div className={styles.row}>
             {props.showImage && (
               <Field label={props.showLocation ? strings.ImageLabel : undefined}>
-                <ImageUpload
+                <ImagePicker
                   inputId="nf-image"
+                  context={props.context}
+                  webUrl={props.webUrl}
                   imageUrl={form.imageUrl}
                   file={imageFile}
-                  labels={{ drop: strings.ImageDrop, browse: strings.ImageBrowse, remove: strings.ImageRemove, hint: strings.ImageHint }}
-                  onChange={(file) => {
+                  labels={{
+                    choose: strings.ImageChoose,
+                    change: strings.ImageChange,
+                    remove: strings.ImageRemove,
+                    hint: strings.ImageHint,
+                    error: strings.ImageError,
+                    drop: strings.ImageDrop,
+                    browse: strings.ImageBrowse,
+                    loading: strings.ImageLoading
+                  }}
+                  onChange={(file, url) => {
                     setImageFile(file);
-                    if (!file) update('imageUrl', undefined);
+                    if (!file) update('imageUrl', url);
                   }}
                 />
               </Field>
