@@ -103,6 +103,16 @@ if (-not $app.InstalledVersion) {
     Write-Host "Installerer app-pakken på $siteUrl ..." -ForegroundColor Green
     Install-PnPApp -Identity $app.Id -Scope $AppScope -Wait
 }
+elseif ([version]$app.InstalledVersion -gt [version]$app.AppCatalogVersion) {
+    # Katalogen har en lavere versjon enn den som er installert, f.eks. når versjonen er satt tilbake før lansering.
+    Write-Host "Installerer app-pakken på nytt på $siteUrl ($($app.InstalledVersion) -> $($app.AppCatalogVersion)) ..." -ForegroundColor Yellow
+    Uninstall-PnPApp -Identity $app.Id -Scope $AppScope
+    for ($i = 0; $i -lt 30; $i++) {
+        Start-Sleep -Seconds 5
+        if (-not (Get-PnPApp -Identity $app.Id -Scope $AppScope).InstalledVersion) { break }
+    }
+    Install-PnPApp -Identity $app.Id -Scope $AppScope -Wait
+}
 elseif ($app.CanUpgrade) {
     Write-Host "Oppgraderer app-pakken på $siteUrl fra $($app.InstalledVersion) til $($app.AppCatalogVersion) ..." -ForegroundColor Green
     Update-PnPApp -Identity $app.Id -Scope $AppScope
