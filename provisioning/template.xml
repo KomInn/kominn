@@ -412,6 +412,7 @@
 
       <pnp:Files>
         <pnp:File Src="assets/logo/kominn-logo.png" Folder="Ikoner" Overwrite="true" />
+        <pnp:File Src="assets/images/kominn-standardbilde.jpg" Folder="Ikoner" Overwrite="true" />
         <pnp:Directory Src="assets/icons" Folder="Ikoner" Overwrite="true" IncludedExtensions="*.png" />
       </pnp:Files>
 

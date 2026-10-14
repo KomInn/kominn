@@ -107,11 +107,28 @@ describe('webdelene tegnes med testdata', () => {
 
   it('Forslagsliste – «Se alle» ved overskriften, som i SharePoint', async () => {
     const c = await renderWithData(
-      <Forslagsliste title="Mine" mode="mine" layout="compact" period="all" top={2} defaultOrder="created" showFilters={false} showSorting={false} showImages={false} highlightMonthly={false} {...listDefaults} />
+      <Forslagsliste title="Mine" mode="mine" layout="compact" period="all" top={1} defaultOrder="created" showFilters={false} showSorting={false} showImages={false} highlightMonthly={false} {...listDefaults} />
     );
     const link = Array.from(c.querySelectorAll('a')).find((a) => a.textContent === 'Se alle');
     expect(link?.getAttribute('href')).toBe('https://mock.sharepoint.com/sites/kominn/SitePages/AlleForslag.aspx?visning=mine');
     expect(c.querySelector('nav')).toBeNull();
+  });
+
+  it('Forslagsliste – ingen «Se alle» når alt allerede vises', async () => {
+    const c = await renderWithData(
+      <Forslagsliste title="Mine" mode="mine" layout="compact" period="all" top={50} defaultOrder="created" showFilters={false} showSorting={false} showImages={false} highlightMonthly={false} {...listDefaults} />
+    );
+    expect(c.textContent).toContain('Solceller på Risenga');
+    expect(c.textContent).not.toContain('Se alle');
+  });
+
+  it('Forslagsliste – standardbilde for forslag uten bilde', async () => {
+    const c = await renderWithData(
+      <Forslagsliste title="Aktuelle" mode="published" layout="cards" period="all" top={6} defaultOrder="likes" showFilters={false} showSorting={false} showImages highlightMonthly={false} {...listDefaults} />
+    );
+    const sources = Array.from(c.querySelectorAll('img')).map((i) => i.getAttribute('src'));
+    expect(sources).toHaveLength(c.querySelectorAll('li').length);
+    expect(sources).toContain('https://mock.sharepoint.com/sites/kominn/Ikoner/kominn-standardbilde.jpg');
   });
 
   it('Forslagsliste – forrige/neste på siden Alle forslag', async () => {

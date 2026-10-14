@@ -53,6 +53,8 @@ export interface SuggestionCardProps {
   showStatus?: boolean;
   /** Vis bilde (miniatyr i kompakt liste, forhåndsvisning i kort). Standard true. */
   showImage?: boolean;
+  /** Illustrasjon i kortvisning når forslaget ikke har eget bilde. */
+  fallbackImageUrl?: string;
   /** Fremhever kortet med ramme og merke, f.eks. «Månedens forslag». */
   highlightLabel?: string;
   likesLabel: string;
@@ -62,9 +64,23 @@ export interface SuggestionCardProps {
 const formatDate = (d: Date): string => d.toLocaleDateString('nb-NO', { day: 'numeric', month: 'short', year: 'numeric' });
 
 /** Kort for ett forslag, brukt i lister og karusell. */
-export const SuggestionCard: React.FC<SuggestionCardProps> = ({ suggestion: s, variant = 'card', showStatus, showImage = true, highlightLabel, likesLabel, commentsLabel }) => {
+export const SuggestionCard: React.FC<SuggestionCardProps> = ({
+  suggestion: s,
+  variant = 'card',
+  showStatus,
+  showImage = true,
+  fallbackImageUrl,
+  highlightLabel,
+  likesLabel,
+  commentsLabel
+}) => {
   const styles = useStyles();
   const compact = variant === 'compact';
+  // Standardbildet brukes bare i kortvisning. Kompakte lister ville fått samme miniatyr på hver rad.
+  const imageSrc = s.imageUrl || (compact ? undefined : fallbackImageUrl);
+  const [failedSrc, setFailedSrc] = React.useState<string>();
+  const image = showImage && imageSrc && imageSrc !== failedSrc ? imageSrc : undefined;
+  const onImageError = (): void => setFailedSrc(imageSrc);
 
   const meta = (
     <div className={styles.meta}>
@@ -105,7 +121,7 @@ export const SuggestionCard: React.FC<SuggestionCardProps> = ({ suggestion: s, v
   if (compact) {
     return (
       <Card className={mergeClasses(styles.card, styles.compact, highlightLabel && styles.highlighted)} appearance="subtle" size="small">
-        {showImage && s.imageUrl && <img className={styles.thumb} src={s.imageUrl} alt="" />}
+        {image && <img className={styles.thumb} src={image} alt="" onError={onImageError} />}
         <div className={styles.body}>
           <Link className={styles.title} href={s.url}>
             {s.title}
@@ -119,9 +135,9 @@ export const SuggestionCard: React.FC<SuggestionCardProps> = ({ suggestion: s, v
 
   return (
     <Card className={mergeClasses(styles.card, highlightLabel && styles.highlighted)}>
-      {showImage && s.imageUrl && (
+      {image && (
         <CardPreview>
-          <img className={styles.image} src={s.imageUrl} alt="" />
+          <img className={styles.image} src={image} alt="" onError={onImageError} />
         </CardPreview>
       )}
       <CardHeader

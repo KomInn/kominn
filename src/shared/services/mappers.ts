@@ -1,5 +1,5 @@
 import type { Campaign, Evaluation, Person, Suggestion, SuggestionComment, SustainabilityGoal, SuggestionStatus, CaseWorkerStatus, CampaignType } from '../models';
-import { ALL_SUGGESTIONS_PAGE, COPY_QUERY_KEY, EDIT_QUERY_KEY, Lists, NEW_SUGGESTION_PAGE, SUGGESTION_PAGE, SUGGESTION_QUERY_KEY, VIEW_QUERY_KEY } from './constants';
+import { ALL_SUGGESTIONS_PAGE, COPY_QUERY_KEY, DEFAULT_IMAGE, EDIT_QUERY_KEY, Lists, NEW_SUGGESTION_PAGE, SUGGESTION_PAGE, SUGGESTION_QUERY_KEY, VIEW_QUERY_KEY } from './constants';
 
 /** Rå listeelementer slik PnPjs (odata=nometadata) returnerer dem. */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -30,6 +30,11 @@ export function editSuggestionUrl(webUrl: string, id: number): string {
 export function allSuggestionsUrl(webUrl: string, view?: string): string {
   const base = `${webUrl.replace(/\/$/, '')}/${ALL_SUGGESTIONS_PAGE}`;
   return view ? `${base}?${VIEW_QUERY_KEY}=${encodeURIComponent(view)}` : base;
+}
+
+/** Adressen til illustrasjonen som brukes når et forslag ikke har bilde. */
+export function defaultImageUrl(webUrl: string): string {
+  return `${webUrl.replace(/\/$/, '')}/${DEFAULT_IMAGE}`;
 }
 
 export function toDate(value: unknown): Date | undefined {
