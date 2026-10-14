@@ -243,6 +243,9 @@ describe('webdelene tegnes med testdata', () => {
     const c = await renderWithData(<Forslag suggestionId={1} showMap={false} showEvaluation showComments={false} showRelated={false} />);
     const button = (): HTMLButtonElement | undefined =>
       Array.from(c.querySelectorAll('button')).find((b) => /Lagre vurdering|Vurdering lagret/.test(b.textContent ?? ''));
+    // Status og vurdering ligger i hvert sitt kort.
+    expect(c.textContent).toContain('Status og saksbehandling');
+    expect(Array.from(c.querySelectorAll('.fui-Card')).filter((card) => /Status og saksbehandling|Snitt av alle vurderinger/.test(card.textContent ?? ''))).toHaveLength(2);
     expect(button()?.textContent).toBe('Lagre vurdering');
     await act(async () => {
       button()?.click();

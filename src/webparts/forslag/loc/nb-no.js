@@ -57,6 +57,8 @@ define([], function () {
     CommentSending: 'Sender …',
 
     CaseWorkerTitle: 'Saksbehandling',
+    StatusCardTitle: 'Status og saksbehandling',
+    EvaluationCardTitle: 'Vurdering',
     CaseWorkerHint: 'Kun synlig for gruppen Saksbehandlere.',
     SaveStatus: 'Lagre status',
     StatusSaved: 'Status er lagret.',

@@ -56,6 +56,8 @@ declare interface IForslagWebPartStrings {
   CommentSending: string;
 
   CaseWorkerTitle: string;
+  StatusCardTitle: string;
+  EvaluationCardTitle: string;
   CaseWorkerHint: string;
   SaveStatus: string;
   StatusSaved: string;
