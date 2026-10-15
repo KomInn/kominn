@@ -19,20 +19,22 @@
 
 .PARAMETER ClientId
     Klient-ID for appregistreringen PnP.PowerShell logger på med.
+    Standard er Prosjektportalens multi-tenant-app for interaktiv PnP-innlogging, som fungerer i de fleste
+    tenanter der den er godkjent. Oppgi egen verdi for å bruke en annen appregistrering.
 
 .PARAMETER Remove
     Slett demodataene i stedet for å opprette dem.
 
 .EXAMPLE
-    ./Seed-DemoData.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ClientId <app-id>
+    ./Seed-DemoData.ps1 -Url https://kommune.sharepoint.com/sites/kominn
 
 .EXAMPLE
-    ./Seed-DemoData.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ClientId <app-id> -Remove
+    ./Seed-DemoData.ps1 -Url https://kommune.sharepoint.com/sites/kominn -Remove
 #>
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)] [string] $Url,
-    [Parameter(Mandatory = $true)] [string] $ClientId,
+    [string] $ClientId = 'da6c31a6-b557-4ac3-9994-7315da06ea3a',
     [Parameter(Mandatory = $false)] [switch] $Remove
 )
 

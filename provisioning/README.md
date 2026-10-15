@@ -14,11 +14,13 @@ Alt som trengs for å sette opp et KomInn-område.
 
 ```powershell
 Install-Module PnP.PowerShell -Scope CurrentUser
-./Install.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ClientId <app-id> -GrantEveryone
+./Install.ps1 -Url https://kommune.sharepoint.com/sites/kominn -GrantEveryone
 ```
 
 Skriptet bygger SPFx-løsningen, laster opp og publiserer `kominn.sppkg` i appkatalogen, installerer den på området, kjører
-malen og gir alle ansatte medlemstilgang. Innlogging skjer i nettleservindu (`-Interactive`).
+malen og gir alle ansatte medlemstilgang. Innlogging skjer i nettleservindu (`-Interactive`). `-ClientId` er som standard
+Prosjektportalens multi-tenant-app for interaktiv PnP-innlogging (`da6c31a6-b557-4ac3-9994-7315da06ea3a`), som fungerer i
+de fleste tenanter der den er godkjent. Oppgi `-ClientId <app-id>` for å bruke en annen appregistrering.
 
 | Parameter | Virkning |
 |---|---|
@@ -39,8 +41,8 @@ promotert, suksess og gjort tidligere), med bærekraftsmål, sted, «inspirert a
 vurderinger. Ett av forslagene er månedens forslag.
 
 ```powershell
-./Seed-DemoData.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ClientId <app-id>
-./Seed-DemoData.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ClientId <app-id> -Remove
+./Seed-DemoData.ps1 -Url https://kommune.sharepoint.com/sites/kominn
+./Seed-DemoData.ps1 -Url https://kommune.sharepoint.com/sites/kominn -Remove
 ```
 
 Demoforslagene merkes med konkurransereferansen `DEMO`, og skriptet kan kjøres flere ganger.
