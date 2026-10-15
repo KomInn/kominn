@@ -20,6 +20,7 @@
 
 .PARAMETER ClientId
     Klient-ID for appregistreringen PnP.PowerShell logger på med.
+    Standard er appregistreringen i testmiljøet. Oppgi egen verdi i andre tenanter.
 
 .PARAMETER AppScope
     Tenant (standard) for leietakerens appkatalog, eller Site for områdets egen appkatalog.
@@ -38,12 +39,12 @@
     like og kommentere.
 
 .EXAMPLE
-    ./Install.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ClientId <app-id> -GrantEveryone
+    ./Install.ps1 -Url https://kommune.sharepoint.com/sites/kominn -GrantEveryone
 #>
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)] [string] $Url,
-    [Parameter(Mandatory = $true)] [string] $ClientId,
+    [string] $ClientId = 'da6c31a6-b557-4ac3-9994-7315da06ea3a',
     [Parameter(Mandatory = $false)] [ValidateSet('Tenant', 'Site')] [string] $AppScope = 'Tenant',
     [Parameter(Mandatory = $false)] [switch] $SkipBuild,
     [Parameter(Mandatory = $false)] [switch] $SkipApp,
