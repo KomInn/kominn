@@ -57,6 +57,8 @@ define([], function () {
     CommentSending: 'Sending …',
 
     CaseWorkerTitle: 'Case handling',
+    StatusCardTitle: 'Status and case handling',
+    EvaluationCardTitle: 'Evaluation',
     CaseWorkerHint: 'Only visible to the Case workers group.',
     SaveStatus: 'Save status',
     StatusSaved: 'Status saved.',
