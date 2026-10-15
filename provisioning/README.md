@@ -18,8 +18,9 @@ Install-Module PnP.PowerShell -Scope CurrentUser
 ```
 
 Skriptet bygger SPFx-løsningen, laster opp og publiserer `kominn.sppkg` i appkatalogen, installerer den på området, kjører
-malen og gir alle ansatte medlemstilgang. Innlogging skjer i nettleservindu (`-Interactive`). `-ClientId` er satt til
-appregistreringen i testmiljøet som standard. Oppgi `-ClientId <app-id>` i andre tenanter.
+malen og gir alle ansatte medlemstilgang. Innlogging skjer i nettleservindu (`-Interactive`). `-ClientId` er som standard
+Prosjektportalens multi-tenant-app for interaktiv PnP-innlogging (`da6c31a6-b557-4ac3-9994-7315da06ea3a`), som fungerer i
+de fleste tenanter der den er godkjent. Oppgi `-ClientId <app-id>` for å bruke en annen appregistrering.
 
 | Parameter | Virkning |
 |---|---|

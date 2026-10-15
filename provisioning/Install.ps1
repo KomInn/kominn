@@ -20,7 +20,8 @@
 
 .PARAMETER ClientId
     Klient-ID for appregistreringen PnP.PowerShell logger på med.
-    Standard er appregistreringen i testmiljøet. Oppgi egen verdi i andre tenanter.
+    Standard er Prosjektportalens multi-tenant-app for interaktiv PnP-innlogging, som fungerer i de fleste
+    tenanter der den er godkjent. Oppgi egen verdi for å bruke en annen appregistrering.
 
 .PARAMETER AppScope
     Tenant (standard) for leietakerens appkatalog, eller Site for områdets egen appkatalog.
