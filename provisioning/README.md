@@ -14,11 +14,11 @@ Alt som trengs for å sette opp et KomInn-område.
 
 ```powershell
 Install-Module PnP.PowerShell -Scope CurrentUser
-./Install.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ContributorGroup alle-ansatte@kommune.no
+./Install.ps1 -Url https://kommune.sharepoint.com/sites/kominn
 ```
 
-Skriptet bygger SPFx-løsningen, laster opp og publiserer `kominn.sppkg` i appkatalogen, installerer den på området, kjører
-malen og legger eventuelt kommunens Entra-grupper inn i KomInn-gruppene. Innlogging skjer i nettleservindu (`-Interactive`). `-ClientId` er som standard
+Skriptet bygger SPFx-løsningen, laster opp og publiserer `kominn.sppkg` i appkatalogen, installerer den på området og
+kjører malen. Innlogging skjer i nettleservindu (`-Interactive`). `-ClientId` er som standard
 Prosjektportalens multi-tenant-app for interaktiv PnP-innlogging (`da6c31a6-b557-4ac3-9994-7315da06ea3a`), som fungerer i
 de fleste tenanter der den er godkjent. Oppgi `-ClientId <app-id>` for å bruke en annen appregistrering.
 
@@ -28,18 +28,14 @@ de fleste tenanter der den er godkjent. Oppgi `-ClientId <app-id>` for å bruke 
 | `-SkipBuild` | Bruk eksisterende `sharepoint/solution/kominn.sppkg` |
 | `-SkipApp` | Ikke last opp app-pakken |
 | `-SkipPages` | Hopp over sidene med webdeler |
-| `-ContributorGroup <gruppe>` | Legg en Entra-gruppe, typisk alle ansatte, i **Idéinnspillere** |
-| `-CaseWorkerGroup <gruppe>` | Legg en Entra-gruppe i **Saksbehandlere** |
-
-Entra-grupper oppgis med objekt-ID (sikkerhetsgruppe), e-postadresse (e-postaktivert gruppe eller
-Microsoft 365-gruppe) eller fullstendig påloggingsnavn. Uten parameterne fylles gruppene i SharePoint etterpå.
 
 Krever Node.js 22 for byggetrinnet, eierrettighet på området og tilgang til appkatalogen.
 Malen kan kjøres flere ganger; seed-data skrives ikke over (`UpdateBehavior="Skip"`).
 
 ## Rettigheter
 
-Malen oppretter to SharePoint-grupper og setter rettighetene. Kommunen legger sine Entra-grupper inn i dem.
+Malen oppretter to SharePoint-grupper med faste navn og setter rettighetene. Tilgang gis manuelt etterpå:
+legg kommunens Entra-gruppe for ansatte i **Idéinnspillere** og saksbehandlerne i **Saksbehandlere**.
 
 | | Idéinnspillere | Saksbehandlere | Besøkende | Eiere |
 |---|---|---|---|---|

@@ -64,8 +64,7 @@ testdata i minnet, uten lister på området.
    Skriptet kjører `provisioning/template.xml`, som oppretter felt, innholdstyper, lister,
    gruppene Saksbehandlere og Idéinnspillere med rettigheter, sider med webdeler og navigasjon.
    Se `provisioning/README.md`.
-4. Legg kommunens Entra-gruppe for ansatte i **Idéinnspillere** og saksbehandlerne i **Saksbehandlere**,
-   eller oppgi dem med `-ContributorGroup` og `-CaseWorkerGroup`.
+4. Legg kommunens Entra-gruppe for ansatte i **Idéinnspillere** og saksbehandlerne i **Saksbehandlere**.
 
 Versjon 2.0 er en nyinstallasjon. Data fra 1.x flyttes ikke.
 
