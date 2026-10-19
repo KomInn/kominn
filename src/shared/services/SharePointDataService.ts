@@ -32,7 +32,18 @@ import {
   Lists,
   SuggestionFields as F
 } from './constants';
-import { mapCampaign, mapComment, mapEvaluation, mapSuggestion, mapSustainabilityGoal, type ListItem } from './mappers';
+import {
+  applyCounts,
+  countBy,
+  mapCampaign,
+  mapComment,
+  mapEvaluation,
+  mapSuggestion,
+  mapSustainabilityGoal,
+  sortByCount,
+  type ListItem,
+  type SuggestionCounts
+} from './mappers';
 
 const SUGGESTION_SELECT = [
   'Id', 'Title', 'Created',
@@ -46,6 +57,10 @@ const SUGGESTION_SELECT = [
   `${F.inspiredBy}/Id`, `${F.inspiredBy}/Title`
 ];
 const SUGGESTION_EXPAND = ['Author', F.caseWorker, F.manager, F.sustainabilityGoals, F.inspiredBy];
+/** Hvor lenge tellingen av likes og kommentarer gjenbrukes før den hentes på nytt. */
+const COUNTS_TTL_MS = 30000;
+/** Sortering på likes eller kommentarer skjer i nettleseren, blant så mange av de nyeste forslagene. */
+const CLIENT_SORT_LIMIT = 500;
 /** Felt lagt til i senere versjoner. Mangler de i listen, hentes forslag uten dem i stedet for å feile. */
 const OPTIONAL_FIELDS: string[] = [F.managerInformed];
 
@@ -63,6 +78,7 @@ export class SharePointDataService implements IDataService {
   private readonly sp: SPFI;
   private currentUser?: Promise<Person>;
   private readonly missingFields = new Set<string>();
+  private counts?: { at: number; data: Promise<SuggestionCounts> };
 
   constructor(context: ISPFXContext, siteUrl?: string) {
     const url = (siteUrl ?? '').trim().replace(/\/$/, '');
@@ -92,6 +108,35 @@ export class SharePointDataService implements IDataService {
     }
   }
 
+  /**
+   * Antall likes og kommentarer telles fra listene Likes og Kommentarer. Idéinnspillere kan bare redigere
+   * egne forslag, så tellerfeltene på forslaget kan ikke oppdateres fra nettleseren når andre liker eller kommenterer.
+   */
+  private loadCounts(): Promise<SuggestionCounts> {
+    if (!this.counts || Date.now() - this.counts.at > COUNTS_TTL_MS) {
+      const likeId = `${LikeFields.suggestion}Id`;
+      const commentId = `${CommentFields.suggestion}Id`;
+      const data = Promise.all([
+        this.list(Lists.likes).items.select(likeId).top(5000)(),
+        this.list(Lists.comments).items.select(commentId).top(5000)()
+      ]).then(([likes, comments]: ListItem[][]) => ({ likes: countBy(likes, likeId), comments: countBy(comments, commentId) }));
+      this.counts = { at: Date.now(), data };
+      data.catch(() => {
+        this.counts = undefined;
+      });
+    }
+    return this.counts.data;
+  }
+
+  /** Setter riktige tall på forslagene. Feiler tellingen, beholdes verdiene fra forslaget. */
+  private async withCounts(suggestions: Suggestion[]): Promise<Suggestion[]> {
+    try {
+      return applyCounts(suggestions, await this.loadCounts());
+    } catch {
+      return suggestions;
+    }
+  }
+
   // ---------- Forslag ----------
 
   public async getSuggestions(query: SuggestionQuery = {}): Promise<Suggestion[]> {
@@ -110,13 +155,19 @@ export class SharePointDataService implements IDataService {
     for (const area of query.focusAreas ?? []) filters.push(`${F.focusAreas} eq ${odataString(area)}`);
     for (const tag of query.tags ?? []) filters.push(`${F.tags} eq ${odataString(tag)}`);
 
-    const orderField = query.orderBy === 'likes' ? F.likes : query.orderBy === 'comments' ? F.numberOfComments : 'Created';
+    const top = query.top ?? 50;
+    const byCount = query.orderBy === 'likes' || query.orderBy === 'comments' ? query.orderBy : undefined;
     const items: ListItem[] = await this.withOptionalFields((select) => {
-      let q = this.list(Lists.suggestions).items.select(...select).expand(...SUGGESTION_EXPAND).orderBy(orderField, false).top(query.top ?? 50);
+      let q = this.list(Lists.suggestions).items
+        .select(...select)
+        .expand(...SUGGESTION_EXPAND)
+        .orderBy('Created', false)
+        .top(byCount ? Math.max(top, CLIENT_SORT_LIMIT) : top);
       if (filters.length) q = q.filter(filters.join(' and '));
       return q();
     });
-    return items.map((i) => mapSuggestion(i, this.webUrl));
+    const suggestions = await this.withCounts(items.map((i) => mapSuggestion(i, this.webUrl)));
+    return byCount ? sortByCount(suggestions, byCount).slice(0, top) : suggestions;
   }
 
   public async getSuggestion(id: number): Promise<Suggestion | undefined> {
@@ -124,7 +175,7 @@ export class SharePointDataService implements IDataService {
       const item: ListItem = await this.withOptionalFields((select) =>
         this.list(Lists.suggestions).items.getById(id).select(...select).expand(...SUGGESTION_EXPAND)()
       );
-      return mapSuggestion(item, this.webUrl);
+      return (await this.withCounts([mapSuggestion(item, this.webUrl)]))[0];
     } catch {
       return undefined;
     }
@@ -137,7 +188,7 @@ export class SharePointDataService implements IDataService {
       .select(...select).expand(...SUGGESTION_EXPAND)
       .filter(`substringof(${odataString(term)}, Title)`)
       .orderBy('Created', false).top(top)());
-    return items.map((i) => mapSuggestion(i, this.webUrl));
+    return this.withCounts(items.map((i) => mapSuggestion(i, this.webUrl)));
   }
 
   public async getInspiredSuggestions(id: number): Promise<Suggestion[]> {
@@ -145,7 +196,7 @@ export class SharePointDataService implements IDataService {
       .select(...select).expand(...SUGGESTION_EXPAND)
       .filter(`${F.inspiredBy}/Id eq ${id}`)
       .orderBy('Created', false).top(20)());
-    return items.map((i) => mapSuggestion(i, this.webUrl));
+    return this.withCounts(items.map((i) => mapSuggestion(i, this.webUrl)));
   }
 
   /** Felles feltverdier for opprettelse og redigering. */
@@ -181,9 +232,18 @@ export class SharePointDataService implements IDataService {
     return updated;
   }
 
+  /**
+   * Innsenderen kan redigere sitt eget forslag (listen tillater bare redigering av egne elementer for Idéinnspillere).
+   * Saksbehandlere og eiere kan redigere alle, og de har «Behandle lister» på listen.
+   */
   public async canEditSuggestion(id: number): Promise<boolean> {
     try {
-      return await this.list(Lists.suggestions).items.getById(id).currentUserHasPermissions(PermissionKind.EditListItems);
+      const [item, me, manager] = await Promise.all([
+        this.list(Lists.suggestions).items.getById(id).select('Author/Id').expand('Author')() as Promise<ListItem>,
+        this.getCurrentUser(),
+        this.list(Lists.suggestions).currentUserHasPermissions(PermissionKind.ManageLists)
+      ]);
+      return manager || (item.Author?.Id !== undefined && item.Author.Id === me.id);
     } catch {
       return false;
     }
@@ -250,8 +310,7 @@ export class SharePointDataService implements IDataService {
       [CommentFields.text]: text,
       [`${CommentFields.suggestion}Id`]: suggestionId
     });
-    const count = await this.list(Lists.comments).items.select('Id').filter(`${CommentFields.suggestion}Id eq ${suggestionId}`).top(5000)();
-    await this.list(Lists.suggestions).items.getById(suggestionId).update({ [F.numberOfComments]: count.length });
+    this.counts = undefined;
     const me = await this.getCurrentUser();
     return { id: added.Id, suggestionId, text, author: me, created: new Date() };
   }
@@ -274,8 +333,8 @@ export class SharePointDataService implements IDataService {
     } else {
       await this.list(Lists.likes).items.add({ Title: String(suggestionId), [`${LikeFields.suggestion}Id`]: suggestionId });
     }
+    this.counts = undefined;
     const all = await this.list(Lists.likes).items.select('Id').filter(`${LikeFields.suggestion}Id eq ${suggestionId}`).top(5000)();
-    await this.list(Lists.suggestions).items.getById(suggestionId).update({ [F.likes]: all.length });
     return all.length;
   }
 

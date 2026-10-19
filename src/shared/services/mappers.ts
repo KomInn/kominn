@@ -180,3 +180,30 @@ export function averageEvaluations(evaluations: Evaluation[]): EvaluationAverage
   });
   return result;
 }
+
+/** Antall likes og kommentarer per forslag, telt fra listene Likes og Kommentarer. */
+export interface SuggestionCounts {
+  likes: Map<number, number>;
+  comments: Map<number, number>;
+}
+
+/** Teller rader per forslag. `field` er oppslagsfeltets id-kolonne, f.eks. «KmiSuggestionId». */
+export function countBy(items: ListItem[], field: string): Map<number, number> {
+  const counts = new Map<number, number>();
+  for (const item of items) {
+    const id = item[field];
+    if (typeof id === 'number') counts.set(id, (counts.get(id) ?? 0) + 1);
+  }
+  return counts;
+}
+
+/** Setter antall likes og kommentarer fra tellingen. Forslag uten rader får 0. */
+export function applyCounts(suggestions: Suggestion[], counts: SuggestionCounts): Suggestion[] {
+  return suggestions.map((s) => ({ ...s, likes: counts.likes.get(s.id) ?? 0, numberOfComments: counts.comments.get(s.id) ?? 0 }));
+}
+
+/** Sorterer synkende på likes eller kommentarer, med nyeste først ved likt antall. */
+export function sortByCount(suggestions: Suggestion[], orderBy: 'likes' | 'comments'): Suggestion[] {
+  const value = (s: Suggestion): number => (orderBy === 'likes' ? s.likes : s.numberOfComments);
+  return [...suggestions].sort((a, b) => value(b) - value(a) || b.created.getTime() - a.created.getTime());
+}

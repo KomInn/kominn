@@ -5,9 +5,14 @@
 .DESCRIPTION
     1. Bygger SPFx-løsningen (npm ci og npm run package) og får sharepoint/solution/kominn.sppkg.
     2. Laster opp og publiserer app-pakken i appkatalogen, og installerer den på området.
-    3. Kjører PnP-malen template.xml: felt, innholdstyper, lister, gruppen Saksbehandlere,
-       sider med KomInn-webdelene, navigasjon og ikoner for bærekraftsmålene.
-    4. Gir eventuelt alle ansatte medlemstilgang (-GrantEveryone).
+    3. Kjører PnP-malen template.xml: felt, innholdstyper, lister, gruppene Saksbehandlere og Idéinnspillere
+       med rettigheter, sider med KomInn-webdelene, navigasjon og ikoner for bærekraftsmålene.
+    4. Legger eventuelt kommunens Entra-grupper inn i Idéinnspillere og Saksbehandlere.
+
+    Rettigheter (settes av malen):
+      - Idéinnspillere: lese på området, bidra i Forslag, Kommentarer, Likes og Bilder. Ser alle forslag,
+        men kan bare endre og slette sine egne. Ingen tilgang til Forslagsvurdering.
+      - Saksbehandlere: redigere på området og alle forslag, bidra i Forslagsvurdering.
 
     Krav:
       - PnP.PowerShell 3.4 eller nyere (Install-Module PnP.PowerShell -Scope CurrentUser)
@@ -35,12 +40,16 @@
 .PARAMETER SkipPages
     Hopp over sidene med webdeler.
 
-.PARAMETER GrantEveryone
-    Legger «Alle unntatt eksterne brukere» i medlemsgruppen, slik at alle ansatte kan sende inn,
-    like og kommentere.
+.PARAMETER ContributorGroup
+    Entra-gruppe som legges i Idéinnspillere, typisk gruppen for alle ansatte. Oppgi gruppens objekt-ID
+    (sikkerhetsgruppe), e-postadresse (e-postaktivert gruppe eller Microsoft 365-gruppe) eller et
+    fullstendig påloggingsnavn (claim). Uten parameteren blir gruppen tom og kan fylles i SharePoint.
+
+.PARAMETER CaseWorkerGroup
+    Entra-gruppe som legges i Saksbehandlere. Samme format som -ContributorGroup.
 
 .EXAMPLE
-    ./Install.ps1 -Url https://kommune.sharepoint.com/sites/kominn -GrantEveryone
+    ./Install.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ContributorGroup alle-ansatte@kommune.no
 #>
 [CmdletBinding()]
 param(
@@ -50,7 +59,8 @@ param(
     [Parameter(Mandatory = $false)] [switch] $SkipBuild,
     [Parameter(Mandatory = $false)] [switch] $SkipApp,
     [Parameter(Mandatory = $false)] [switch] $SkipPages,
-    [Parameter(Mandatory = $false)] [switch] $GrantEveryone
+    [Parameter(Mandatory = $false)] [string] $ContributorGroup,
+    [Parameter(Mandatory = $false)] [string] $CaseWorkerGroup
 )
 
 #Requires -Modules @{ ModuleName = 'PnP.PowerShell'; ModuleVersion = '3.4.0' }
@@ -131,15 +141,33 @@ $sw = [Diagnostics.Stopwatch]::StartNew()
 Invoke-PnPSiteTemplate @invokeParams
 $sw.Stop()
 
-# 5. Tilgang for alle ansatte
-if ($GrantEveryone) {
-    $tenantId = Get-PnPTenantId
-    $members = Get-PnPGroup -AssociatedMemberGroup
-    Write-Host "Legger «Alle unntatt eksterne brukere» i '$($members.Title)' ..." -ForegroundColor Green
-    Add-PnPGroupMember -Group $members -LoginName "c:0-.f|rolemanager|spo-grid-all-users/$tenantId"
+# 5. Tilgang
+# Eldre versjoner av skriptet (-GrantEveryone) la «Alle unntatt eksterne brukere» i Medlemmer, som har
+# redigeringsrettigheter på hele området. Tilgang for ansatte gis nå gjennom Idéinnspillere.
+$members = Get-PnPGroup -AssociatedMemberGroup
+Get-PnPGroupMember -Group $members | Where-Object { $_.LoginName -like '*spo-grid-all-users*' } | ForEach-Object {
+    Write-Host "Fjerner «$($_.Title)» fra '$($members.Title)'. Bruk Idéinnspillere for tilgang for ansatte." -ForegroundColor Yellow
+    Remove-PnPGroupMember -Group $members -LoginName $_.LoginName
 }
+
+function Add-EntraGroup([string] $SiteGroup, [string] $EntraGroup) {
+    if (-not $EntraGroup) { return }
+    # Objekt-ID gir claim for en sikkerhetsgruppe. E-post og claims sendes videre som de er.
+    $loginName = if ($EntraGroup -match '^[0-9a-fA-F-]{36}$') { "c:0t.c|tenant|$EntraGroup" } else { $EntraGroup }
+    try {
+        Add-PnPGroupMember -Group $SiteGroup -LoginName $loginName
+        Write-Host "La '$EntraGroup' i '$SiteGroup'." -ForegroundColor Green
+    }
+    catch {
+        Write-Warning "Kunne ikke legge '$EntraGroup' i '$SiteGroup': $($_.Exception.Message). Legg gruppen inn manuelt i SharePoint."
+    }
+}
+Add-EntraGroup -SiteGroup 'Idéinnspillere' -EntraGroup $ContributorGroup
+Add-EntraGroup -SiteGroup 'Saksbehandlere' -EntraGroup $CaseWorkerGroup
 
 Write-Host ''
 Write-Host "Malen brukte $($sw.Elapsed.ToString('mm\:ss'))." -ForegroundColor Green
 Write-Host "Installert på: $siteUrl" -ForegroundColor Green
-Write-Host "Legg saksbehandlere i gruppen 'Saksbehandlere' og åpne $siteUrl/SitePages/Hjem.aspx"
+if (-not $ContributorGroup) { Write-Host "Legg kommunens Entra-gruppe for ansatte i gruppen 'Idéinnspillere'." }
+if (-not $CaseWorkerGroup) { Write-Host "Legg saksbehandlerne i gruppen 'Saksbehandlere'." }
+Write-Host "Åpne $siteUrl/SitePages/Hjem.aspx"

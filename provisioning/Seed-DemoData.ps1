@@ -8,9 +8,9 @@
     Med -Remove slettes alle DEMO-forslag. Kommentarer, likes og vurderinger som peker på dem
     slettes automatisk av SharePoint (oppslagsfeltene har Cascade).
 
-    Kommentarer og vurderinger opprettes i navnet til brukeren som kjører skriptet.
-    Antall liker og kommentarer på forslagene er satt for visning. Første gang noen trykker
-    Lik eller kommenterer, telles de opp på nytt fra listene.
+    Kommentarer, likes og vurderinger opprettes i navnet til brukeren som kjører skriptet.
+    KomInn teller likes og kommentarer fra listene Likes og Kommentarer, så skriptet legger inn
+    én like-rad per like i demodataene. Alle demo-likene står derfor på brukeren som kjører skriptet.
 
     Krever PnP.PowerShell 3.4 eller nyere, og at malen er kjørt på området.
 
@@ -44,6 +44,7 @@ $ErrorActionPreference = 'Stop'
 $DemoRef = 'DEMO'
 $SuggestionList = 'Forslag'
 $CommentList = 'Kommentarer'
+$LikeList = 'Likes'
 $EvaluationList = 'Forslagsvurdering'
 $GoalList = 'Baerekraftsmaal'
 
@@ -177,6 +178,16 @@ foreach ($key in $comments.Keys) {
     }
 }
 Write-Host 'Kommentarer lagt inn.' -ForegroundColor Green
+
+# Likes (én rad per like, i en samlet batch)
+$batch = New-PnPBatch
+foreach ($s in $demo | Where-Object { $_.Likes -gt 0 -and $ids[$_.Key] }) {
+    for ($i = 0; $i -lt $s.Likes; $i++) {
+        Add-PnPListItem -List $LikeList -Values @{ Title = $DemoRef; KmiSuggestion = $ids[$s.Key] } -Batch $batch
+    }
+}
+Invoke-PnPBatch -Batch $batch
+Write-Host 'Likes lagt inn.' -ForegroundColor Green
 
 # Vurderinger
 foreach ($key in $evaluations.Keys) {

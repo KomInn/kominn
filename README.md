@@ -62,8 +62,10 @@ testdata i minnet, uten lister på området.
 2. Opprett et moderne SharePoint-område (kommunikasjons- eller teamområde).
 3. Kjør `provisioning/Install.ps1` mot området med PnP.PowerShell 3.4 eller nyere.
    Skriptet kjører `provisioning/template.xml`, som oppretter felt, innholdstyper, lister,
-   gruppen Saksbehandlere, sider med webdeler og navigasjon. Se `provisioning/README.md`.
-4. Legg saksbehandlere i SharePoint-gruppen **Saksbehandlere**.
+   gruppene Saksbehandlere og Idéinnspillere med rettigheter, sider med webdeler og navigasjon.
+   Se `provisioning/README.md`.
+4. Legg kommunens Entra-gruppe for ansatte i **Idéinnspillere** og saksbehandlerne i **Saksbehandlere**,
+   eller oppgi dem med `-ContributorGroup` og `-CaseWorkerGroup`.
 
 Versjon 2.0 er en nyinstallasjon. Data fra 1.x flyttes ikke.
 

@@ -1,4 +1,4 @@
-import { averageEvaluations, mapSuggestion, mapSustainabilityGoal, suggestionUrl, toStringArray } from './mappers';
+import { applyCounts, averageEvaluations, countBy, mapSuggestion, mapSustainabilityGoal, sortByCount, suggestionUrl, toStringArray } from './mappers';
 
 const web = 'https://contoso.sharepoint.com/sites/kominn/';
 
@@ -64,5 +64,24 @@ describe('averageEvaluations', () => {
     expect(first?.count).toBe(2);
     expect(first?.feasibility).toBe(3.5);
     expect(first?.learningPotential).toBe(4.5);
+  });
+});
+
+describe('telling av likes og kommentarer', () => {
+  const a = { ...mapSuggestion({ Id: 1, Created: '2026-01-01T00:00:00Z', KmiLikes: 99 }, web) };
+  const b = { ...mapSuggestion({ Id: 2, Created: '2026-02-01T00:00:00Z' }, web) };
+  const c = { ...mapSuggestion({ Id: 3, Created: '2026-03-01T00:00:00Z' }, web) };
+
+  it('teller rader per forslag og overstyrer feltverdiene', () => {
+    const likes = countBy([{ KmiSuggestionId: 1 }, { KmiSuggestionId: 2 }, { KmiSuggestionId: 2 }, { KmiSuggestionId: null }], 'KmiSuggestionId');
+    const comments = countBy([{ KmiSuggestionId: 3 }], 'KmiSuggestionId');
+    const [x, y, z] = applyCounts([a, b, c], { likes, comments });
+    expect([x.likes, y.likes, z.likes]).toEqual([1, 2, 0]);
+    expect([x.numberOfComments, y.numberOfComments, z.numberOfComments]).toEqual([0, 0, 1]);
+  });
+
+  it('sorterer synkende på antall, nyeste først ved likt antall', () => {
+    const counted = applyCounts([a, b, c], { likes: new Map([[1, 2], [2, 5], [3, 2]]), comments: new Map() });
+    expect(sortByCount(counted, 'likes').map((s) => s.id)).toEqual([2, 3, 1]);
   });
 });

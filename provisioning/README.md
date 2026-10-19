@@ -4,7 +4,7 @@ Alt som trengs for å sette opp et KomInn-område.
 
 | Fil | Innhold |
 |---|---|
-| `template.xml` | PnP Provisioning-mal på skjema 2022/09: felt, innholdstyper, lister med visninger, gruppen Saksbehandlere, rettigheter på Forslagsvurdering, moderne sider med KomInn-webdelene, navigasjon og seed-data (bærekraftsmål, standardtekst, kartkonfigurasjon). |
+| `template.xml` | PnP Provisioning-mal på skjema 2022/09: felt, innholdstyper, lister med visninger, gruppene Saksbehandlere og Idéinnspillere med rettigheter, moderne sider med KomInn-webdelene, navigasjon og seed-data (bærekraftsmål, standardtekst, kartkonfigurasjon). |
 | `Install.ps1` | Kobler til området og kjører malen. Krever PnP.PowerShell 3.4 eller nyere. |
 | `assets/icons/` | Ikoner for FNs 17 bærekraftsmål. Lastes opp til biblioteket Ikoner. |
 | `assets/logo/` | KomInn-logoen (SVG-kilde og PNG). PNG-en lastes opp til Ikoner og settes som områdelogo. |
@@ -14,11 +14,11 @@ Alt som trengs for å sette opp et KomInn-område.
 
 ```powershell
 Install-Module PnP.PowerShell -Scope CurrentUser
-./Install.ps1 -Url https://kommune.sharepoint.com/sites/kominn -GrantEveryone
+./Install.ps1 -Url https://kommune.sharepoint.com/sites/kominn -ContributorGroup alle-ansatte@kommune.no
 ```
 
 Skriptet bygger SPFx-løsningen, laster opp og publiserer `kominn.sppkg` i appkatalogen, installerer den på området, kjører
-malen og gir alle ansatte medlemstilgang. Innlogging skjer i nettleservindu (`-Interactive`). `-ClientId` er som standard
+malen og legger eventuelt kommunens Entra-grupper inn i KomInn-gruppene. Innlogging skjer i nettleservindu (`-Interactive`). `-ClientId` er som standard
 Prosjektportalens multi-tenant-app for interaktiv PnP-innlogging (`da6c31a6-b557-4ac3-9994-7315da06ea3a`), som fungerer i
 de fleste tenanter der den er godkjent. Oppgi `-ClientId <app-id>` for å bruke en annen appregistrering.
 
@@ -28,11 +28,34 @@ de fleste tenanter der den er godkjent. Oppgi `-ClientId <app-id>` for å bruke 
 | `-SkipBuild` | Bruk eksisterende `sharepoint/solution/kominn.sppkg` |
 | `-SkipApp` | Ikke last opp app-pakken |
 | `-SkipPages` | Hopp over sidene med webdeler |
-| `-GrantEveryone` | Legg «Alle unntatt eksterne brukere» i medlemsgruppen |
+| `-ContributorGroup <gruppe>` | Legg en Entra-gruppe, typisk alle ansatte, i **Idéinnspillere** |
+| `-CaseWorkerGroup <gruppe>` | Legg en Entra-gruppe i **Saksbehandlere** |
+
+Entra-grupper oppgis med objekt-ID (sikkerhetsgruppe), e-postadresse (e-postaktivert gruppe eller
+Microsoft 365-gruppe) eller fullstendig påloggingsnavn. Uten parameterne fylles gruppene i SharePoint etterpå.
 
 Krever Node.js 22 for byggetrinnet, eierrettighet på området og tilgang til appkatalogen.
-Legg saksbehandlere i gruppen **Saksbehandlere** etterpå. Malen kan kjøres flere ganger; seed-data
-skrives ikke over (`UpdateBehavior="Skip"`).
+Malen kan kjøres flere ganger; seed-data skrives ikke over (`UpdateBehavior="Skip"`).
+
+## Rettigheter
+
+Malen oppretter to SharePoint-grupper og setter rettighetene. Kommunen legger sine Entra-grupper inn i dem.
+
+| | Idéinnspillere | Saksbehandlere | Besøkende | Eiere |
+|---|---|---|---|---|
+| Området og sidene | Lese | Redigere | Lese | Full kontroll |
+| Forslag | Bidra, bare egne elementer | Redigere alle | Lese | Full kontroll |
+| Kommentarer og Likes | Bidra, bare egne elementer | Redigere alle | Lese | Full kontroll |
+| Bilder | Bidra | Redigere | Lese | Full kontroll |
+| Forslagsvurdering | Ingen tilgang | Bidra | Ingen tilgang | Full kontroll |
+
+Idéinnspillere ser alle forslag og kommentarer, men kan bare endre og slette sine egne. Listene Forslag,
+Kommentarer og Likes har «Opprette elementer og redigere elementer de har opprettet» (`WriteSecurity="2"`).
+Saksbehandlere har Redigere, som overstyrer dette. Antall likes og kommentarer telles fra listene Likes og
+Kommentarer, så ingen trenger å skrive i andres forslag.
+
+Medlemmer brukes ikke av KomInn og beholder sin vanlige betydning. Eldre versjoner av skriptet la
+«Alle unntatt eksterne brukere» i Medlemmer (`-GrantEveryone`). Skriptet fjerner dem derfra.
 
 ## Demodata
 

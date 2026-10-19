@@ -15,10 +15,12 @@
       <pnp:Security>
         <pnp:SiteGroups>
           <pnp:SiteGroup Title="Saksbehandlere" Description="Kan vurdere forslag, endre status og se saksbehandlingssiden." Owner="{associatedownergroup}" AllowMembersEditMembership="false" AllowRequestToJoinLeave="false" AutoAcceptRequestToJoinLeave="false" OnlyAllowMembersViewMembership="false" />
+          <pnp:SiteGroup Title="Idéinnspillere" Description="Kan sende inn forslag, kommentere og like. Ser alle forslag, men kan bare endre sine egne. Legg kommunens Entra-gruppe for ansatte her." Owner="{associatedownergroup}" AllowMembersEditMembership="false" AllowRequestToJoinLeave="false" AutoAcceptRequestToJoinLeave="false" OnlyAllowMembersViewMembership="false" />
         </pnp:SiteGroups>
         <pnp:Permissions>
           <pnp:RoleAssignments>
             <pnp:RoleAssignment Principal="Saksbehandlere" RoleDefinition="{roledefinition:Editor}" />
+            <pnp:RoleAssignment Principal="Idéinnspillere" RoleDefinition="{roledefinition:Reader}" />
           </pnp:RoleAssignments>
         </pnp:Permissions>
       </pnp:Security>
@@ -187,7 +189,14 @@
       <pnp:Lists>
         <pnp:ListInstance Title="Ikoner" Description="Ikoner for FNs bærekraftsmål" TemplateType="101" Url="Ikoner" EnableVersioning="false" EnableAttachments="false" OnQuickLaunch="false" />
 
-        <pnp:ListInstance Title="Bilder" Description="Bilder lastet opp til forslag" TemplateType="109" TemplateFeatureID="00bfea71-52d4-45b3-b544-b1c71b620109" Url="Bilder" EnableVersioning="false" EnableAttachments="false" OnQuickLaunch="false" />
+        <pnp:ListInstance Title="Bilder" Description="Bilder lastet opp til forslag" TemplateType="109" TemplateFeatureID="00bfea71-52d4-45b3-b544-b1c71b620109" Url="Bilder" EnableVersioning="false" EnableAttachments="false" OnQuickLaunch="false">
+          <!-- Idéinnspillere kan legge til og laste opp bilder. Øvrige grupper arver rettighetene fra området. -->
+          <pnp:Security>
+            <pnp:BreakRoleInheritance CopyRoleAssignments="true" ClearSubscopes="false">
+              <pnp:RoleAssignment Principal="Idéinnspillere" RoleDefinition="{roledefinition:Contributor}" />
+            </pnp:BreakRoleInheritance>
+          </pnp:Security>
+        </pnp:ListInstance>
 
         <pnp:ListInstance Title="Baerekraftsmaal" Description="FNs 17 bærekraftsmål" TemplateType="100" Url="Lists/Baerekraftsmaal" OnQuickLaunch="false" EnableAttachments="false" EnableFolderCreation="false">
           <pnp:FieldRefs>
@@ -272,7 +281,7 @@
           </pnp:DataRows>
         </pnp:ListInstance>
 
-        <pnp:ListInstance Title="Forslag" Description="Innsendte forslag" TemplateType="100" Url="Lists/Forslag" OnQuickLaunch="false" ContentTypesEnabled="true" RemoveExistingContentTypes="true" EnableVersioning="true" MaxVersionLimit="50" EnableAttachments="false" EnableFolderCreation="false">
+        <pnp:ListInstance Title="Forslag" Description="Innsendte forslag" TemplateType="100" Url="Lists/Forslag" OnQuickLaunch="false" ContentTypesEnabled="true" RemoveExistingContentTypes="true" EnableVersioning="true" MaxVersionLimit="50" EnableAttachments="false" EnableFolderCreation="false" WriteSecurity="2">
           <pnp:ContentTypeBindings>
             <pnp:ContentTypeBinding ContentTypeID="0x010063D756B686FA90498E2CB193C077DEA0" Default="true" />
           </pnp:ContentTypeBindings>
@@ -306,6 +315,12 @@
             <pnp:FieldDefault FieldName="KmiStatus">Sendt inn</pnp:FieldDefault>
             <pnp:FieldDefault FieldName="KmiCaseWorkerStatus">Sendt inn</pnp:FieldDefault>
           </pnp:FieldDefaults>
+          <!-- Idéinnspillere kan legge til og bare endre egne elementer (WriteSecurity=2). Øvrige grupper arver rettighetene fra området. -->
+          <pnp:Security>
+            <pnp:BreakRoleInheritance CopyRoleAssignments="true" ClearSubscopes="false">
+              <pnp:RoleAssignment Principal="Idéinnspillere" RoleDefinition="{roledefinition:Contributor}" />
+            </pnp:BreakRoleInheritance>
+          </pnp:Security>
         </pnp:ListInstance>
 
         <pnp:ListInstance Title="Forslagsvurdering" Description="Saksbehandlernes vurderinger. Kun synlig for gruppen Saksbehandlere." TemplateType="100" Url="Lists/Forslagsvurdering" OnQuickLaunch="false" ContentTypesEnabled="true" RemoveExistingContentTypes="true" EnableVersioning="true" EnableAttachments="false" EnableFolderCreation="false">
@@ -347,6 +362,12 @@
               <RowLimit Paged="TRUE">30</RowLimit>
             </View>
           </pnp:Views>
+          <!-- Idéinnspillere kan legge til og bare endre egne elementer (WriteSecurity=2). Øvrige grupper arver rettighetene fra området. -->
+          <pnp:Security>
+            <pnp:BreakRoleInheritance CopyRoleAssignments="true" ClearSubscopes="false">
+              <pnp:RoleAssignment Principal="Idéinnspillere" RoleDefinition="{roledefinition:Contributor}" />
+            </pnp:BreakRoleInheritance>
+          </pnp:Security>
         </pnp:ListInstance>
 
         <pnp:ListInstance Title="Likes" Description="Én rad per bruker per forslag" TemplateType="100" Url="Lists/Likes" OnQuickLaunch="false" EnableAttachments="false" EnableFolderCreation="false" WriteSecurity="2">
@@ -360,6 +381,12 @@
               <RowLimit Paged="TRUE">30</RowLimit>
             </View>
           </pnp:Views>
+          <!-- Idéinnspillere kan legge til og bare endre egne elementer (WriteSecurity=2). Øvrige grupper arver rettighetene fra området. -->
+          <pnp:Security>
+            <pnp:BreakRoleInheritance CopyRoleAssignments="true" ClearSubscopes="false">
+              <pnp:RoleAssignment Principal="Idéinnspillere" RoleDefinition="{roledefinition:Contributor}" />
+            </pnp:BreakRoleInheritance>
+          </pnp:Security>
         </pnp:ListInstance>
 
         <pnp:ListInstance Title="Kampanje" Description="Kampanjetekster og perioder som vises på forsiden" TemplateType="100" Url="Lists/Kampanje" OnQuickLaunch="false" ContentTypesEnabled="true" RemoveExistingContentTypes="true" EnableAttachments="false" EnableFolderCreation="false">
